@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+/* Tokens de docs/identidade-visual.md. A paleta padrão do Tailwind é removida
+   para que só as cores da marca possam ser usadas. */
+@theme {
+  --color-*: initial;
+
+  --color-cream: #fff7f2; /* fundo principal */
+  --color-white: #ffffff; /* seções alternadas, cards */
+  --color-blush: #fbe4e1; /* hero, fundos de cards, selos */
+  --color-peach-soft: #fdeee3; /* fundo alternativo */
+  --color-pink: #f2b8b5; /* decorativo */
+  --color-pink-mid: #d9708a; /* decorativo, marcadores */
+  --color-rose: #a8324f; /* faixa superior, bloco editorial, eyebrows */
+  --color-apricot: #f7c59f; /* botão e script sobre fundo escuro */
+  --color-orange: #e8743b; /* SOMENTE decorativo: nunca leva texto */
+  --color-orange-cta: #b5461a; /* botão principal, com texto branco */
+  --color-orange-script: #c4551f; /* texto cursivo, menu ativo */
+  --color-plum: #2d1b1f; /* texto principal, rodapé */
+  --color-plum-muted: #6e5458; /* texto de apoio */
+  --color-plum-soft: #5c4448; /* parágrafos longos sobre rosa */
+  --color-border: #f2d5d0; /* bordas finas */
+}
+
+/* Fontes carregadas por next/font no layout raiz. */
+@theme inline {
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-jost), system-ui, sans-serif;
+  --font-script: var(--font-pinyon), cursive;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-cream);
+    color: var(--color-plum);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Foco visível em qualquer fundo: o anel usa a cor do próprio texto,
+     que já tem contraste com o fundo em que está. */
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background-color: var(--color-blush);
+    color: var(--color-plum);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

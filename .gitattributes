@@ -1,0 +1,5 @@
+# Quebras de linha LF no repositório (o deploy da Vercel roda em Linux).
+* text=auto eol=lf
+*.jpg binary
+*.png binary
+*.ico binary

@@ -1,0 +1,33 @@
+# dependências
+/node_modules
+/.pnp
+.pnp.*
+
+# Next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# testes
+/coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# variáveis de ambiente: só o modelo vai para o git
+.env*
+!.env.example
+
+# Supabase CLI (cache local)
+supabase/.temp/
+
+# Vercel
+.vercel
+
+# diversos
+.DS_Store
+*.pem
+npm-debug.log*

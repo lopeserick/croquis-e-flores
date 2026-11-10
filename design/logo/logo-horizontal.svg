@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Croquis e Flores — logo provisória (opção 3, silhueta de croqui). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" width="720" height="360" role="img" aria-label="Croquis e Flores">
+<style>@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400&amp;family=Pinyon+Script&amp;display=swap");</style>
+<g fill="none">
+  <ellipse cx="100" cy="42" rx="13" ry="16" stroke="#2D1B1F" stroke-width="1.6"/>
+  <circle cx="110" cy="25" r="7" fill="#2D1B1F"/>
+  <path d="M100 58 L100 74" stroke="#2D1B1F" stroke-width="1.6"/>
+  <path d="M80 80 C74 100 74 120 80 142" stroke="#2D1B1F" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M120 80 C130 100 131 122 125 146" stroke="#2D1B1F" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M80 80 Q100 72 120 80 L113 122 Q100 128 87 122 Z" stroke="#2D1B1F" stroke-width="1.6" fill="#FFF7F2"/>
+  <path d="M87 122 C62 180 44 262 30 344 C72 326 128 326 170 344 C156 262 138 180 113 122 Z" stroke="#A8324F" stroke-width="1.6" fill="#F2B8B5"/>
+  <path d="M98 128 C92 200 90 270 98 330" stroke="#A8324F" stroke-width="1"/>
+  <path d="M106 128 C124 196 134 262 146 330" stroke="#A8324F" stroke-width="1"/>
+  <path d="M93 128 C78 190 64 256 54 332" stroke="#A8324F" stroke-width="1"/>
+  <circle cx="88" cy="124" r="11" fill="#E8743B"/>
+  <path d="M88 117 a7 7 0 1 1 -6.5 9" stroke="#FFF7F2" stroke-width="1.4"/>
+</g>
+<text x="222" y="196" font-family="'Cormorant Garamond', Georgia, serif" font-size="124" fill="#2D1B1F">Croquis</text>
+<text x="330" y="284" font-family="'Pinyon Script', cursive" font-size="80" fill="#B5461A">e flores</text>
+</svg>
