@@ -20,6 +20,40 @@
   --color-plum-muted: #6e5458; /* texto de apoio */
   --color-plum-soft: #5c4448; /* parágrafos longos sobre rosa */
   --color-border: #f2d5d0; /* bordas finas */
+  --color-border-strong: #e7c2b8; /* contorno de botões redondos */
+
+  /* Apoio, usados no protótipo aprovado. Nenhum leva texto pequeno. */
+  --color-wall: #f6cfc9; /* parede da ilustração do hero */
+  --color-floor: #edb79e; /* piso da ilustração do hero */
+  --color-wood: #c9876a; /* moldura e móvel */
+  --color-mauve: #d9b8b8; /* texto de apoio no rodapé, foto de exemplo */
+  --color-plum-line: #4a3337; /* divisória no rodapé */
+
+  /* Escala tipográfica (identidade-visual.md: H1 68/40px, H2 46/32px). */
+  --text-hero: 2.5rem;
+  --text-hero--line-height: 1.05;
+  --text-hero-lg: 4.25rem;
+  --text-hero-lg--line-height: 1.02;
+  --text-section: 2rem;
+  --text-section--line-height: 1.12;
+  --text-section-lg: 2.875rem;
+  --text-section-lg--line-height: 1.1;
+  --text-feature-lg: 3.625rem;
+  --text-feature-lg--line-height: 1.05;
+
+  --tracking-eyebrow: 0.22em;
+  --tracking-button: 0.16em;
+  --tracking-nav: 0.12em;
+
+  --radius-card: 20px;
+}
+
+/* Lista com rolagem horizontal sem barra visível (vitrine de obras). */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Fontes carregadas por next/font no layout raiz. */

@@ -4,24 +4,32 @@ import { parseEnv } from "@/lib/env";
 const validSupabase = {
   NEXT_PUBLIC_SUPABASE_URL: "https://exemplo.supabase.co",
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_abc",
+};
+
+const validAdmin = {
+  NEXT_PUBLIC_SUPABASE_URL: "https://exemplo.supabase.co",
   SUPABASE_SECRET_KEY: "sb_secret_abc",
 };
 
 describe("parseEnv", () => {
   it("devolve só as variáveis do grupo quando são válidas", () => {
-    const env = parseEnv("supabase", { ...validSupabase, OUTRA: "x" });
+    const env = parseEnv("supabase", { ...validSupabase, ...validAdmin, OUTRA: "x" });
     expect(env).toEqual(validSupabase);
+  });
+
+  it("leitura pública não exige a chave secreta", () => {
+    expect(() => parseEnv("supabase", validSupabase)).not.toThrow();
   });
 
   it("lista as variáveis ausentes na mensagem de erro", () => {
     expect(() => parseEnv("supabase", {})).toThrow(
-      /\(supabase\): NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, SUPABASE_SECRET_KEY/,
+      /\(supabase\): NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY/,
     );
   });
 
   it("rejeita chave com formato errado", () => {
     expect(() =>
-      parseEnv("supabase", { ...validSupabase, SUPABASE_SECRET_KEY: "sb_publishable_trocada" }),
+      parseEnv("supabaseAdmin", { ...validAdmin, SUPABASE_SECRET_KEY: "sb_publishable_trocada" }),
     ).toThrow(/SUPABASE_SECRET_KEY/);
   });
 

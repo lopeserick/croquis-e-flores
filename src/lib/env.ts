@@ -8,9 +8,14 @@ const schemas = {
   site: z.object({
     NEXT_PUBLIC_SITE_URL: z.url(),
   }),
+  // Leitura pública (sujeita às políticas RLS).
   supabase: z.object({
     NEXT_PUBLIC_SUPABASE_URL: z.url(),
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().startsWith("sb_publishable_"),
+  }),
+  // Acesso total, ignora o RLS: só em código de servidor que já checou permissão.
+  supabaseAdmin: z.object({
+    NEXT_PUBLIC_SUPABASE_URL: z.url(),
     SUPABASE_SECRET_KEY: z.string().startsWith("sb_secret_"),
   }),
   email: z.object({

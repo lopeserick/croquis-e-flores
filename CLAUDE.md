@@ -8,11 +8,14 @@ Publicação prevista: **Vercel**.
 
 1. `docs/briefing.md`: requisitos completos (o "prompt mestre"). É a fonte da verdade dos requisitos.
 2. `docs/decisoes.md`: o que já foi decidido e o que **mudou em relação ao briefing**. Em conflito, `decisoes.md` vale mais que o briefing.
+   `docs/conteudo-carla.md`: textos, coleções, preços, prazos e entrega informados pela Carla (valores iniciais reais).
 3. `docs/identidade-visual.md`: paleta, fontes, componentes, logo e estrutura da home.
 4. `docs/plano-inicial.md`: proposta de stack, banco e entregas. É ponto de partida para a Fase 1, não decisão fechada.
 5. `design/home-referencia.html`: protótipo visual aprovado da página inicial. Abra no navegador e use como referência de layout, espaçamento e hierarquia.
 6. `design/logo/`: logo escolhida (símbolo e versões horizontais em SVG) e `logo-referencia.html`.
 7. `design/assets/obras/`: fotos reais das obras da Carla, usadas no protótipo.
+8. `docs/arquitetura.md`: plano aprovado da Fase 1 (arquitetura, banco, fluxos, entregas, riscos).
+9. `docs/plano-aprovado.md`: andamento. **Ao fim de cada entrega, atualize este arquivo** com o que foi entregue e como conferir, em checklists curtas.
 
 ## Como trabalhar neste projeto
 
@@ -47,10 +50,19 @@ Node 24 + npm. Antes do primeiro uso: `npm install`, `npx playwright install chr
 | `npm run typecheck` | Gera os tipos das rotas e roda o TypeScript |
 | `npm test` | Testes de unidade (Vitest, `tests/unit/`) |
 | `npm run test:e2e` | Testes de ponta a ponta (Playwright, `tests/e2e/`), em celular e desktop |
-| `npm run build` | Build de produção |
+| `npm run build` | Build de produção (lê o Supabase durante a pré-renderização) |
+| `npm run test:db` | Testes contra o Supabase de desenvolvimento (RLS, buckets, seed). Usa rede e `.env.local` |
+| `npm run db:push` | Aplica as migrations de `supabase/migrations/` no projeto vinculado |
+| `npm run db:seed` | Executa o `supabase/seed.sql` no projeto vinculado (só desenvolvimento; pode rodar de novo) |
+| `npm run db:types` | Regenera `src/lib/supabase/database.types.ts` a partir do banco |
 
 Stack: Next.js 16.4 (App Router, Cache Components), React 19, Tailwind 4, Zod 4. **O Next 16.4 tem APIs diferentes das versões antigas**: consulte `node_modules/next/dist/docs/` antes de usar uma API do Next (ver `AGENTS.md`).
 
 - Tokens de cor e fontes ficam em `src/app/globals.css`. A paleta padrão do Tailwind foi removida: use só as cores da marca (`bg-cream`, `text-plum`, `bg-orange-cta`…).
 - Variáveis de ambiente são lidas só por `getEnv(grupo)` em `src/lib/env.ts`, que valida o grupo na primeira vez que ele é usado.
+- Banco: só o servidor acessa (`src/lib/supabase/server.ts`). Páginas públicas usam `createPublicClient()` (chave pública, sujeita ao RLS); `createAdminClient()` ignora o RLS e só entra depois de checar permissão. Toda tabela nova precisa de RLS, grants explícitos e teste em `tests/db/`.
+- Leituras públicas ficam em funções `"use cache"` com `cacheLife` e `cacheTag` (`src/lib/cache-tags.ts`); o painel invalida a etiqueta ao salvar.
+- Mudou o banco? Nova migration em `supabase/migrations/`, `npm run db:push`, `npm run db:types`.
+- Regras do pedido ficam em `src/features/orders/schema.ts` e são as mesmas no configurador (navegador) e no envio (servidor). Não duplique validação em componente.
+- Rotas com `params`/`searchParams` leem esses valores dentro de `<Suspense>` (aviso "instant-shell-url-data" do Next 16.4).
 - Arquitetura e plano de entregas: `docs/arquitetura.md`.

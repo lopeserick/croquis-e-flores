@@ -41,7 +41,9 @@ cp .env.example .env.local   # e preencha os valores
 npm run dev                  # http://localhost:3000
 ```
 
-Verificações: `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e`, `npm run build`.
+Verificações: `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e`, `npm run test:db`, `npm run build`.
+
+Banco (Supabase): a CLI roda via `npx supabase`. Na primeira vez, `npx supabase login` e `npx supabase link --project-ref <ref>`. Depois, `npm run db:push` aplica as migrations e `npm run db:types` atualiza os tipos.
 
 ## Antes de publicar
 

@@ -98,12 +98,12 @@ src/
     orders/                     schema, create-order, whatsapp-link, email-template
     artworks/  catalog/  settings/  testimonials/
   lib/
-    supabase/                   server.ts, admin.ts
+    supabase/                   server.ts (clientes público e admin), database.types.ts (gerado)
     security/                   file-signature, rate-limit, honeypot, ip-hash
     env.ts                      valida variáveis de ambiente na inicialização
 supabase/
-  migrations/                   tabelas, RLS, buckets, função create_order
-  seed.sql                      catálogo provisório + 8 obras marcadas como placeholder
+  migrations/                   tabelas, RLS, buckets (create_order chega na entrega 6)
+  seed.sql                      catálogo provisório, 7 obras com nomes entre colchetes, depoimentos de exemplo
 tests/
   unit/  e2e/
 ```
@@ -135,8 +135,8 @@ settings · testimonials · admin_users · rate_limits · order_counters
 | **orders** | número (`CF-2026-0001`), `idempotency_key` único, ids **e** snapshot em texto das escolhas, valores personalizados, data desejada, descrição, observações, nome, e-mail, WhatsApp, cidade, UF, aceite de privacidade (data e versão da política), artwork_ref_id, status, orçamento em centavos, prazo confirmado, `email_status`, `ip_hash` |
 | **order_references** | order_id, caminho no bucket privado, caminho da miniatura, nome original, MIME, tamanho |
 | **order_events** | order_id, tipo (status / nota / email_enviado / email_falhou), status anterior → novo, texto, autor, data |
-| **settings** | chave → JSON: nome, contatos, WhatsApp, e-mail de recebimento, textos institucionais, limites de upload, prazo mínimo |
-| **testimonials** | nome, cidade/UF, texto, nota (opcional), registro da autorização, publicado, ordem |
+| **settings** | chave → JSON + `is_public`: nome, contatos, WhatsApp, textos institucionais (públicos); e-mail de recebimento, limites de upload, prazo mínimo (privados) |
+| **testimonials** | nome, cidade/UF, texto, nota (opcional), registro da autorização, `is_demo`, publicado, ordem. Depoimento real só é publicado com a autorização registrada (regra no banco) |
 | **admin_users** | user_id (Supabase Auth), nome |
 | **rate_limits / order_counters** | limite de tentativas por IP (hash) e número sequencial por ano |
 
@@ -220,3 +220,4 @@ Configurações: contatos, e-mail de recebimento, WhatsApp, limites, prazo míni
 | Datas e fuso horário | Data desejada como data pura; horários exibidos em `America/Sao_Paulo` |
 | LGPD | Aceite com data e versão da política; coleta mínima (só cidade/UF); IP só como hash; retenção e exclusão pelo painel; texto da política vem da Carla ou de um profissional |
 | Imagens de baixa resolução e direitos de imagem | Ponto focal por foto; pendências de originais e autorizações em `decisoes.md` |
+| Obra/categoria inexistente responde 200 em vez de 404 (pré-renderização parcial envia a casca antes do `notFound()`) | Comportamento documentado do Next 16: a página mostra "Página não encontrada" e recebe `noindex`. Revisto na entrega 4: mantido, porque `dynamicParams = false` daria 404 correto mas impediria obras novas do painel de aparecerem sem novo deploy |

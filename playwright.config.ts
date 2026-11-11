@@ -7,7 +7,10 @@ export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
   forbidOnly: isCI,
-  retries: isCI ? 2 : 0,
+  // Localmente, 1 nova tentativa: o `next dev` às vezes responde 500 ("Unexpected
+  // end of JSON input") quando dois testes compilam a mesma rota dinâmica ao
+  // mesmo tempo. Não ocorre no build de produção. Teste repetido sai como "flaky".
+  retries: isCI ? 2 : 1,
   reporter: isCI ? "github" : "list",
   use: {
     baseURL: `http://localhost:${PORT}`,
