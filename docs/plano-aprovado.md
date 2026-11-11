@@ -255,7 +255,9 @@ Decisões: `decisoes.md`, item 16.
 **Para receber o e-mail de verdade** (falta configurar)
 - [ ] Criar conta em resend.com e gerar uma chave de API
 - [ ] No `.env.local`: `RESEND_API_KEY=re_...`, `EMAIL_FROM="Croquis e Flores <onboarding@resend.dev>"` e `EMAIL_TO_OVERRIDE=` com o e-mail da conta do Resend (sem domínio verificado, ele só entrega para esse endereço)
-- [ ] Reiniciar o `npm run dev`, enviar um pedido e conferir a caixa de entrada
+- [x] Chave do Resend no `.env.local`, com os e-mails desviados para erick1lopes7@outlook.com (11/11/2026)
+- [ ] Reiniciar o `npm run dev`, enviar um pedido e conferir a caixa de entrada (veja também o lixo eletrônico)
+- Os testes automáticos não mandam e-mail. Para testar o envio real neles: `E2E_SEND_EMAIL=1 npm run test:e2e`
 
 **Testes automáticos**
 - [ ] `npm test`: 91 testes de regras (inclui link do WhatsApp, e-mail sem HTML injetado, falha do e-mail, caminho das fotos, chave do pedido, IP em hash)

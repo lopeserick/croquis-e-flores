@@ -27,5 +27,9 @@ export default defineConfig({
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !isCI,
     timeout: 180_000,
+    // Os testes enviam pedidos: sem isto, cada rodada mandaria e-mails de verdade.
+    // Variável já definida (mesmo vazia) vale mais que o .env.local.
+    // Para testar o envio real: E2E_SEND_EMAIL=1 npm run test:e2e
+    env: process.env.E2E_SEND_EMAIL ? {} : { RESEND_API_KEY: "" },
   },
 });
