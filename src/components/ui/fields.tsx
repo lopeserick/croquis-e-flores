@@ -4,7 +4,7 @@ import { focalPosition } from "@/components/site/artwork-card";
 import { LogoSymbol } from "@/components/site/logo";
 import type { ImageAsset } from "@/features/catalog/types";
 
-// Campos do configurador. Texto em 16px (o iPhone não dá zoom ao focar),
+// Campos de formulário (configurador e painel). Texto em 16px (o iPhone não dá zoom ao focar),
 // alvos de toque de no mínimo 44px, erro ligado ao campo por aria-describedby.
 
 const describedBy = (id: string, hint?: ReactNode, error?: string) =>

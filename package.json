@@ -14,9 +14,11 @@
     "test:db": "vitest run --config vitest.db.config.mts",
     "db:push": "node scripts/db.mjs db push --remote",
     "db:seed": "node scripts/db.mjs db query --remote -f supabase/seed.sql",
-    "db:types": "node scripts/db.mjs gen types --lang typescript --linked > src/lib/supabase/database.types.ts"
+    "db:types": "node scripts/db.mjs gen types --lang typescript --linked > src/lib/supabase/database.types.ts",
+    "admin": "node scripts/admin.mjs"
   },
   "dependencies": {
+    "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "2.118.0",
     "next": "16.4.6",
     "react": "19.3.0",

@@ -3,7 +3,7 @@ import { formatPrice, optionPriceLabel, startingPrice } from "@/features/catalog
 import { addDays, formatLongDate, isValidIsoDate, todayInSaoPaulo } from "@/features/orders/dates";
 import { CUSTOM_CATEGORY } from "@/features/orders/form-types";
 import { formatBrPhone, normalizeBrPhone, phoneInputDigits } from "@/features/orders/phone";
-import { checkReference } from "@/features/orders/references";
+import { checkReference, formatFileSize } from "@/features/orders/references";
 import {
   autoSelectSingleOptions,
   emptyDraft,
@@ -55,6 +55,14 @@ describe("WhatsApp", () => {
     expect(formatBrPhone("75988498356")).toBe("(75) 98849-8356");
     expect(formatBrPhone("7532214567")).toBe("(75) 3221-4567");
     expect(phoneInputDigits("+55 (75) 98849-8356")).toBe("75988498356");
+  });
+});
+
+describe("tamanho dos arquivos", () => {
+  it("mostra KB abaixo de 1 MB e MB acima", () => {
+    expect(formatFileSize(70)).toBe("1 KB");
+    expect(formatFileSize(350 * 1024)).toBe("350 KB");
+    expect(formatFileSize(2.4 * 1024 * 1024)).toBe("2,4 MB");
   });
 });
 

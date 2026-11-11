@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { optionPriceLabel } from "@/features/catalog/prices";
 import { CUSTOM_CATEGORY } from "./form-types";
 import { findModality, type OrderDraft, type ValidationContext } from "./schema";
@@ -50,4 +51,13 @@ export function summarizeOrder(draft: OrderDraft, ctx: ValidationContext): Order
       ["Entrega", delivery],
     ],
   };
+}
+
+const storedRowsSchema = z.array(z.tuple([z.string(), z.string()])).catch([]);
+const storedSummarySchema = z.object({ obra: storedRowsSchema, detalhes: storedRowsSchema }).catch({ obra: [], detalhes: [] });
+
+/** Lê a cópia das escolhas gravada no pedido (orders.choices). */
+export function parseStoredSummary(choices: unknown): OrderSummary {
+  const parsed = storedSummarySchema.parse(choices ?? {});
+  return { work: parsed.obra, details: parsed.detalhes };
 }

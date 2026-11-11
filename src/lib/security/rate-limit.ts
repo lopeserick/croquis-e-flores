@@ -8,6 +8,8 @@ export const RATE_LIMITS = {
   pedido: { windowSeconds: 3600, max: 10 },
   /** Pedidos de links para enviar fotos. */
   upload: { windowSeconds: 3600, max: 30 },
+  /** Tentativas de login no painel. */
+  login: { windowSeconds: 900, max: 10 },
 } as const;
 
 export async function withinRateLimit(name: keyof typeof RATE_LIMITS, ipHash: string): Promise<boolean> {

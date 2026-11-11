@@ -2,7 +2,7 @@
 
 Atualizado a cada entrega. Plano completo: `arquitetura.md`. Pendências e decisões: `decisoes.md`.
 
-**Última atualização:** 11/11/2026, entrega 6.
+**Última atualização:** 11/11/2026, entrega 7.
 
 ## Visão geral
 
@@ -14,7 +14,7 @@ Atualizado a cada entrega. Plano completo: `arquitetura.md`. Pendências e decis
 - [x] Entrega 5: configurador de encomenda (telas)
 - [x] Entrega 5.1: conteúdo real da Carla (coleções, preços, prazos, textos, depoimentos)
 - [x] Entrega 6: envio do pedido (registro, fotos, e-mail, WhatsApp)
-- [ ] Entrega 7: painel: login e pedidos
+- [x] Entrega 7: painel: login e pedidos
 - [ ] Entrega 8: painel: obras
 - [ ] Entrega 9: painel: catálogo, depoimentos, textos e configurações
 - [ ] Entrega 10: qualidade (testes, acessibilidade, celulares reais)
@@ -268,3 +268,37 @@ Decisões: `decisoes.md`, seção 6.
 - "Ver no painel" do e-mail: o painel chega na entrega 7
 - Reenvio de e-mails que falharam e limpeza de fotos de pedidos não concluídos (rotina diária, junto com o painel)
 - E-mail de confirmação para o cliente (depende do domínio verificado, entrega 11)
+
+## Entrega 7: painel (login e pedidos) ✔
+
+**Entregue**
+- [x] Login do painel em `/admin/login`, com mensagem que não revela se o e-mail existe e limite de tentativas
+- [x] Painel protegido de verdade: sem login, toda página do painel leva ao login. Conta que não é da Carla não entra. As fotos dos clientes também não abrem por chamada direta
+- [x] Início do painel: pedidos novos, contagem por status, aviso de e-mails que não saíram e pedidos recentes
+- [x] Lista de pedidos com filtro por status
+- [x] Página do pedido:
+  - escolhas, data desejada, descrição e obra de inspiração;
+  - fotos do cliente (abrem em tamanho real ou para baixar, por link que vale 1 minuto);
+  - contato, com botões de WhatsApp e e-mail.
+- [x] Mudar o status, registrar orçamento (R$) e prazo confirmado, fazer anotações internas e reenviar o e-mail de aviso. Tudo vai para o histórico do pedido
+- [x] Botão "Sair"
+- [x] Comando para criar a conta do painel e trocar senha: `npm run admin -- criar email "Nome"` (a senha é digitada no terminal, sem aparecer)
+
+**Como conferir no navegador**
+- [ ] No terminal, criar a sua conta: `npm run admin -- criar erick1lopes7@outlook.com "Erick"` e digitar uma senha de 12 caracteres ou mais
+- [ ] Abrir `http://localhost:3000/admin` sem estar logado: vai para o login
+- [ ] Entrar com a conta criada: aparece "Olá, Erick!" com a contagem de pedidos
+- [ ] Fazer um pedido pelo site (com foto) e vê-lo no painel; abrir a foto
+- [ ] Mudar o status, salvar um orçamento e uma anotação: tudo aparece no histórico
+- [ ] "Sair" e tentar abrir o pedido de novo: volta para o login
+- [ ] No celular: o painel funciona e os botões são fáceis de tocar
+
+**Testes automáticos**
+- [ ] `npm test`: 100 testes de regras (inclui valor em reais, datas no fuso de São Paulo, nomes dos status)
+- [ ] `npm run test:db`: 37 testes no banco (inclui conta comum sem acesso aos pedidos e a Carla lendo, alterando e abrindo fotos só com a sessão dela)
+- [ ] `npm run test:e2e`: 127 testes de navegador (inclui painel bloqueado sem login, conta sem acesso, foto sem login, percurso completo da Carla, filtros e acessibilidade)
+
+**Ainda não funciona (previsto para depois)**
+- "Esqueci minha senha" pelo e-mail (depois do domínio próprio)
+- Cadastro de obras pelo painel (entrega 8); catálogo, textos e configurações (entrega 9)
+- Rotina diária: reenviar e-mails que falharam e limpar fotos de pedidos não concluídos (entrega 10)

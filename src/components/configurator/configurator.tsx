@@ -24,7 +24,7 @@ import {
 } from "@/features/orders/schema";
 import { idempotencyKeySchema, newIdempotencyKey } from "@/features/orders/submission";
 import { SIGNATURE_BYTES } from "@/lib/security/file-signature";
-import { ErrorSummary } from "./fields";
+import { ErrorSummary } from "@/components/ui/fields";
 import type { ReferenceItem } from "./reference-picker";
 import { StepProgress } from "./step-progress";
 import { FIELD_ANCHORS, StepChoice, StepCustomer, StepDetails, StepInspiration, StepReview } from "./steps";

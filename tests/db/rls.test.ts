@@ -210,6 +210,54 @@ describe("usuário logado que não é admin", () => {
     const download = await user.storage.from("referencias").download(referencePath);
     expect(download.error).not.toBeNull();
   });
+
+  it("não muda status de pedido nem escreve no histórico", async () => {
+    await user.from("orders").update({ status: "cancelado" }).eq("id", orderId);
+    const { data } = await admin.from("orders").select("status").eq("id", orderId).single();
+    expect(data!.status).toBe("nova");
+    const event = await user.from("order_events").insert({ order_id: orderId, type: "nota", body: "invasão" });
+    expect(event.error).not.toBeNull();
+  });
+});
+
+describe("Carla logada (admin), só com a chave pública", () => {
+  const email = `teste-admin-${suffix}@exemplo.com`;
+  const password = randomUUID();
+  let userId = "";
+  const carla = createClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    { auth: { persistSession: false, autoRefreshToken: false } },
+  );
+
+  beforeAll(async () => {
+    const created = await admin.auth.admin.createUser({ email, password, email_confirm: true });
+    if (created.error) throw created.error;
+    userId = created.data.user.id;
+    const grant = await admin.from("admin_users").insert({ user_id: userId, name: "Carla Teste" });
+    if (grant.error) throw grant.error;
+    const signIn = await carla.auth.signInWithPassword({ email, password });
+    if (signIn.error) throw signIn.error;
+  });
+
+  afterAll(async () => {
+    if (userId) await admin.auth.admin.deleteUser(userId);
+  });
+
+  it("lê e altera pedidos e registra no histórico", async () => {
+    const { data } = await carla.from("orders").select("id").eq("id", orderId);
+    expect(data).toHaveLength(1);
+    const updated = await carla.from("orders").update({ quote_cents: 15000 }).eq("id", orderId).select("quote_cents");
+    expect(updated.data).toEqual([{ quote_cents: 15000 }]);
+    const event = await carla.from("order_events").insert({ order_id: orderId, type: "nota", body: "ok", author_id: userId });
+    expect(event.error).toBeNull();
+  });
+
+  it("abre foto de cliente só por link assinado", async () => {
+    const signed = await carla.storage.from("referencias").createSignedUrl(referencePath, 60);
+    expect(signed.error).toBeNull();
+    expect((await fetch(signed.data!.signedUrl)).status).toBe(200);
+  });
 });
 
 describe("regras do banco", () => {

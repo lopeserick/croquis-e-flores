@@ -17,7 +17,8 @@ export function escapeHtml(value: string): string {
 export type OrderEmailInput = {
   number: string;
   summary: OrderSummary;
-  desiredDate: string;
+  /** null em pedidos antigos sem data. */
+  desiredDate: string | null;
   description: string;
   customer: {
     name: string;
@@ -57,7 +58,7 @@ export function buildOrderEmail(input: OrderEmailInput): { subject: string; html
     [
       "Inspiração",
       [
-        ["Data desejada", formatLongDate(input.desiredDate)],
+        ["Data desejada", input.desiredDate ? formatLongDate(input.desiredDate) : "Não informada"],
         ["Descrição", input.description],
         ["Fotos", photos],
       ],

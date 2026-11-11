@@ -55,6 +55,7 @@ Node 24 + npm. Antes do primeiro uso: `npm install`, `npx playwright install chr
 | `npm run db:push` | Aplica as migrations de `supabase/migrations/` no projeto vinculado |
 | `npm run db:seed` | Executa o `supabase/seed.sql` no projeto vinculado (só desenvolvimento; pode rodar de novo) |
 | `npm run db:types` | Regenera `src/lib/supabase/database.types.ts` a partir do banco |
+| `npm run admin -- criar email "Nome"` | Cria conta do painel (pede a senha no terminal). Também: `senha email`, `remover email` |
 
 Stack: Next.js 16.4 (App Router, Cache Components), React 19, Tailwind 4, Zod 4. **O Next 16.4 tem APIs diferentes das versões antigas**: consulte `node_modules/next/dist/docs/` antes de usar uma API do Next (ver `AGENTS.md`).
 
@@ -64,6 +65,7 @@ Stack: Next.js 16.4 (App Router, Cache Components), React 19, Tailwind 4, Zod 4.
 - Leituras públicas ficam em funções `"use cache"` com `cacheLife` e `cacheTag` (`src/lib/cache-tags.ts`); o painel invalida a etiqueta ao salvar.
 - Mudou o banco? Nova migration em `supabase/migrations/`, `npm run db:push`, `npm run db:types`.
 - Regras do pedido ficam em `src/features/orders/schema.ts` e são as mesmas no configurador (navegador) e no envio (servidor). Não duplique validação em componente.
+- Painel (`/admin`): `src/proxy.ts` só renova a sessão e manda para o login; a permissão de verdade é `requireAdmin()` (`src/features/admin/auth.ts`) em toda página, Server Action e rota, e o painel lê com `createSessionClient()` (sessão da Carla, sob o RLS). Leitura da sessão sempre dentro de `<Suspense>`.
 - Envio do pedido: `src/features/orders/create-order.ts` (só servidor) valida tudo de novo e chama a função SQL `create_order`. As fotos sobem do navegador por link assinado. Os testes `tests/e2e/order.spec.ts` gravam no Supabase de desenvolvimento e apagam o que criam (`tests/e2e/support/db.ts`).
 - Rotas com `params`/`searchParams` leem esses valores dentro de `<Suspense>` (aviso "instant-shell-url-data" do Next 16.4).
 - Arquitetura e plano de entregas: `docs/arquitetura.md`.

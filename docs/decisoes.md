@@ -88,6 +88,9 @@ Os textos, preços e informações que a Carla passou estão em `conteudo-carla.
 ## 7. Publicação, contas e custos
 
 - [x] **Painel da Carla:** só ela entra, com e-mail e senha forte (no mínimo 12 caracteres). Não existe cadastro aberto ao público.
+- [x] **Pedidos no painel:** a Carla vê a lista de pedidos, abre cada um com as fotos do cliente, muda o andamento (Nova, Em análise, Orçamento enviado…), registra o valor do orçamento e o prazo, faz anotações que só ela vê e chama o cliente no WhatsApp. Tudo fica num histórico do pedido.
+- [x] **Contas do painel:** por enquanto, quem cria a conta da Carla (ou troca a senha dela) é o Erick, por um comando no computador. A senha é digitada pela própria pessoa.
+- [ ] **"Esqueci minha senha" pelo e-mail:** fica para depois que o site tiver domínio próprio. Até lá, se a Carla esquecer a senha, o Erick cria uma nova.
 - [x] **Envio de e-mails em teste:** o serviço de envio (Resend) está funcionando. Enquanto o site não tem domínio próprio, os e-mails de pedidos chegam para o Erick.
 - [ ] **Domínio croquiseflores.com.br:** escolhido, mas ainda não registrado. É registrado no registro.br, por cerca de R$ 40 por ano (conferir o valor). Sem ele, o site não tem endereço próprio e os e-mails não podem ir para a Carla.
 - [ ] **E-mails de pedidos indo para a Carla:** depende do domínio. Quando ele estiver pronto, os pedidos passam a chegar em croquiseflores@outlook.com.

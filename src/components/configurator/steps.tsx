@@ -23,7 +23,7 @@ import {
   type StepNumber,
   type ValidationContext,
 } from "@/features/orders/schema";
-import { CheckboxField, ChoiceGroup, SelectField, TextArea, TextField, type Choice } from "./fields";
+import { CheckboxField, ChoiceGroup, SelectField, TextArea, TextField, type Choice } from "@/components/ui/fields";
 import { ReferencePicker, type ReferenceItem } from "./reference-picker";
 
 type StepProps = {
