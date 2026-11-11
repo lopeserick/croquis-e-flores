@@ -48,6 +48,14 @@ Registro do que foi decidido antes do desenvolvimento. **Em conflito com o brief
     - **Depoimentos sem nome** ("Cliente Croquis e Flores"): a pesquisa foi anônima e os nomes tinham sido distribuídos sem saber quem escreveu cada frase.
     - **Coleções sem foto** (Pets, Kit para colorir) mostram o símbolo da marca até a Carla mandar fotos.
     - **Frase de inspiração** do "Sobre" escrita a partir do que a Carla contou; ela confirma ou reescreve no painel.
+16. **Adotado na entrega 6** (envio do pedido):
+    - **Número do pedido** `CF-AAAA-NNNN`, sequencial por ano (fuso de São Paulo).
+    - **Fotos** vão direto do navegador para o bucket privado, por links assinados criados pelo servidor, na pasta da chave do pedido. Antes de gravar, o servidor confere tamanho e tipo real (primeiros bytes) e apaga o que não for imagem.
+    - **Sem chave do Resend**, o pedido é gravado normalmente, com o e-mail marcado como "falhou" e o motivo no histórico. O painel (entrega 7) vai destacar e permitir reenviar.
+    - **E-mail de recebimento** fica numa configuração privada (`notifications`), hoje croquiseflores@outlook.com. O "Responder" do e-mail vai direto para o cliente. Em desenvolvimento, `EMAIL_TO_OVERRIDE` manda tudo para um endereço de teste.
+    - **Limites por IP** (guardado só como hash): 10 pedidos e 30 pedidos de envio de fotos por hora. Campo-armadilha invisível contra robôs.
+    - **Tela de sucesso** com o número e "Abrir conversa no WhatsApp" com mensagem pronta. O texto não diz que a mensagem foi enviada.
+    - **Ainda não**: miniaturas das fotos, e-mail de confirmação para o cliente (depende do domínio) e limpeza automática de fotos de pedidos não concluídos (cron, junto com o painel).
 
 ## Pendências com a Carla (bloqueiam a publicação, não o desenvolvimento)
 
@@ -84,5 +92,5 @@ Propostas apresentadas em 09/11/2026, aguardando resposta. Cada uma tem soluçã
 - [ ] **E-mail de confirmação para o cliente.** Recomendado; depende do domínio verificado no Resend.
 - [ ] **Autorização de portfólio no pedido.** Adotado provisoriamente: caixa opcional, desmarcada, desligável na configuração (decisão 13).
 - [ ] **Retenção das referências.** Proposta: apagar N dias após conclusão/cancelamento, N configurável.
-- [ ] **Número do pedido.** Proposta: `CF-2026-0001`, sequencial por ano.
+- [x] **Número do pedido.** `CF-2026-0001`, sequencial por ano (decisão 16).
 - [ ] **Limites de upload.** Padrão técnico provisório: até 10 imagens de 10 MB (JPG, PNG, WebP), configurável.

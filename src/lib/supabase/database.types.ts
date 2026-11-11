@@ -331,7 +331,15 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "is_admin":
+            "create_order":
+{ Args: { "p_order": Json,"p_references"?: Json }; Returns: {
+              "created": boolean,"order_id": string,"order_number": string
+            }[]
+                           },
+"hit_rate_limit":
+{ Args: { "p_key": string,"p_max": number,"p_window_seconds": number }; Returns: boolean
+                           },
+"is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "is_image_asset":

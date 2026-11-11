@@ -7,6 +7,7 @@ import type { OptionKind } from "@/features/catalog/types";
 import { BR_STATES } from "@/features/orders/br-states";
 import { formatLongDate } from "@/features/orders/dates";
 import { CUSTOM_CATEGORY } from "@/features/orders/form-types";
+import { summarizeOrder } from "@/features/orders/summary";
 import { formatBrPhone, phoneInputDigits } from "@/features/orders/phone";
 import {
   availableOptions,
@@ -58,7 +59,6 @@ export const FIELD_ANCHORS: Record<keyof OrderDraft, string> = {
 
 const deliveryTag = { fisica: "Entrega física", digital: "Arquivo digital" } as const;
 
-const optionLabel = (ctx: ValidationContext, id: string) => ctx.data.options.find((o) => o.id === id)?.label ?? "";
 const isCustomOption = (ctx: ValidationContext, id: string) =>
   ctx.data.options.find((o) => o.id === id)?.allowsCustom ?? false;
 
@@ -444,50 +444,22 @@ export function StepReview({
   references,
   onEdit,
 }: Omit<StepProps, "update" | "errors"> & { references: ReferenceItem[]; onEdit: (step: StepNumber) => void }) {
-  const modality = findModality(ctx, draft.modalityId);
-  const category =
-    draft.categoryId === CUSTOM_CATEGORY
-      ? "Personalizado"
-      : (ctx.data.categories.find((c) => c.id === draft.categoryId)?.name ?? "");
-  const inspiration = ctx.data.artworks.find((a) => a.id === draft.artworkRefId);
-  const withCustom = (id: string, customText: string) =>
-    isCustomOption(ctx, id) ? `${optionLabel(ctx, id)}: ${customText.trim()}` : optionLabel(ctx, id);
-  const delivery =
-    modality?.deliveryKind === "digital"
-      ? `Arquivo digital em alta resolução${draft.fileFormatOptionId ? ` · ${optionLabel(ctx, draft.fileFormatOptionId)}` : ""}`
-      : optionLabel(ctx, draft.deliveryOptionId) || "A combinar";
-  const withPrice = (id: string, text: string) => {
-    const option = ctx.data.options.find((o) => o.id === id);
-    const price = option && optionPriceLabel(option);
-    return price ? `${text} (${price})` : text;
-  };
+  const summary = summarizeOrder(draft, ctx);
   const state = BR_STATES.find(([code]) => code === draft.state)?.[0] ?? draft.state;
 
-  const optional = (value: string) => value || "Não se aplica";
   return (
     <div className="flex flex-col gap-5">
       <ReviewBlock
         title="Sua obra"
         step={1}
         onEdit={onEdit}
-        rows={[
-          ["Modalidade", modality?.name ?? ""],
-          ["Tipo de arte", category],
-          ...(inspiration ? [["Inspirada em", inspiration.title] as [string, string]] : []),
-        ]}
+        rows={summary.work}
       />
       <ReviewBlock
         title="Técnica, tamanho e entrega"
         step={2}
         onEdit={onEdit}
-        rows={[
-          ["Tamanho", optional(withPrice(draft.sizeOptionId, withCustom(draft.sizeOptionId, draft.customSize)))],
-          ["Técnica", optional(withCustom(draft.techniqueOptionId, draft.customTechnique))],
-          ...(draft.finishOptionId
-            ? [["Moldura", withPrice(draft.finishOptionId, optionLabel(ctx, draft.finishOptionId))] as [string, string]]
-            : []),
-          ["Entrega", draft.deliveryOptionId ? withPrice(draft.deliveryOptionId, delivery) : delivery],
-        ]}
+        rows={summary.details}
       />
       <ReviewBlock
         title="Sua inspiração"

@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type RefObject } from "react";
 import { buttonClasses } from "@/components/ui/button-link";
+import { prepareReferenceUploads, sendOrder } from "@/features/orders/actions";
 import { todayInSaoPaulo } from "@/features/orders/dates";
 import type { OrderFormData } from "@/features/orders/form-types";
 import { checkReference } from "@/features/orders/references";
@@ -20,6 +22,7 @@ import {
   type StepNumber,
   type ValidationContext,
 } from "@/features/orders/schema";
+import { idempotencyKeySchema, newIdempotencyKey } from "@/features/orders/submission";
 import { SIGNATURE_BYTES } from "@/lib/security/file-signature";
 import { ErrorSummary } from "./fields";
 import type { ReferenceItem } from "./reference-picker";
@@ -65,17 +68,28 @@ export function ConfiguratorSkeleton() {
   );
 }
 
-type Stored = { draft: OrderDraft; referenceNames: string[] };
+/** idempotencyKey: a mesma em todas as tentativas de envio deste rascunho. */
+type Stored = { draft: OrderDraft; referenceNames: string[]; idempotencyKey: string | null };
+
+type Submission =
+  | { status: "idle" }
+  | { status: "sending"; message: string }
+  | { status: "error"; message: string }
+  | { status: "sent"; number: string; whatsappUrl: string | null };
+
+/** Erro com mensagem pronta para mostrar ao cliente. */
+class SubmitError extends Error {}
 
 function readStored(): Stored | null {
   try {
     const raw = window.sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const value = JSON.parse(raw) as { draft?: unknown; referenceNames?: unknown };
+    const value = JSON.parse(raw) as { draft?: unknown; referenceNames?: unknown; idempotencyKey?: unknown };
     const names = Array.isArray(value.referenceNames)
       ? value.referenceNames.filter((n): n is string => typeof n === "string").slice(0, 20)
       : [];
-    return { draft: parseDraft(value.draft), referenceNames: names };
+    const key = idempotencyKeySchema.safeParse(value.idempotencyKey);
+    return { draft: parseDraft(value.draft), referenceNames: names, idempotencyKey: key.success ? key.data : null };
   } catch {
     return null; // modo privado, armazenamento cheio ou conteúdo corrompido: começa do zero
   }
@@ -119,6 +133,7 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
       today,
       draft: autoSelectSingleOptions(sanitizeDraft(prefilled, ctx), ctx),
       forgottenNames: stored?.referenceNames ?? [],
+      idempotencyKey: stored?.idempotencyKey ?? newIdempotencyKey(),
     };
   });
   const ctx = useMemo<ValidationContext>(() => ({ data, today: initial.today }), [data, initial.today]);
@@ -128,7 +143,10 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
   const [referenceMessages, setReferenceMessages] = useState<string[]>([]);
   const [attempted, setAttempted] = useState<ReadonlySet<StepNumber>>(new Set());
   const [errorFocusTick, setErrorFocusTick] = useState(0);
-  const [submitNotice, setSubmitNotice] = useState(false);
+  const [idempotencyKey, setIdempotencyKey] = useState(initial.idempotencyKey);
+  const [submission, setSubmission] = useState<Submission>({ status: "idle" });
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  const successRef = useRef<HTMLHeadingElement>(null);
 
   // Etapa pedida no endereço. Acompanhada aqui (pushState + popstate) para o
   // "voltar" do navegador responder na hora, sem esperar o roteador do Next.
@@ -169,14 +187,24 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
   }, [errorFocusTick]);
 
   // Rascunho salvo a cada mudança (sem as fotos; só os nomes, para lembrar o cliente).
+  // Depois do envio ele some: um novo pedido começa do zero.
+  const sent = submission.status === "sent";
   useEffect(() => {
     try {
-      const stored: Stored = { draft, referenceNames: references.map((r) => r.file.name) };
+      if (sent) {
+        window.sessionStorage.removeItem(STORAGE_KEY);
+        return;
+      }
+      const stored: Stored = { draft, referenceNames: references.map((r) => r.file.name), idempotencyKey };
       window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
     } catch {
       // sem armazenamento disponível: o formulário segue funcionando, só não guarda o rascunho
     }
-  }, [draft, references]);
+  }, [draft, references, idempotencyKey, sent]);
+
+  useEffect(() => {
+    if (sent) successRef.current?.focus();
+  }, [sent]);
 
   // Libera a memória das prévias quando o formulário sai da tela.
   const referencesRef = useRef(references);
@@ -186,7 +214,7 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
   useEffect(() => () => referencesRef.current.forEach((r) => URL.revokeObjectURL(r.previewUrl)), []);
 
   function update(patch: Partial<OrderDraft>) {
-    setSubmitNotice(false);
+    if (submission.status === "error") setSubmission({ status: "idle" });
     setDraft((current) => {
       // Uma escolha pode liberar ou invalidar outras (ex.: trocar quadro por folha A4).
       return autoSelectSingleOptions(sanitizeDraft({ ...current, ...patch }, ctx), ctx);
@@ -237,7 +265,7 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
         continue;
       }
       nextId.current += 1;
-      accepted.push({ id: `ref-${nextId.current}`, file, previewUrl: URL.createObjectURL(file) });
+      accepted.push({ id: `ref-${nextId.current}`, file, mime: check.mime, previewUrl: URL.createObjectURL(file) });
       free -= 1;
     }
     if (accepted.length > 0) {
@@ -255,21 +283,95 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
     fileInputRef.current?.focus();
   }
 
-  function restart() {
-    if (!window.confirm("Apagar tudo o que você preencheu e começar de novo?")) return;
+  /** Formulário vazio, com uma chave nova (é outro pedido). */
+  function reset() {
     references.forEach((r) => URL.revokeObjectURL(r.previewUrl));
     setReferences([]);
     setReferenceMessages([]);
     setAttempted(new Set());
     setDraft(autoSelectSingleOptions(emptyDraft, ctx));
+    setIdempotencyKey(newIdempotencyKey());
+    setSubmission({ status: "idle" });
     setStepInUrl(1, "replace");
     setRequested(1);
+  }
+
+  function restart() {
+    if (window.confirm("Apagar tudo o que você preencheu e começar de novo?")) reset();
+  }
+
+  /**
+   * Envio: as fotos vão direto para o armazenamento privado (links assinados
+   * pelo servidor), depois o pedido. A mesma chave vale em toda tentativa: se
+   * a resposta se perder e o cliente tocar de novo, volta o mesmo pedido.
+   */
+  async function submit() {
+    if (submission.status === "sending") return;
+    const sending = (message: string) => setSubmission({ status: "sending", message });
+    try {
+      const uploaded: { path: string; name: string }[] = [];
+      if (references.length > 0) {
+        sending("Preparando o envio das fotos…");
+        const prepared = await prepareReferenceUploads({
+          idempotencyKey,
+          files: references.map((r) => ({ name: r.file.name, size: r.file.size, type: r.mime })),
+        });
+        if (!prepared.ok) throw new SubmitError(prepared.message);
+        for (const [index, upload] of prepared.uploads.entries()) {
+          const item = references[index];
+          sending(`Enviando foto ${index + 1} de ${references.length}…`);
+          const response = await fetch(upload.url, {
+            method: "PUT",
+            headers: { "content-type": item.mime, "x-upsert": "false" },
+            body: item.file,
+          });
+          if (!response.ok) {
+            throw new SubmitError(`Não foi possível enviar a foto "${item.file.name}". Confira a conexão e tente de novo.`);
+          }
+          uploaded.push({ path: upload.path, name: item.file.name });
+        }
+      }
+
+      sending("Registrando o pedido…");
+      const result = await sendOrder({
+        idempotencyKey,
+        draft,
+        references: uploaded,
+        website: honeypotRef.current?.value ?? "",
+      });
+      if (!result.ok) {
+        if (result.step && result.step < LAST_STEP) goTo(result.step as StepNumber);
+        throw new SubmitError(result.message);
+      }
+      references.forEach((r) => URL.revokeObjectURL(r.previewUrl));
+      setSubmission({ status: "sent", number: result.number, whatsappUrl: result.whatsappUrl });
+    } catch (error) {
+      setSubmission({
+        status: "error",
+        message:
+          error instanceof SubmitError
+            ? error.message
+            : "Não foi possível enviar agora. Confira a sua conexão e tente de novo: seus dados continuam aqui.",
+      });
+    }
   }
 
   const stepProps = { draft, update, errors, ctx };
   const errorList = Object.entries(errors) as [keyof OrderDraft, string][];
   const current = STEPS[step - 1];
   const hasProgress = JSON.stringify(draft) !== JSON.stringify(autoSelectSingleOptions(emptyDraft, ctx));
+  const isSending = submission.status === "sending";
+
+  if (submission.status === "sent") {
+    return (
+      <OrderSent
+        number={submission.number}
+        whatsappUrl={submission.whatsappUrl}
+        headingRef={successRef}
+        onStartOver={reset}
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8">
@@ -281,7 +383,7 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
         onSubmit={(event) => {
           event.preventDefault();
           if (step < LAST_STEP) next();
-          else setSubmitNotice(true);
+          else void submit();
         }}
         className="flex flex-col gap-8"
       >
@@ -323,14 +425,25 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
         {step === 4 && <StepCustomer {...stepProps} />}
         {step === 5 && <StepReview draft={draft} ctx={ctx} references={references} onEdit={goTo} />}
 
-        {step === LAST_STEP && submitNotice && (
-          <div role="status" className="rounded-card bg-peach-soft p-5 leading-relaxed">
-            <p className="font-medium">Tudo certo com a sua solicitação.</p>
-            <p className="text-plum-soft">
-              O envio ainda está em construção: na próxima etapa do desenvolvimento, este botão registra o pedido,
-              envia as fotos e avisa a artista por e-mail.
+        {step === LAST_STEP && (
+          <>
+            {/* Campo-armadilha: fora da tela e escondido de leitores de tela; robôs costumam preencher. */}
+            <div aria-hidden="true" className="absolute -left-[9999px] size-px overflow-hidden">
+              <label htmlFor="site-do-cliente">Não preencha este campo</label>
+              <input id="site-do-cliente" name="website" ref={honeypotRef} tabIndex={-1} autoComplete="off" />
+            </div>
+            <p role="status" className={isSending ? "text-plum-soft" : "sr-only"}>
+              {submission.status === "sending" ? submission.message : ""}
             </p>
-          </div>
+            {submission.status === "error" && (
+              <div role="alert" className="rounded-card border-2 border-rose bg-white p-5 leading-relaxed">
+                <p className="font-medium">{submission.message}</p>
+              </div>
+            )}
+            <p className="text-sm leading-relaxed text-plum-muted">
+              Ao enviar, a artista recebe a sua solicitação e responde com o orçamento. Nada é cobrado pelo site.
+            </p>
+          </>
         )}
 
         <div className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
@@ -341,8 +454,12 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
           ) : (
             <span />
           )}
-          <button type="submit" className={`${buttonClasses("primary")} sm:min-w-56`}>
-            {step < LAST_STEP ? "Continuar" : "Solicitar orçamento"}
+          <button
+            type="submit"
+            disabled={isSending}
+            className={`${buttonClasses("primary")} sm:min-w-56 disabled:cursor-wait disabled:opacity-70`}
+          >
+            {step < LAST_STEP ? "Continuar" : isSending ? "Enviando…" : "Solicitar orçamento"}
           </button>
         </div>
       </form>
@@ -360,5 +477,59 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
         </p>
       )}
     </div>
+  );
+}
+
+/** Tela depois do envio: número do pedido e conversa no WhatsApp (o site não envia mensagem sozinho). */
+function OrderSent({
+  number,
+  whatsappUrl,
+  headingRef,
+  onStartOver,
+}: {
+  number: string;
+  whatsappUrl: string | null;
+  headingRef: RefObject<HTMLHeadingElement | null>;
+  onStartOver: () => void;
+}) {
+  return (
+    <section
+      aria-labelledby="pedido-enviado"
+      className="flex flex-col items-start gap-6 rounded-card bg-peach-soft p-7 md:p-10"
+    >
+      <p className="text-xs uppercase tracking-eyebrow text-rose">Solicitação enviada</p>
+      <h2
+        id="pedido-enviado"
+        ref={headingRef}
+        tabIndex={-1}
+        className="font-serif text-section font-normal focus:outline-none md:text-section-lg"
+      >
+        Recebemos o seu pedido!
+      </h2>
+      <p className="text-lg">
+        Número do pedido: <strong className="font-medium">{number}</strong>
+      </p>
+      <p className="max-w-prose leading-relaxed text-plum-soft">
+        A artista vai analisar a sua ideia e responder com o orçamento e o prazo. Se quiser adiantar a conversa, abra o
+        WhatsApp: a mensagem já vem pronta com o número do pedido, é só enviar.
+      </p>
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+        {whatsappUrl && (
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className={buttonClasses("primary")}>
+            Abrir conversa no WhatsApp<span className="sr-only"> (abre em nova aba)</span>
+          </a>
+        )}
+        <Link href="/" className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-rose">
+          Voltar ao início
+        </Link>
+        <button
+          type="button"
+          onClick={onStartOver}
+          className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-rose"
+        >
+          Fazer outra encomenda
+        </button>
+      </div>
+    </section>
   );
 }

@@ -21,6 +21,8 @@ const schemas = {
   email: z.object({
     RESEND_API_KEY: z.string().startsWith("re_"),
     EMAIL_FROM: z.string().min(3),
+    // Só em desenvolvimento: sem domínio verificado, o Resend só entrega ao dono da conta.
+    EMAIL_TO_OVERRIDE: z.email().optional(),
   }),
   security: z.object({
     CRON_SECRET: z.string().min(32),

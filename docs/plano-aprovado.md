@@ -2,7 +2,7 @@
 
 Atualizado a cada entrega. Plano completo: `arquitetura.md`. Pendências e decisões: `decisoes.md`.
 
-**Última atualização:** 11/11/2026, entrega 5.1.
+**Última atualização:** 11/11/2026, entrega 6.
 
 ## Visão geral
 
@@ -13,7 +13,7 @@ Atualizado a cada entrega. Plano completo: `arquitetura.md`. Pendências e decis
 - [x] Entrega 4: galeria, página da obra e busca
 - [x] Entrega 5: configurador de encomenda (telas)
 - [x] Entrega 5.1: conteúdo real da Carla (coleções, preços, prazos, textos, depoimentos)
-- [ ] Entrega 6: envio do pedido (registro, fotos, e-mail, WhatsApp)
+- [x] Entrega 6: envio do pedido (registro, fotos, e-mail, WhatsApp)
 - [ ] Entrega 7: painel: login e pedidos
 - [ ] Entrega 8: painel: obras
 - [ ] Entrega 9: painel: catálogo, depoimentos, textos e configurações
@@ -227,3 +227,42 @@ Fonte: `conteudo-carla.md`. Decisões: `decisoes.md`, item 14.
 - Fotos das obras, dela, de Pets e do Kit para colorir; nomes reais das obras
 - Confirmar a frase de inspiração do "Sobre" (escrita a partir do que ela contou)
 - Nome nos depoimentos: só com a confirmação de cada cliente
+
+## Entrega 6: envio do pedido ✔
+
+Decisões: `decisoes.md`, item 16.
+
+**Entregue**
+- [x] "Solicitar orçamento" envia de verdade:
+  - as fotos sobem para o armazenamento privado;
+  - o pedido é gravado com número `CF-2026-0001`;
+  - a Carla recebe um e-mail.
+- [x] O servidor confere tudo de novo (mesmas regras do formulário), inclusive se cada foto é mesmo uma imagem
+- [x] Duplo clique ou reenvio depois de falha de rede não duplicam o pedido
+- [x] Proteções: limite de tentativas por IP (guardado só como hash) e campo invisível contra robôs
+- [x] E-mail "Nova solicitação" com escolhas, preços, data, descrição, contato do cliente e botões "Conversar no WhatsApp" e "Ver no painel". "Responder" vai direto para o cliente
+- [x] Se o e-mail falhar (ou ainda não estiver configurado), o pedido continua gravado e a falha fica registrada para o painel
+- [x] Tela de sucesso com o número do pedido e "Abrir conversa no WhatsApp" com mensagem pronta
+- [x] Enquanto envia, o botão mostra "Enviando…" e o andamento ("Enviando foto 1 de 2…"); em caso de erro, os dados continuam no formulário
+
+**Como conferir no navegador**
+- [ ] Fazer uma encomenda completa com 1 ou 2 fotos: aparece "Recebemos o seu pedido!" com o número
+- [ ] "Abrir conversa no WhatsApp" abre a conversa com a Carla e a mensagem com o número do pedido (não precisa enviar)
+- [ ] No Supabase (Table Editor > `orders`), o pedido aparece; em `order_references`, as fotos; em Storage > `referencias`, os arquivos
+- [ ] Voltar a "Encomendar" depois do envio: o formulário começa vazio
+- [ ] Depois de conferir, apagar o pedido de teste no Supabase (as fotos ficam na pasta com a chave do pedido)
+
+**Para receber o e-mail de verdade** (falta configurar)
+- [ ] Criar conta em resend.com e gerar uma chave de API
+- [ ] No `.env.local`: `RESEND_API_KEY=re_...`, `EMAIL_FROM="Croquis e Flores <onboarding@resend.dev>"` e `EMAIL_TO_OVERRIDE=` com o e-mail da conta do Resend (sem domínio verificado, ele só entrega para esse endereço)
+- [ ] Reiniciar o `npm run dev`, enviar um pedido e conferir a caixa de entrada
+
+**Testes automáticos**
+- [ ] `npm test`: 91 testes de regras (inclui link do WhatsApp, e-mail sem HTML injetado, falha do e-mail, caminho das fotos, chave do pedido, IP em hash)
+- [ ] `npm run test:db`: 34 testes no banco (inclui número sequencial, pedido gravado numa vez, mesma chave sem duplicar, limite de tentativas, visitante sem acesso às funções)
+- [ ] `npm run test:e2e`: 108 testes de navegador (inclui pedido com foto, duplo clique, foto falsa recusada pelo servidor, robô barrado, acessibilidade da tela de sucesso). Os pedidos de teste são apagados no fim
+
+**Ainda não funciona (previsto para depois)**
+- "Ver no painel" do e-mail: o painel chega na entrega 7
+- Reenvio de e-mails que falharam e limpeza de fotos de pedidos não concluídos (rotina diária, junto com o painel)
+- E-mail de confirmação para o cliente (depende do domínio verificado, entrega 11)

@@ -1,11 +1,13 @@
 import type { RefObject } from "react";
 import { ACCEPT_ATTRIBUTE } from "@/features/orders/references";
+import type { ImageMime } from "@/lib/security/file-signature";
 
-export type ReferenceItem = { id: string; file: File; previewUrl: string };
+/** Foto escolhida, já conferida pelo conteúdo (mime = tipo real). */
+export type ReferenceItem = { id: string; file: File; mime: ImageMime; previewUrl: string };
 
 /**
  * Fotos de referência: escolher (galeria ou câmera do celular), ver a prévia
- * e remover antes de enviar. As fotos só sobem no envio do pedido (entrega 6).
+ * e remover antes de enviar. As fotos só sobem ao enviar o pedido.
  */
 export function ReferencePicker({
   items,

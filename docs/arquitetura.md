@@ -102,7 +102,7 @@ src/
     security/                   file-signature, rate-limit, honeypot, ip-hash
     env.ts                      valida variáveis de ambiente na inicialização
 supabase/
-  migrations/                   tabelas, RLS, buckets (create_order chega na entrega 6)
+  migrations/                   tabelas, RLS, buckets, create_order e hit_rate_limit (entrega 6)
   seed.sql                      catálogo provisório, 7 obras com nomes entre colchetes, depoimentos de exemplo
 tests/
   unit/  e2e/
@@ -113,7 +113,7 @@ tests/
 ```
 modalities ──< category_modalities >── categories
      │                                    │
-     ├──< options (technique | size | finish | file_format)
+     ├──< options (technique | size | finish | file_format | delivery)
      │                                    │
      └──────────< artworks >──────────────┘──< artwork_images
                      │

@@ -64,5 +64,6 @@ Stack: Next.js 16.4 (App Router, Cache Components), React 19, Tailwind 4, Zod 4.
 - Leituras públicas ficam em funções `"use cache"` com `cacheLife` e `cacheTag` (`src/lib/cache-tags.ts`); o painel invalida a etiqueta ao salvar.
 - Mudou o banco? Nova migration em `supabase/migrations/`, `npm run db:push`, `npm run db:types`.
 - Regras do pedido ficam em `src/features/orders/schema.ts` e são as mesmas no configurador (navegador) e no envio (servidor). Não duplique validação em componente.
+- Envio do pedido: `src/features/orders/create-order.ts` (só servidor) valida tudo de novo e chama a função SQL `create_order`. As fotos sobem do navegador por link assinado. Os testes `tests/e2e/order.spec.ts` gravam no Supabase de desenvolvimento e apagam o que criam (`tests/e2e/support/db.ts`).
 - Rotas com `params`/`searchParams` leem esses valores dentro de `<Suspense>` (aviso "instant-shell-url-data" do Next 16.4).
 - Arquitetura e plano de entregas: `docs/arquitetura.md`.

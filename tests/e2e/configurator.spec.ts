@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
-// Configurador de encomenda (entrega 5): interface completa, ainda sem envio.
+// Configurador de encomenda: as 5 telas (o envio fica em order.spec.ts).
 
 const PNG = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
@@ -123,8 +123,7 @@ test("percurso completo: da obra da galeria até a revisão", async ({ page }) =
   await expect(review.getByText("Tinta acrílica", { exact: true })).toBeVisible();
   await expect(review.getByText("Com moldura (porta-retrato) (+ R$ 50)")).toHaveCount(0);
 
-  await page.getByRole("button", { name: "Solicitar orçamento" }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Tudo certo" })).toBeVisible();
+  // O envio de verdade é testado em order.spec.ts.
 });
 
 test("obra digital pede formato do arquivo (PDF ou JPG), e não moldura nem entrega", async ({ page }) => {

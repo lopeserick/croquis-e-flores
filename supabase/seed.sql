@@ -273,6 +273,14 @@ on conflict (key) do update set
   value = excluded.value,
   is_public = excluded.is_public;
 
+-- Privado (só o servidor lê): e-mail que recebe os pedidos. O da Carla até ela
+-- confirmar outro (docs/decisoes.md).
+insert into public.settings (key, is_public, value) values
+  ('notifications', false, $json${ "orderEmail": "croquiseflores@outlook.com" }$json$)
+on conflict (key) do update set
+  value = excluded.value,
+  is_public = excluded.is_public;
+
 -- ---------------------------------------------------------------------------
 -- Depoimentos
 -- ---------------------------------------------------------------------------
