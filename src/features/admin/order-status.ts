@@ -6,25 +6,13 @@ export type OrderStatus = Database["public"]["Enums"]["order_status"];
 export type OrderEventType = Database["public"]["Enums"]["order_event_type"];
 export type EmailStatus = Database["public"]["Enums"]["email_status"];
 
-/** Na ordem do andamento de um pedido (briefing). */
-export const ORDER_STATUSES: readonly OrderStatus[] = [
-  "nova",
-  "em_analise",
-  "orcamento_enviado",
-  "aguardando_aprovacao",
-  "aprovado",
-  "em_producao",
-  "concluido",
-  "cancelado",
-];
+/** Na ordem do andamento de um pedido (definidos com a Carla em 11/11/2026). */
+export const ORDER_STATUSES: readonly OrderStatus[] = ["novo", "orcamento_enviado", "aprovado", "concluido", "cancelado"];
 
 export const STATUS_LABELS: Record<OrderStatus, string> = {
-  nova: "Nova",
-  em_analise: "Em análise",
+  novo: "Novo",
   orcamento_enviado: "Orçamento enviado",
-  aguardando_aprovacao: "Aguardando aprovação",
-  aprovado: "Aprovado",
-  em_producao: "Em produção",
+  aprovado: "Aprovado (em produção)",
   concluido: "Concluído",
   cancelado: "Cancelado",
 };

@@ -29,8 +29,9 @@ Informado pela Carla em 10/11/2026 (conversa e prints do Instagram). Fonte compl
 
 ## Coleções (categorias)
 
-Retratos, Casais, Pets, Desenho técnico de moda (croquis) e Kit para colorir.
+Retratos, Casais, Pets e Desenho técnico de moda (croquis).
 **Caneca personalizada: não entra** (ela não faz mais).
+**Kit para colorir: retirado do site** (decidido em 11/11/2026).
 
 ## Modalidades, técnicas e tamanhos
 
@@ -49,7 +50,6 @@ Confirmados pela Carla em 10/11/2026.
 
 | Serviço | Preço |
 |---|---|
-| Kit para colorir (10 ilustrações para pintar) | R$ 55 |
 | Desenho técnico de moda | R$ 70 |
 | Ilustração digital | R$ 80 |
 | Quadro 10×15 cm | R$ 90 |

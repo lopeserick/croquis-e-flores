@@ -1,5 +1,5 @@
 import { InstagramIcon, MailIcon, WhatsAppIcon } from "@/components/ui/icons";
-import { instagramUrl, whatsappUrl } from "@/features/settings/contact-links";
+import { CONTACT_WHATSAPP_MESSAGE, instagramUrl, whatsappUrl } from "@/features/settings/contact-links";
 import type { SiteSettings } from "@/features/settings/site-settings";
 
 type ContactListProps = {
@@ -24,7 +24,7 @@ export function ContactList({ settings, tone = "dark" }: ContactListProps) {
     <ul className="flex flex-col">
       <li>
         {settings.whatsappNumber ? (
-          <a href={whatsappUrl(settings.whatsappNumber)} target="_blank" rel="noopener noreferrer" className={`${item} ${link}`}>
+          <a href={whatsappUrl(settings.whatsappNumber, CONTACT_WHATSAPP_MESSAGE)} target="_blank" rel="noopener noreferrer" className={`${item} ${link}`}>
             <WhatsAppIcon size={18} />
             WhatsApp<span className="sr-only"> (abre em nova aba)</span>
           </a>

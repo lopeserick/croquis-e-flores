@@ -2,7 +2,7 @@
 
 Atualizado a cada entrega. Plano completo: `arquitetura.md`. Pendências e decisões: `decisoes.md`.
 
-**Última atualização:** 11/11/2026, entrega 7.
+**Última atualização:** 11/11/2026, ajustes depois da entrega 7.
 
 ## Visão geral
 
@@ -280,7 +280,7 @@ Decisões: `decisoes.md`, seção 6.
   - escolhas, data desejada, descrição e obra de inspiração;
   - fotos do cliente (abrem em tamanho real ou para baixar, por link que vale 1 minuto);
   - contato, com botões de WhatsApp e e-mail.
-- [x] Mudar o status, registrar orçamento (R$) e prazo confirmado, fazer anotações internas e reenviar o e-mail de aviso. Tudo vai para o histórico do pedido
+- [x] Mudar o status (Novo, Orçamento enviado, Aprovado (em produção), Concluído, Cancelado), registrar orçamento (R$) e prazo confirmado, fazer anotações internas e reenviar o e-mail de aviso. Tudo vai para o histórico do pedido
 - [x] Botão "Sair"
 - [x] Comando para criar a conta do painel e trocar senha: `npm run admin -- criar email "Nome"` (a senha é digitada no terminal, sem aparecer)
 
@@ -302,3 +302,23 @@ Decisões: `decisoes.md`, seção 6.
 - "Esqueci minha senha" pelo e-mail (depois do domínio próprio)
 - Cadastro de obras pelo painel (entrega 8); catálogo, textos e configurações (entrega 9)
 - Rotina diária: reenviar e-mails que falharam e limpar fotos de pedidos não concluídos (entrega 10)
+
+## Ajustes pedidos depois da entrega 7 ✔
+
+**Entregue**
+- [x] Status dos pedidos simplificados: **Novo, Orçamento enviado, Aprovado (em produção), Concluído e Cancelado**. Pedidos que já existiam foram convertidos para o status mais próximo
+- [x] Coleção **Kit para colorir** retirada do site (página inicial, galeria, encomenda e preços); o endereço antigo mostra "Página não encontrada"
+- [x] Mensagens prontas do WhatsApp mais carinhosas, com emojis:
+  - botão de WhatsApp do site (rodapé e Contato);
+  - cliente para a Carla, depois de enviar o pedido;
+  - Carla para o cliente, no painel e no e-mail do pedido.
+- [x] Depoimentos em **carrossel**: um por vez, com aspas grandes, setas que dão a volta, bolinhas no computador e "1 de 7" no celular. Dá para arrastar com o dedo e passar pelo teclado
+
+**Como conferir no navegador**
+- [ ] Painel: o filtro e a página do pedido mostram os 5 status novos
+- [ ] Página inicial: não aparece mais o Kit para colorir; `/galeria/kit-para-colorir` mostra "Página não encontrada"
+- [ ] Rodapé > WhatsApp: a conversa abre com "Oi, Carla! 🌸 Vim pelo site…"
+- [ ] Depoimentos: passar com as setas e, no celular, arrastando com o dedo
+
+**Testes automáticos**
+- [ ] `npm test`: 101 · `npm run test:db`: 37 · `npm run test:e2e`: 129 (inclui o carrossel, a coleção retirada e a mensagem do WhatsApp)

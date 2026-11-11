@@ -140,14 +140,6 @@ test("obra digital pede formato do arquivo (PDF ou JPG), e não moldura nem entr
   await expect(page.getByRole("group", { name: "Como você quer receber?" })).toHaveCount(0);
 });
 
-test("Kit para colorir só aparece nas ilustrações", async ({ page }) => {
-  await page.goto("/encomendar?modalidade=obra-feita-a-mao");
-  await expect(page.getByRole("radio", { name: "Pets" })).toBeVisible();
-  await expect(page.getByRole("radio", { name: "Kit para colorir" })).toHaveCount(0);
-  await page.getByRole("radio", { name: "Ilustração digital", exact: true }).check();
-  await expect(page.getByRole("radio", { name: "Kit para colorir" })).toBeVisible();
-});
-
 test("trocar a modalidade mantém só o que ainda vale", async ({ page }) => {
   await page.goto("/encomendar?modalidade=obra-feita-a-mao&categoria=retratos");
   await expect(page.getByRole("radio", { name: "Retratos" })).toBeChecked();

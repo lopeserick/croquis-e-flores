@@ -58,7 +58,9 @@ describe("WhatsApp", () => {
     const url = customerWhatsappLink("5575988498356", { number: "CF-2026-0007", customerName: "Maria Souza" });
     expect(url).toMatch(/^https:\/\/wa\.me\/5575988498356\?text=/);
     const text = decodeURIComponent(url!.split("text=")[1]);
-    expect(text).toBe("Olá! Sou Maria e acabei de enviar pelo site a solicitação de orçamento CF-2026-0007.");
+    expect(text).toBe(
+      "Oi, Carla! 🌸 Aqui é Maria. Acabei de enviar pelo site o meu pedido CF-2026-0007 e mal posso esperar para ver a minha ideia virar arte! ✨ Fico no aguardo do orçamento 💛",
+    );
   });
 
   it("sem WhatsApp configurado, não há botão", () => {
@@ -69,7 +71,7 @@ describe("WhatsApp", () => {
     const url = artistToCustomerLink("5511912345678", "CF-2026-0001", "Ana & Júlia");
     expect(url).not.toContain(" ");
     expect(url).not.toContain("&J");
-    expect(decodeURIComponent(url.split("text=")[1])).toContain("Olá, Ana!");
+    expect(decodeURIComponent(url.split("text=")[1])).toMatch(/^Oi, Ana! 🌷 Aqui é a Carla/);
   });
 });
 

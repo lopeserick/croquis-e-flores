@@ -29,11 +29,11 @@ async function Dashboard() {
       <div className="flex flex-col gap-1">
         <h1 className="font-serif text-section md:text-section-lg">Olá, {firstName}!</h1>
         <p className="text-plum-muted">
-          {counts.byStatus.nova === 0
+          {counts.byStatus.novo === 0
             ? "Nenhum pedido novo esperando por você."
-            : counts.byStatus.nova === 1
+            : counts.byStatus.novo === 1
               ? "Você tem 1 pedido novo."
-              : `Você tem ${counts.byStatus.nova} pedidos novos.`}
+              : `Você tem ${counts.byStatus.novo} pedidos novos.`}
         </p>
       </div>
 
@@ -60,7 +60,7 @@ async function Dashboard() {
         <h2 id="por-status" className="font-serif text-3xl">
           Pedidos por status
         </h2>
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {ORDER_STATUSES.map((status) => (
             <li key={status}>
               <Link

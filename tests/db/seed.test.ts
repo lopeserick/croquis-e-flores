@@ -13,16 +13,15 @@ import { getPublishedTestimonials } from "@/features/testimonials/testimonials";
 // (docs/conteudo-carla.md) com as fotos provisórias do protótipo.
 
 describe("dados iniciais lidos do Supabase", () => {
-  it("a home mostra as 5 coleções da Carla, em ordem", async () => {
+  it("a home mostra as 4 coleções da Carla, em ordem", async () => {
     const categories = await getHomeCategories();
     expect(categories.map((c) => c.name)).toEqual([
       "Retratos",
       "Casais",
       "Pets",
       "Desenho técnico de moda",
-      "Kit para colorir",
     ]);
-    expect(categories.find((c) => c.slug === "kit-para-colorir")?.priceCents).toBe(5500);
+    expect(categories.find((c) => c.slug === "croquis-de-moda")?.priceCents).toBe(7000);
   });
 
   it("obra feita à mão: preços dos tamanhos e técnica conforme o suporte", async () => {

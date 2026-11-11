@@ -44,7 +44,8 @@ describe("datas e status do painel", () => {
 
   it("todo status tem nome em português e só os do banco são aceitos", () => {
     for (const status of ORDER_STATUSES) expect(STATUS_LABELS[status]).toBeTruthy();
-    expect(isOrderStatus("em_producao")).toBe(true);
+    expect(isOrderStatus("aprovado")).toBe(true);
+    expect(isOrderStatus("em_analise")).toBe(false); // status antigo
     expect(isOrderStatus("apagado")).toBe(false);
     expect(isOrderStatus(null)).toBe(false);
   });

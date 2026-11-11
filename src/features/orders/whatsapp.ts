@@ -1,19 +1,28 @@
-// Links do WhatsApp (wa.me). Montados no servidor com o número das configurações.
+// Links do WhatsApp (wa.me) com mensagem pronta, em tom carinhoso (pedido da
+// Carla). A pessoa pode editar o texto antes de enviar; nada é enviado sozinho.
 
 const firstName = (name: string) => name.trim().split(/\s+/)[0] ?? "";
 
-/** Conversa do cliente com a artista, já com o número do pedido. null se o WhatsApp não foi configurado. */
+const waLink = (number: string, text: string) => `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+
+/** Cliente → artista, na tela de "pedido enviado". null se o WhatsApp não foi configurado. */
 export function customerWhatsappLink(
   artistNumber: string | null,
   order: { number: string; customerName: string },
 ): string | null {
   if (!artistNumber) return null;
-  const text = `Olá! Sou ${firstName(order.customerName)} e acabei de enviar pelo site a solicitação de orçamento ${order.number}.`;
-  return `https://wa.me/${artistNumber}?text=${encodeURIComponent(text)}`;
+  return waLink(
+    artistNumber,
+    `Oi, Carla! 🌸 Aqui é ${firstName(order.customerName)}. Acabei de enviar pelo site o meu pedido ${order.number} ` +
+      `e mal posso esperar para ver a minha ideia virar arte! ✨ Fico no aguardo do orçamento 💛`,
+  );
 }
 
-/** Link para a artista chamar o cliente (no e-mail do pedido). Recebe o número já com 55. */
+/** Artista → cliente (e-mail do pedido e painel). Recebe o número já com 55. */
 export function artistToCustomerLink(customerNumber: string, orderNumber: string, customerName: string): string {
-  const text = `Olá, ${firstName(customerName)}! Aqui é a Carla, do Croquis e Flores. Recebi sua solicitação ${orderNumber}.`;
-  return `https://wa.me/${customerNumber}?text=${encodeURIComponent(text)}`;
+  return waLink(
+    customerNumber,
+    `Oi, ${firstName(customerName)}! 🌷 Aqui é a Carla, do Croquis e Flores. Que alegria receber o seu pedido ` +
+      `${orderNumber}! ✨ Vamos conversar sobre os detalhes e o orçamento? 💛`,
+  );
 }

@@ -347,7 +347,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "artwork_status": "rascunho"|"publicada"|"arquivada","delivery_kind": "digital"|"fisica","email_status": "pendente"|"enviado"|"falhou","option_kind": "technique"|"size"|"finish"|"file_format"|"delivery","order_event_type": "criado"|"status"|"nota"|"email_enviado"|"email_falhou","order_status": "nova"|"em_analise"|"orcamento_enviado"|"aguardando_aprovacao"|"aprovado"|"em_producao"|"concluido"|"cancelado"
+            "artwork_status": "rascunho"|"publicada"|"arquivada","delivery_kind": "digital"|"fisica","email_status": "pendente"|"enviado"|"falhou","option_kind": "technique"|"size"|"finish"|"file_format"|"delivery","order_event_type": "criado"|"status"|"nota"|"email_enviado"|"email_falhou","order_status": "novo"|"orcamento_enviado"|"aprovado"|"concluido"|"cancelado"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -467,7 +467,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "artwork_status": ["rascunho", "publicada", "arquivada"],"delivery_kind": ["digital", "fisica"],"email_status": ["pendente", "enviado", "falhou"],"option_kind": ["technique", "size", "finish", "file_format", "delivery"],"order_event_type": ["criado", "status", "nota", "email_enviado", "email_falhou"],"order_status": ["nova", "em_analise", "orcamento_enviado", "aguardando_aprovacao", "aprovado", "em_producao", "concluido", "cancelado"]
+            "artwork_status": ["rascunho", "publicada", "arquivada"],"delivery_kind": ["digital", "fisica"],"email_status": ["pendente", "enviado", "falhou"],"option_kind": ["technique", "size", "finish", "file_format", "delivery"],"order_event_type": ["criado", "status", "nota", "email_enviado", "email_falhou"],"order_status": ["novo", "orcamento_enviado", "aprovado", "concluido", "cancelado"]
           }
         }
 } as const

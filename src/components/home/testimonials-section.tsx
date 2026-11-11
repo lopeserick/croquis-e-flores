@@ -1,20 +1,6 @@
-import { StarIcon } from "@/components/ui/icons";
-import { Container, SectionTitle } from "@/components/ui/layout";
+import { Container, ScriptLine, SectionTitle } from "@/components/ui/layout";
 import type { Testimonial } from "@/features/testimonials/testimonials";
-
-function Rating({ value, demo }: { value: number; demo: boolean }) {
-  return (
-    <div
-      role="img"
-      aria-label={`${demo ? "Nota de exemplo" : "Nota"}: ${value} de 5`}
-      className="flex gap-1 text-orange-script"
-    >
-      {Array.from({ length: 5 }, (_, i) => (
-        <StarIcon key={i} size={18} fill={i < value ? "currentColor" : "none"} />
-      ))}
-    </div>
-  );
-}
+import { TestimonialsCarousel } from "./testimonials-carousel";
 
 /** Some quando não há depoimentos; os de exemplo vêm sempre identificados. */
 export function TestimonialsSection({ testimonials }: { testimonials: Testimonial[] }) {
@@ -24,29 +10,19 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
   return (
     <section aria-labelledby="depoimentos-titulo" className="bg-cream py-16 md:py-22">
       <Container>
-        <div className="text-center">
-          <SectionTitle id="depoimentos-titulo">Quem já encomendou</SectionTitle>
+        <div className="flex flex-col items-center text-center">
+          <ScriptLine className="text-orange-script">palavras de carinho</ScriptLine>
+          <SectionTitle id="depoimentos-titulo" className="mt-1">
+            Quem já encomendou
+          </SectionTitle>
+          <p className="mt-2.5 text-plum-muted">Frases reais da nossa pesquisa de satisfação.</p>
           {hasDemo && (
             <p className="mt-3.5 inline-block rounded-full bg-blush px-3.5 py-1.5 text-xs text-rose">
               Conteúdo demonstrativo: substituir por avaliações reais antes de publicar
             </p>
           )}
         </div>
-        {/* Colunas (e não grade): textos de tamanhos diferentes se encaixam sem buracos. */}
-        <ul className="mt-10 gap-6 md:columns-2 lg:columns-3">
-          {testimonials.map((t) => (
-            <li key={t.id} className="mb-6 break-inside-avoid">
-              <figure className="flex flex-col gap-3.5 rounded-card border border-border bg-white p-7">
-                {t.rating !== null && <Rating value={t.rating} demo={t.demo} />}
-                <blockquote className="font-serif text-[21px] leading-[1.45] italic">{t.text}</blockquote>
-                <figcaption className="text-[13px] text-plum-muted">
-                  {t.name}
-                  {t.location && ` · ${t.location}`}
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
+        <TestimonialsCarousel testimonials={testimonials} />
       </Container>
     </section>
   );

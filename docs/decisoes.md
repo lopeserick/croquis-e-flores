@@ -34,28 +34,28 @@ Os textos, preços e informações que a Carla passou estão em `conteudo-carla.
 
 ## 3. Coleções, preços e prazos
 
-- [x] **Coleções:** Retratos, Casais, Pets, Desenho técnico de moda e Kit para colorir. "Momentos especiais" e caneca saíram.
+- [x] **Coleções:** Retratos, Casais, Pets e Desenho técnico de moda. "Momentos especiais", caneca e Kit para colorir saíram.
 - [x] **O que é oferecido em cada tipo de obra:**
   - **Feita à mão:** quadros em tinta acrílica (10 × 15, 16 × 22 ou 20 × 25 cm) ou desenho em folha A4 com nanquim ou lápis de cor.
   - **Ilustração digital:** tamanho A4, entregue em arquivo PDF ou JPG.
   - **Ilustração digital impressa:** tamanho A4, já com moldura.
 - [x] **Moldura:** um tipo só, estilo porta-retrato. Na folha A4 custa R$ 50 a mais; na ilustração impressa já está incluída no preço.
 - [x] **Preços no site:** aparecem como "a partir de", em cada opção e na página "Tipos de obra e preços". O valor final é sempre confirmado pela Carla no orçamento.
-- [x] **O site não soma o total do pedido,** porque ainda não está claro como entram os preços do Desenho técnico de moda e do Kit para colorir (ver o último item desta seção).
+- [x] **O site não soma o total do pedido,** porque ainda não está claro como entra o preço do Desenho técnico de moda (ver o último item desta seção).
 - [x] **Prazo:** o cliente só consegue escolher datas a partir de 15 dias. A entrega é em até 15 dias corridos depois do pagamento inicial.
 - [x] **Pagamento:** Pix, transferência, depósito ou boleto (sem cartão). Metade no início e metade na entrega.
 - [x] **Entrega:** retirada sem taxa (bairros Brasília ou Fraga Maia, em Feira de Santana), entrega por R$ 10 em Feira de Santana (dentro do Anel de Contorno) ou Correios para todo o Brasil, com frete a combinar.
 - [x] **Opções fechadas:** não há "outra técnica" nem "tamanho personalizado". Quem quiser algo diferente explica na descrição do pedido.
 - [x] **Tema "Personalizado":** para pedidos que não se encaixam em nenhuma coleção.
 - [x] **Filtro por tamanho na galeria:** fica para depois, quando as obras tiverem o tamanho cadastrado.
-- [ ] **Desenho técnico de moda (R$ 70) e Kit para colorir (R$ 55):** em que tipo de obra e tamanho esses preços valem? Por enquanto o Kit aparece só nas ilustrações (digital e impressa), e o Desenho técnico de moda em todos os tipos.
+- [ ] **Desenho técnico de moda (R$ 70):** em que tipo de obra e tamanho esse preço vale? Por enquanto ele aparece em todos os tipos.
 
 ## 4. Textos e depoimentos
 
 - [x] **"Sobre a artista":** usa a apresentação escrita pela Carla.
 - [ ] **Frase sobre o que inspira a Carla:** foi escrita a partir do que ela contou. Ela precisa confirmar ou reescrever.
 - [x] **"Como funciona":** usa os 5 passos descritos pela Carla.
-- [x] **Depoimentos:** as 7 frases reais da pesquisa de satisfação aparecem **sem nome** ("Cliente Croquis e Flores"). A pesquisa foi anônima, então não dá para saber quem escreveu cada frase.
+- [x] **Depoimentos:** as 7 frases reais da pesquisa de satisfação aparecem **sem nome** ("Cliente Croquis e Flores"), num carrossel que passa de um em um. A pesquisa foi anônima, então não dá para saber quem escreveu cada frase.
 - [ ] **Depoimento com nome:** só se a própria cliente confirmar que a frase é dela e autorizar.
 - [ ] **Política de privacidade e termos de uso:** os textos atuais são provisórios. Falta o texto definitivo.
 
@@ -63,16 +63,18 @@ Os textos, preços e informações que a Carla passou estão em `conteudo-carla.
 
 - [x] **Fotos atuais:** vieram do Instagram, em tamanho pequeno. Em uma delas foram apagados ícones e uma frase de série de TV, para não mostrar elementos de terceiros.
 - [x] **Enquanto não houver autorização,** as fotos ficam só como exemplo no site em desenvolvimento.
-- [x] **Coleções sem foto** (Pets e Kit para colorir) mostram o símbolo da marca no lugar da foto.
+- [x] **Coleção sem foto** (Pets) mostra o símbolo da marca no lugar da foto.
 - [ ] **Autorização da Carla** para usar as fotos das obras e a foto dela no site.
 - [ ] **Fotos originais em boa resolução:** de 8 a 12 obras, cobrindo cada serviço, mais fotos das obras no ambiente. A Carla vai mandar pelo WhatsApp, como documento.
-- [ ] **Fotos para Pets e Kit para colorir.**
+- [ ] **Fotos para a coleção Pets.**
 - [ ] **Autorização das pessoas retratadas** (ou de quem encomendou) para mostrar os retratos na galeria.
 - [ ] **Nomes e descrições reais das obras:** hoje aparecem entre colchetes, como "[Nome da obra]".
 
 ## 6. Pedidos de encomenda
 
 - [x] **Número do pedido:** cada pedido recebe um número, como **CF-2026-0001**, em sequência a cada ano.
+- [x] **Andamento do pedido no painel:** Novo, Orçamento enviado, Aprovado (em produção), Concluído e Cancelado.
+- [x] **Mensagens prontas do WhatsApp:** em tom carinhoso e com emojis, tanto a do cliente para a Carla quanto a da Carla para o cliente. Dá para editar antes de enviar.
 - [x] **Aviso por e-mail:** a cada pedido, a Carla recebe um e-mail com tudo o que o cliente escolheu, a data, a descrição e o contato. O e-mail tem um botão para chamar o cliente no WhatsApp, e "Responder" vai direto para o cliente.
 - [x] **Se o e-mail falhar,** o pedido não se perde: fica guardado e vai aparecer no painel.
 - [x] **Depois de enviar,** o cliente vê o número do pedido e um botão para abrir uma conversa no WhatsApp com a Carla, com a mensagem já pronta. É o próprio cliente quem envia.

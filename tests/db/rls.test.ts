@@ -214,7 +214,7 @@ describe("usuário logado que não é admin", () => {
   it("não muda status de pedido nem escreve no histórico", async () => {
     await user.from("orders").update({ status: "cancelado" }).eq("id", orderId);
     const { data } = await admin.from("orders").select("status").eq("id", orderId).single();
-    expect(data!.status).toBe("nova");
+    expect(data!.status).toBe("novo");
     const event = await user.from("order_events").insert({ order_id: orderId, type: "nota", body: "invasão" });
     expect(event.error).not.toBeNull();
   });

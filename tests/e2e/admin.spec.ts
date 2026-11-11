@@ -114,11 +114,11 @@ test.describe("Carla logada", () => {
     await expect(whatsapp).toHaveAttribute("href", /^https:\/\/wa\.me\/5511912345678\?text=/);
     await audit(page);
 
-    await page.getByLabel("Status do pedido").selectOption("em_analise");
+    await page.getByLabel("Status do pedido").selectOption("orcamento_enviado");
     await page.getByRole("button", { name: "Salvar status" }).click();
-    await expect(page.getByText('Status alterado para "Em análise".')).toBeVisible();
+    await expect(page.getByText('Status alterado para "Orçamento enviado".')).toBeVisible();
     const history = page.locator("section[aria-labelledby='historico']");
-    await expect(history.getByText("Status: Nova → Em análise")).toBeVisible();
+    await expect(history.getByText("Status: Novo → Orçamento enviado")).toBeVisible();
 
     await page.getByLabel("Valor do orçamento (R$)").fill("150,00");
     await page.getByLabel("Prazo confirmado").fill("2027-03-10");
@@ -141,7 +141,7 @@ test.describe("Carla logada", () => {
     await login(page, carla!);
     await expect(page).toHaveURL(/\/admin$/);
     // Nos testes o envio de e-mail fica desligado: o pedido criado direto no banco está "pendente".
-    await page.goto("/admin/pedidos?status=nova");
+    await page.goto("/admin/pedidos?status=novo");
     await expect(page.getByRole("link", { name: new RegExp(order.number) })).toBeVisible();
     await page.goto("/admin/pedidos?status=concluido");
     await expect(page.getByRole("link", { name: new RegExp(order.number) })).toHaveCount(0);

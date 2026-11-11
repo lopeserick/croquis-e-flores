@@ -53,7 +53,7 @@ export type CategoryRow = {
   tagline: string;
   /** null = coleção ainda sem foto (o site mostra o símbolo da marca). */
   image: ImageAsset | null;
-  /** Preço "a partir de" próprio da coleção (ex.: Kit para colorir). */
+  /** Preço "a partir de" próprio da coleção (ex.: Desenho técnico de moda). */
   priceCents: number | null;
   sortOrder: number;
   active: boolean;

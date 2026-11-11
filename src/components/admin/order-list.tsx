@@ -10,12 +10,9 @@ import type { OrderListItem } from "@/features/admin/orders";
 
 // Cores com contraste de texto 4,5:1 sobre o fundo de cada etiqueta.
 const statusTone: Record<OrderStatus, string> = {
-  nova: "bg-orange-cta text-white",
-  em_analise: "bg-blush text-plum",
+  novo: "bg-orange-cta text-white",
   orcamento_enviado: "bg-peach-soft text-plum",
-  aguardando_aprovacao: "bg-peach-soft text-plum",
   aprovado: "bg-plum text-cream",
-  em_producao: "bg-plum text-cream",
   concluido: "border border-border-strong bg-white text-plum",
   cancelado: "border border-border-strong bg-white text-plum-muted",
 };

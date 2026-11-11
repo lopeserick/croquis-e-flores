@@ -40,8 +40,7 @@ from (values
   ('pets', 'Pets', 'Seu bichinho eternizado em arte', null, null, 3),
   ('croquis-de-moda', 'Desenho técnico de moda', 'Moda desenhada à mão',
    '{"path": "/demo/obras/croqui-chapeu.jpg", "alt": "Croqui a nanquim de mulher com chapéu e mangas bufantes", "width": 759, "height": 760, "focalX": 50, "focalY": 50}',
-   7000, 4),
-  ('kit-para-colorir', 'Kit para colorir', '10 ilustrações para pintar', null, 5500, 5)
+   7000, 4)
 ) as v (slug, name, tagline, image, price_cents, sort_order)
 on conflict (slug) do update set
   name = excluded.name,
@@ -62,12 +61,11 @@ from (values
 ) as v (slug, image)
 where m.slug = v.slug;
 
--- Provisório (pendência em docs/decisoes.md): toda coleção em toda modalidade,
--- menos o Kit para colorir, que só faz sentido como ilustração (arquivo ou impressa).
+-- Provisório: toda coleção em toda modalidade, até a Carla definir o que
+-- oferece em cada uma.
 delete from public.category_modalities;
 insert into public.category_modalities (category_id, modality_id)
 select c.id, m.id from public.categories c cross join public.modalities m
-where c.slug <> 'kit-para-colorir' or m.slug in ('ilustracao-digital', 'ilustracao-digital-impressa')
 on conflict do nothing;
 
 -- ---------------------------------------------------------------------------
@@ -163,8 +161,9 @@ on conflict (slug) do update set
   sort_order = excluded.sort_order,
   status = excluded.status;
 
--- "Momentos especiais" saiu das coleções (a obra que estava nela foi para Casais).
-delete from public.categories where slug = 'momentos-especiais';
+-- Coleções que saíram: "Momentos especiais" (a obra dela foi para Casais) e
+-- "Kit para colorir" (retirado pela Carla em 11/11/2026).
+delete from public.categories where slug in ('momentos-especiais', 'kit-para-colorir');
 
 -- Uma foto (capa) por obra. Recria as fotos das obras provisórias.
 delete from public.artwork_images

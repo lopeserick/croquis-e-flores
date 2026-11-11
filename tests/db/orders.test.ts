@@ -52,13 +52,13 @@ describe("create_order", () => {
     expect(saved.order_number).toMatch(/^CF-\d{4}-\d{4,}$/);
 
     const order = await admin.from("orders").select("status, email_status, privacy_accepted_at").eq("id", saved.order_id).single();
-    expect(order.data).toMatchObject({ status: "nova", email_status: "pendente" });
+    expect(order.data).toMatchObject({ status: "novo", email_status: "pendente" });
     expect(order.data!.privacy_accepted_at).not.toBeNull();
 
     const refs = await admin.from("order_references").select("original_name").eq("order_id", saved.order_id);
     expect(refs.data).toEqual([{ original_name: "foto.png" }]);
     const events = await admin.from("order_events").select("type, to_status").eq("order_id", saved.order_id);
-    expect(events.data).toEqual([{ type: "criado", to_status: "nova" }]);
+    expect(events.data).toEqual([{ type: "criado", to_status: "novo" }]);
   });
 
   it("a mesma chave devolve o mesmo pedido, sem duplicar (duplo clique)", async () => {

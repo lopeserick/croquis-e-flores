@@ -34,6 +34,28 @@ test.describe("página inicial", () => {
     await expect(section.getByText("Cliente Croquis e Flores").first()).toBeVisible();
   });
 
+  test("depoimentos em carrossel: um por vez, setas dão a volta", async ({ page }) => {
+    const section = page.locator("section[aria-labelledby='depoimentos-titulo']");
+    const slides = section.locator("[aria-roledescription='slide']");
+    await section.scrollIntoViewIfNeeded();
+    await expect(slides.first()).toBeInViewport();
+    await expect(slides.nth(1)).not.toBeInViewport();
+
+    await section.getByRole("button", { name: "Próximo depoimento" }).click();
+    await expect(slides.nth(1)).toBeInViewport();
+    await expect(slides.first()).not.toBeInViewport();
+
+    // Do primeiro, "anterior" vai para o último (mesmo com cliques rápidos).
+    await section.getByRole("button", { name: "Depoimento anterior" }).click();
+    await section.getByRole("button", { name: "Depoimento anterior" }).click();
+    await expect(slides.last()).toBeInViewport();
+
+    // Teclado: a faixa recebe foco e as setas passam os depoimentos.
+    await section.getByRole("list", { name: /Depoimentos/ }).focus();
+    await page.keyboard.press("ArrowLeft");
+    await expect(slides.nth(5)).toBeInViewport();
+  });
+
   test("coleção sem foto mostra o símbolo da marca", async ({ page }) => {
     const pets = page.getByRole("link", { name: /Pets/ }).first();
     await expect(pets.locator("svg")).toBeVisible();
@@ -75,7 +97,7 @@ test("rodapé tem WhatsApp, Instagram e e-mail do ateliê", async ({ page }) => 
   const footer = page.getByRole("contentinfo");
   await expect(footer.getByRole("link", { name: /WhatsApp/ })).toHaveAttribute(
     "href",
-    "https://wa.me/5575988498356",
+    /^https:\/\/wa\.me\/5575988498356\?text=Oi%2C%20Carla!/,
   );
   await expect(footer.getByRole("link", { name: /Instagram/ })).toHaveAttribute(
     "href",

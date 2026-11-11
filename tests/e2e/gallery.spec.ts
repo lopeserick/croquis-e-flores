@@ -110,3 +110,10 @@ test.describe("prévia de link e buscadores", () => {
     expect(robots).toMatch(/Sitemap: .+\/sitemap\.xml/);
   });
 });
+
+test("coleção retirada (Kit para colorir) não tem mais página", async ({ page }) => {
+  await page.goto("/galeria/kit-para-colorir");
+  await expect(page.getByRole("heading", { name: "Página não encontrada" })).toBeVisible();
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: /Kit para colorir/ })).toHaveCount(0);
+});

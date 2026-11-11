@@ -29,7 +29,6 @@ test("Tipos de obra mostra preços de referência, prazo, pagamento e entrega", 
   await expect(printed.getByText("A partir de R$ 130")).toBeVisible();
 
   const collections = page.locator("section[aria-labelledby='colecoes-preco']");
-  await expect(collections.getByRole("listitem").filter({ hasText: "Kit para colorir" })).toContainText("R$ 55");
   await expect(collections.getByRole("listitem").filter({ hasText: "Desenho técnico de moda" })).toContainText("R$ 70");
 
   await expect(page.getByText("Entrega em até 15 dias corridos após o pagamento inicial.")).toBeVisible();
