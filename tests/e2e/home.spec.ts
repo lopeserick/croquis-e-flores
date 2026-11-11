@@ -15,16 +15,28 @@ test.describe("página inicial", () => {
       "Obras que contam histórias",
       "Como funciona",
       "Sua ideia, nossa arte.",
-      "Oi, eu sou a Carla.",
+      "Quem já encomendou",
+      "Carla Vitória",
     ];
-    // "Quem já encomendou" só existe fora do build de produção (conteúdo de exemplo).
-    expect(headings.filter((h) => h !== "Quem já encomendou")).toEqual(expected);
+    expect(headings).toEqual(expected);
   });
 
-  test("depoimentos de exemplo aparecem identificados como tal", async ({ page }) => {
+  test("como funciona: os 5 passos da Carla e o prazo", async ({ page }) => {
+    const section = page.locator("#como-funciona");
+    await expect(section.getByRole("listitem")).toHaveCount(5);
+    await expect(section.getByText("Do primeiro rascunho à entrega, em até 15 dias corridos.")).toBeVisible();
+  });
+
+  test("depoimentos reais, sem nome e sem selo de demonstração", async ({ page }) => {
     const section = page.locator("section[aria-labelledby='depoimentos-titulo']");
-    test.skip((await section.count()) === 0, "seção oculta no build de produção");
-    await expect(section.getByText(/Conteúdo demonstrativo/)).toBeVisible();
+    await expect(section.locator("figure")).toHaveCount(7);
+    await expect(section.getByText(/Conteúdo demonstrativo/)).toHaveCount(0);
+    await expect(section.getByText("Cliente Croquis e Flores").first()).toBeVisible();
+  });
+
+  test("coleção sem foto mostra o símbolo da marca", async ({ page }) => {
+    const pets = page.getByRole("link", { name: /Pets/ }).first();
+    await expect(pets.locator("svg")).toBeVisible();
   });
 
   test("todos os links internos abrem uma página existente", async ({ page, request }) => {

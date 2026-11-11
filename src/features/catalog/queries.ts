@@ -176,3 +176,10 @@ export function pickRelatedArtworks(
   const rest = others.filter((a) => a.category.slug !== artwork.category.slug);
   return [...sameCategory, ...rest].slice(0, limit);
 }
+
+/** Opções de encomenda das modalidades ativas (preços em "Tipos de obra"). */
+export async function getActiveOptions(): Promise<OptionRow[]> {
+  const { options, modalities } = await loadCatalog();
+  const active = new Set(modalities.filter((m) => m.active).map((m) => m.id));
+  return options.filter((o) => active.has(o.modalityId)).sort(bySortOrder);
+}

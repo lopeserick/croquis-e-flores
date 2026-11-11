@@ -29,6 +29,7 @@ export const orderDraftSchema = z.object({
   customSize: z.string().catch(""),
   finishOptionId: z.string().catch(""),
   fileFormatOptionId: z.string().catch(""),
+  deliveryOptionId: z.string().catch(""),
   description: z.string().catch(""),
   desiredDate: z.string().catch(""),
   name: z.string().catch(""),
@@ -73,8 +74,20 @@ export type ValidationContext = {
 };
 
 // ---------------------------------------------------------------------------
-// Opções disponíveis conforme a modalidade
+// Opções disponíveis conforme a modalidade e as outras escolhas
 // ---------------------------------------------------------------------------
+
+/** Campo do rascunho de cada grupo de opções, na ordem em que aparecem na etapa 2. */
+export const OPTION_FIELDS = {
+  size: "sizeOptionId",
+  technique: "techniqueOptionId",
+  finish: "finishOptionId",
+  file_format: "fileFormatOptionId",
+  delivery: "deliveryOptionId",
+} as const satisfies Record<OptionKind, DraftField>;
+
+export type OptionField = (typeof OPTION_FIELDS)[OptionKind];
+const OPTION_ENTRIES = Object.entries(OPTION_FIELDS) as [OptionKind, OptionField][];
 
 export const findModality = (ctx: ValidationContext, id: string) =>
   ctx.data.modalities.find((m) => m.id === id) ?? null;
@@ -85,9 +98,15 @@ export const categoriesFor = (ctx: ValidationContext, modalityId: string) =>
 export const optionsFor = (ctx: ValidationContext, modalityId: string, kind: OptionKind): OptionRow[] =>
   ctx.data.options.filter((o) => o.modalityId === modalityId && o.kind === kind);
 
-/** Acabamento (moldura) para obra física; formato de arquivo para digital. */
-export function deliveryKindOption(ctx: ValidationContext, modalityId: string): OptionKind {
-  return findModality(ctx, modalityId)?.deliveryKind === "digital" ? "file_format" : "finish";
+/**
+ * Opções do grupo que valem para as escolhas atuais: as sem requisito e as
+ * que dependem de algo já escolhido (ex.: moldura só para a folha A4).
+ */
+export function availableOptions(ctx: ValidationContext, draft: OrderDraft, kind: OptionKind): OptionRow[] {
+  const selected = new Set(OPTION_ENTRIES.map(([, field]) => draft[field]).filter(Boolean));
+  return optionsFor(ctx, draft.modalityId, kind).filter(
+    (o) => o.requiresOptionIds.length === 0 || o.requiresOptionIds.some((id) => selected.has(id)),
+  );
 }
 
 export const minDesiredDate = (ctx: ValidationContext) => addDays(ctx.today, ctx.data.settings.minLeadDays);
@@ -95,56 +114,51 @@ export const maxDesiredDate = (ctx: ValidationContext) => addDays(ctx.today, LIM
 
 const toBrDate = (iso: string) => iso.split("-").reverse().join("/");
 
+const noOptions = Object.fromEntries(OPTION_ENTRIES.map(([, field]) => [field, ""])) as Record<OptionField, "">;
+
 /**
- * Valores que não valem para a modalidade escolhida viram vazio (ex.: trocou
- * de "feita à mão" para "digital": a moldura escolhida sai). Também descarta
- * ids que não existem mais no catálogo.
+ * Valores que não valem mais viram vazio: trocou de modalidade (a moldura
+ * escolhida sai) ou de tamanho (a técnica de quadro sai ao escolher folha).
+ * Também descarta ids que não existem mais no catálogo.
  */
 export function sanitizeDraft(draft: OrderDraft, ctx: ValidationContext): OrderDraft {
+  const artworkRefId = ctx.data.artworks.some((a) => a.id === draft.artworkRefId) ? draft.artworkRefId : null;
   const modality = findModality(ctx, draft.modalityId);
   if (!modality) {
     return {
       ...draft,
+      ...noOptions,
       modalityId: "",
       categoryId: draft.categoryId === CUSTOM_CATEGORY ? CUSTOM_CATEGORY : "",
-      techniqueOptionId: "",
-      sizeOptionId: "",
-      finishOptionId: "",
-      fileFormatOptionId: "",
-      artworkRefId: ctx.data.artworks.some((a) => a.id === draft.artworkRefId) ? draft.artworkRefId : null,
+      artworkRefId,
     };
   }
-  const keep = (id: string, kind: OptionKind) => (optionsFor(ctx, modality.id, kind).some((o) => o.id === id) ? id : "");
   const categoryOk =
     draft.categoryId === CUSTOM_CATEGORY || categoriesFor(ctx, modality.id).some((c) => c.id === draft.categoryId);
-  return {
-    ...draft,
-    categoryId: categoryOk ? draft.categoryId : "",
-    techniqueOptionId: keep(draft.techniqueOptionId, "technique"),
-    sizeOptionId: keep(draft.sizeOptionId, "size"),
-    finishOptionId: modality.deliveryKind === "digital" ? "" : keep(draft.finishOptionId, "finish"),
-    fileFormatOptionId: modality.deliveryKind === "digital" ? keep(draft.fileFormatOptionId, "file_format") : "",
-    artworkRefId: ctx.data.artworks.some((a) => a.id === draft.artworkRefId) ? draft.artworkRefId : null,
-  };
+  let next: OrderDraft = { ...draft, categoryId: categoryOk ? draft.categoryId : "", artworkRefId };
+  // Tirar uma escolha pode invalidar outra que dependia dela: repete até estabilizar.
+  for (let changed = true; changed; ) {
+    changed = false;
+    for (const [kind, field] of OPTION_ENTRIES) {
+      if (next[field] && !availableOptions(ctx, next, kind).some((o) => o.id === next[field])) {
+        next = { ...next, [field]: "" };
+        changed = true;
+      }
+    }
+  }
+  return next;
 }
 
 /** Grupos com uma única opção (e sem campo livre) já vêm escolhidos. */
 export function autoSelectSingleOptions(draft: OrderDraft, ctx: ValidationContext): OrderDraft {
   if (!findModality(ctx, draft.modalityId)) return draft;
-  const pick = (current: string, kind: OptionKind) => {
-    if (current) return current;
-    const list = optionsFor(ctx, draft.modalityId, kind);
-    return list.length === 1 && !list[0].allowsCustom ? list[0].id : current;
-  };
-  const deliveryKind = deliveryKindOption(ctx, draft.modalityId);
-  return {
-    ...draft,
-    techniqueOptionId: pick(draft.techniqueOptionId, "technique"),
-    sizeOptionId: pick(draft.sizeOptionId, "size"),
-    finishOptionId: deliveryKind === "finish" ? pick(draft.finishOptionId, "finish") : draft.finishOptionId,
-    fileFormatOptionId:
-      deliveryKind === "file_format" ? pick(draft.fileFormatOptionId, "file_format") : draft.fileFormatOptionId,
-  };
+  let next = draft;
+  for (const [kind, field] of OPTION_ENTRIES) {
+    if (next[field]) continue;
+    const list = availableOptions(ctx, next, kind);
+    if (list.length === 1 && !list[0].allowsCustom) next = { ...next, [field]: list[0].id };
+  }
+  return next;
 }
 
 // ---------------------------------------------------------------------------
@@ -153,22 +167,31 @@ export function autoSelectSingleOptions(draft: OrderDraft, ctx: ValidationContex
 
 const emailSchema = z.email();
 
-function validateOptionGroup(
-  errors: FieldErrors,
-  ctx: ValidationContext,
-  draft: OrderDraft,
-  kind: OptionKind,
-  field: "techniqueOptionId" | "sizeOptionId" | "finishOptionId" | "fileFormatOptionId",
-  messages: { required: string; custom?: string },
-  customField?: "customTechnique" | "customSize",
-) {
-  const options = optionsFor(ctx, draft.modalityId, kind);
+const OPTION_MESSAGES: Record<OptionKind, { required: string; custom?: string }> = {
+  size: { required: "Escolha o tamanho.", custom: "Informe o tamanho que você quer." },
+  technique: { required: "Escolha a técnica.", custom: "Descreva a técnica que você quer." },
+  finish: { required: "Escolha se quer a obra com ou sem moldura." },
+  file_format: { required: "Escolha o formato do arquivo." },
+  delivery: { required: "Escolha como quer receber a obra." },
+};
+
+/** Campo livre de "Outra técnica" e "Tamanho personalizado". */
+export const CUSTOM_FIELDS: Partial<Record<OptionKind, "customTechnique" | "customSize">> = {
+  size: "customSize",
+  technique: "customTechnique",
+};
+
+function validateOptionGroup(errors: FieldErrors, ctx: ValidationContext, draft: OrderDraft, kind: OptionKind) {
+  const field = OPTION_FIELDS[kind];
+  const messages = OPTION_MESSAGES[kind];
+  const options = availableOptions(ctx, draft, kind);
   if (options.length === 0) return; // a artista não oferece escolha aqui
   const chosen = options.find((o) => o.id === draft[field]);
   if (!chosen) {
     errors[field] = messages.required;
     return;
   }
+  const customField = CUSTOM_FIELDS[kind];
   if (chosen.allowsCustom && customField) {
     const text = draft[customField].trim();
     if (text.length < 2) errors[customField] = messages.custom;
@@ -193,33 +216,7 @@ export function validateStep(step: StepNumber, draft: OrderDraft, ctx: Validatio
       errors.modalityId = "Escolha a modalidade da obra.";
       return errors;
     }
-    validateOptionGroup(
-      errors,
-      ctx,
-      draft,
-      "technique",
-      "techniqueOptionId",
-      { required: "Escolha a técnica.", custom: "Descreva a técnica que você quer." },
-      "customTechnique",
-    );
-    validateOptionGroup(
-      errors,
-      ctx,
-      draft,
-      "size",
-      "sizeOptionId",
-      { required: "Escolha o tamanho.", custom: "Informe o tamanho que você quer." },
-      "customSize",
-    );
-    if (deliveryKindOption(ctx, draft.modalityId) === "file_format") {
-      validateOptionGroup(errors, ctx, draft, "file_format", "fileFormatOptionId", {
-        required: "Escolha o formato do arquivo.",
-      });
-    } else {
-      validateOptionGroup(errors, ctx, draft, "finish", "finishOptionId", {
-        required: "Escolha se quer a obra com ou sem moldura.",
-      });
-    }
+    for (const [kind] of OPTION_ENTRIES) validateOptionGroup(errors, ctx, draft, kind);
   }
 
   if (step === 3) {

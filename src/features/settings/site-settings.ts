@@ -30,8 +30,14 @@ const homeSchema = z.object({
   }),
   /** Obra mostrada no bloco "Sua ideia, nossa arte." (foto → obra). */
   editorialExample: imageAssetSchema.nullable(),
+  /** Seção "Como funciona": passos da encomenda, nas palavras da artista. */
+  howItWorks: z.object({
+    subtitle: z.string(),
+    steps: z.array(z.object({ title: z.string().min(1), text: z.string().min(1) })).min(1),
+  }),
 });
 
+/** Parágrafos vazios não aparecem no site. */
 const aboutSchema = z.object({
   heading: z.string(),
   signature: z.string(),
@@ -42,12 +48,20 @@ const aboutSchema = z.object({
   photo: imageAssetSchema,
 });
 
-const settingsSchemas = { site: siteSchema, home: homeSchema, about: aboutSchema } as const;
+/** Prazos e pagamento (informativos: o pagamento é combinado fora do site). */
+const commerceSchema = z.object({
+  leadTime: z.string(),
+  paymentMethods: z.string(),
+  paymentTerms: z.string(),
+  priceNote: z.string(),
+});
+
+const settingsSchemas = { site: siteSchema, home: homeSchema, about: aboutSchema, commerce: commerceSchema } as const;
 type SettingsKey = keyof typeof settingsSchemas;
 const SETTINGS_KEYS = Object.keys(settingsSchemas) as SettingsKey[];
 
 export type SiteSettings = z.infer<typeof siteSchema> &
-  z.infer<typeof homeSchema> & { about: z.infer<typeof aboutSchema> };
+  z.infer<typeof homeSchema> & { about: z.infer<typeof aboutSchema>; commerce: z.infer<typeof commerceSchema> };
 
 /** Monta as configurações a partir das linhas da tabela. Lança erro se faltar ou sobrar algo inválido. */
 export function parseSiteSettings(rows: { key: string; value: unknown }[]): SiteSettings {
@@ -60,6 +74,7 @@ export function parseSiteSettings(rows: { key: string; value: unknown }[]): Site
     ...siteSchema.parse(values.get("site")),
     ...homeSchema.parse(values.get("home")),
     about: aboutSchema.parse(values.get("about")),
+    commerce: commerceSchema.parse(values.get("commerce")),
   };
 }
 

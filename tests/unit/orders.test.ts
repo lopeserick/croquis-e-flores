@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { formatPrice, optionPriceLabel, startingPrice } from "@/features/catalog/prices";
+import type { OptionRow } from "@/features/catalog/types";
 import { addDays, formatLongDate, isValidIsoDate, todayInSaoPaulo } from "@/features/orders/dates";
 import { CUSTOM_CATEGORY, type OrderFormData } from "@/features/orders/form-types";
 import { formatBrPhone, normalizeBrPhone, phoneInputDigits } from "@/features/orders/phone";
@@ -24,20 +26,27 @@ const data: ValidationContext["data"] = {
     { id: "dig", slug: "ilustracao-digital", name: "Ilustração digital", description: "", deliveryKind: "digital", image },
   ],
   categories: [
-    { id: "ret", slug: "retratos", name: "Retratos", image, modalityIds: ["mao", "dig"] },
-    { id: "cro", slug: "croquis", name: "Croquis", image, modalityIds: ["mao"] },
+    { id: "ret", slug: "retratos", name: "Retratos", image, priceCents: null, modalityIds: ["mao", "dig"] },
+    { id: "cro", slug: "croquis", name: "Croquis", image: null, priceCents: 7000, modalityIds: ["mao"] },
   ],
-  options: [
-    { id: "nanquim", modalityId: "mao", kind: "technique", label: "Nanquim", description: "", allowsCustom: false, sortOrder: 1 },
-    { id: "outra", modalityId: "mao", kind: "technique", label: "Outra técnica", description: "", allowsCustom: true, sortOrder: 2 },
-    { id: "20x30", modalityId: "mao", kind: "size", label: "20 × 30 cm", description: "", allowsCustom: false, sortOrder: 1 },
-    { id: "sem", modalityId: "mao", kind: "finish", label: "Sem moldura", description: "", allowsCustom: false, sortOrder: 1 },
-    { id: "com", modalityId: "mao", kind: "finish", label: "Com moldura", description: "", allowsCustom: false, sortOrder: 2 },
-    { id: "dig-tec", modalityId: "dig", kind: "technique", label: "Ilustração digital", description: "", allowsCustom: false, sortOrder: 1 },
-    { id: "a4", modalityId: "dig", kind: "size", label: "A4", description: "", allowsCustom: false, sortOrder: 1 },
-    { id: "png", modalityId: "dig", kind: "file_format", label: "PNG", description: "", allowsCustom: false, sortOrder: 1 },
-    { id: "pdf", modalityId: "dig", kind: "file_format", label: "PDF", description: "", allowsCustom: false, sortOrder: 2 },
-  ],
+  options: (
+    [
+      // Folha (20 × 30) aceita nanquim e moldura; quadro só acrílica, sem moldura.
+      { id: "20x30", modalityId: "mao", kind: "size", label: "Folha 20 × 30 cm", priceCents: 10000 },
+      { id: "quadro", modalityId: "mao", kind: "size", label: "Quadro 10 × 15 cm", priceCents: 9000 },
+      { id: "nanquim", modalityId: "mao", kind: "technique", label: "Nanquim", requiresOptionIds: ["20x30"] },
+      { id: "outra", modalityId: "mao", kind: "technique", label: "Outra técnica", allowsCustom: true, requiresOptionIds: ["20x30"] },
+      { id: "acrilica", modalityId: "mao", kind: "technique", label: "Tinta acrílica", requiresOptionIds: ["quadro"] },
+      { id: "sem", modalityId: "mao", kind: "finish", label: "Sem moldura", requiresOptionIds: ["20x30"] },
+      { id: "com", modalityId: "mao", kind: "finish", label: "Com moldura", priceCents: 5000, requiresOptionIds: ["20x30"] },
+      { id: "retirada", modalityId: "mao", kind: "delivery", label: "Retirada", priceCents: 0 },
+      { id: "correios", modalityId: "mao", kind: "delivery", label: "Correios" },
+      { id: "dig-tec", modalityId: "dig", kind: "technique", label: "Ilustração digital" },
+      { id: "a4", modalityId: "dig", kind: "size", label: "A4", priceCents: 8000 },
+      { id: "png", modalityId: "dig", kind: "file_format", label: "PNG" },
+      { id: "pdf", modalityId: "dig", kind: "file_format", label: "PDF" },
+    ] as (Pick<OptionRow, "id" | "modalityId" | "kind" | "label"> & Partial<OptionRow>)[]
+  ).map((o, i) => ({ description: "", allowsCustom: false, priceCents: null, requiresOptionIds: [], sortOrder: i, ...o })),
   artworks: [{ id: "obra1", slug: "obra-1", title: "Obra 1", categoryId: "ret", modalityId: "dig", cover: image }],
   settings: {
     maxFiles: 10,
@@ -57,6 +66,7 @@ const complete: OrderDraft = {
   techniqueOptionId: "nanquim",
   sizeOptionId: "20x30",
   finishOptionId: "com",
+  deliveryOptionId: "retirada",
   description: "Retrato da minha avó no jardim, em tons de rosa.",
   desiredDate: "2026-12-20",
   name: "Maria Souza",
@@ -172,6 +182,20 @@ describe("etapas do pedido", () => {
     expect(validateStep(2, { ...digital, fileFormatOptionId: "pdf" }, ctx)).toEqual({});
   });
 
+  it("etapa 2: técnica e moldura dependem do tamanho", () => {
+    const quadro = { ...complete, sizeOptionId: "quadro" };
+    // Nanquim e moldura só valem para a folha.
+    expect(validateStep(2, quadro, ctx)).toEqual({ techniqueOptionId: "Escolha a técnica." });
+    // No quadro, a moldura nem é perguntada.
+    expect(validateStep(2, { ...quadro, techniqueOptionId: "acrilica", finishOptionId: "" }, ctx)).toEqual({});
+  });
+
+  it("etapa 2: obra física pede a forma de entrega", () => {
+    expect(validateStep(2, { ...complete, deliveryOptionId: "" }, ctx)).toEqual({
+      deliveryOptionId: "Escolha como quer receber a obra.",
+    });
+  });
+
   it("etapa 3: data a partir de amanhã (prazo mínimo configurável) e até 2 anos", () => {
     expect(validateStep(3, { ...complete, desiredDate: "2026-11-10" }, ctx)).toEqual({
       desiredDate: "Escolha uma data a partir de 11/11/2026.",
@@ -213,6 +237,11 @@ describe("rascunho", () => {
     });
   });
 
+  it("trocar folha por quadro tira nanquim e moldura e já escolhe a acrílica", () => {
+    const draft = autoSelectSingleOptions(sanitizeDraft({ ...complete, sizeOptionId: "quadro" }, ctx), ctx);
+    expect(draft).toMatchObject({ techniqueOptionId: "acrilica", finishOptionId: "", deliveryOptionId: "retirada" });
+  });
+
   it("descarta obra de inspiração que não existe mais", () => {
     expect(sanitizeDraft({ ...complete, artworkRefId: "apagada" }, ctx).artworkRefId).toBeNull();
     expect(sanitizeDraft({ ...complete, artworkRefId: "obra1" }, ctx).artworkRefId).toBe("obra1");
@@ -230,5 +259,25 @@ describe("rascunho", () => {
       privacyAccepted: false,
       city: "Salvador",
     });
+  });
+});
+
+describe("preços de referência", () => {
+  it("formata em reais, sem centavos quando redondo", () => {
+    expect(formatPrice(9000)).toBe("R$ 90");
+    expect(formatPrice(9050)).toBe("R$ 90,50");
+    expect(formatPrice(150000)).toBe("R$ 1.500");
+  });
+
+  it("tamanho mostra o preço; moldura e entrega mostram o acréscimo", () => {
+    expect(optionPriceLabel({ kind: "size", priceCents: 9000 })).toBe("R$ 90");
+    expect(optionPriceLabel({ kind: "finish", priceCents: 5000 })).toBe("+ R$ 50");
+    expect(optionPriceLabel({ kind: "delivery", priceCents: 0 })).toBe("sem custo");
+    expect(optionPriceLabel({ kind: "delivery", priceCents: null })).toBeNull();
+  });
+
+  it("'a partir de' da modalidade é o menor tamanho com preço", () => {
+    expect(startingPrice(data.options, "mao")).toBe(9000);
+    expect(startingPrice(data.options, "nenhuma")).toBeNull();
   });
 });

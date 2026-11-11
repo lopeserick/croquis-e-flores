@@ -32,13 +32,14 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
             </p>
           )}
         </div>
-        <ul className="mt-10 grid gap-6 md:grid-cols-3">
+        {/* Colunas (e não grade): textos de tamanhos diferentes se encaixam sem buracos. */}
+        <ul className="mt-10 gap-6 md:columns-2 lg:columns-3">
           {testimonials.map((t) => (
-            <li key={t.id}>
-              <figure className="flex h-full flex-col gap-3.5 rounded-card border border-border bg-white p-7">
+            <li key={t.id} className="mb-6 break-inside-avoid">
+              <figure className="flex flex-col gap-3.5 rounded-card border border-border bg-white p-7">
                 {t.rating !== null && <Rating value={t.rating} demo={t.demo} />}
                 <blockquote className="font-serif text-[21px] leading-[1.45] italic">{t.text}</blockquote>
-                <figcaption className="mt-auto text-[13px] text-plum-muted">
+                <figcaption className="text-[13px] text-plum-muted">
                   {t.name}
                   {t.location && ` · ${t.location}`}
                 </figcaption>

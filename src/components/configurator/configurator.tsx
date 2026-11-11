@@ -188,8 +188,8 @@ function ConfiguratorForm({ data }: { data: OrderFormData }) {
   function update(patch: Partial<OrderDraft>) {
     setSubmitNotice(false);
     setDraft((current) => {
-      const next = { ...current, ...patch };
-      return "modalityId" in patch ? autoSelectSingleOptions(sanitizeDraft(next, ctx), ctx) : next;
+      // Uma escolha pode liberar ou invalidar outras (ex.: trocar quadro por folha A4).
+      return autoSelectSingleOptions(sanitizeDraft({ ...current, ...patch }, ctx), ctx);
     });
   }
 

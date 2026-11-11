@@ -22,7 +22,7 @@ export default async function HomePage() {
       <Hero hero={settings.hero} />
       <CollectionsSection categories={categories} />
       <FeaturedArtworksSection artworks={featured} />
-      <HowItWorksSection />
+      <HowItWorksSection howItWorks={settings.howItWorks} />
       <CustomArtSection example={settings.editorialExample} />
       <TestimonialsSection testimonials={testimonials} />
       <AboutSection about={settings.about} />

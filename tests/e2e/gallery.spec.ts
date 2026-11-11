@@ -77,7 +77,7 @@ test.describe("página da obra", () => {
 
   test("trilha leva de volta à coleção", async ({ page }) => {
     await page.goto("/obra/croqui-chapeu");
-    await page.getByRole("navigation", { name: "Você está em" }).getByRole("link", { name: "Croquis de moda" }).click();
+    await page.getByRole("navigation", { name: "Você está em" }).getByRole("link", { name: "Desenho técnico de moda" }).click();
     await expect(page).toHaveURL(/\/galeria\/croquis-de-moda$/);
   });
 });

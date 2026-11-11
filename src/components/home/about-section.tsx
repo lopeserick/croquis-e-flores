@@ -12,10 +12,9 @@ type AboutSectionProps = {
 
 export function AboutSection({ about, variant = "summary", headingLevel = "h2" }: AboutSectionProps) {
   const Heading = headingLevel;
-  const paragraphs =
-    variant === "full"
-      ? [about.intro, about.story, about.process, about.differentials]
-      : [about.intro, about.process];
+  const paragraphs = (
+    variant === "full" ? [about.intro, about.story, about.process, about.differentials] : [about.intro, about.process]
+  ).filter((text) => text.trim() !== "");
 
   return (
     <section aria-labelledby="sobre-titulo" className="bg-white py-16 md:py-22">

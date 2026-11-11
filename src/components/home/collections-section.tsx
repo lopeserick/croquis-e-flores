@@ -11,9 +11,9 @@ export function CollectionsSection({ categories }: { categories: CategoryRow[] }
         <SectionTitle id="colecoes-titulo" className="mt-1">
           Nossas coleções
         </SectionTitle>
-        <ul className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:mt-12 lg:grid-cols-4 lg:gap-8">
+        <ul className="mt-10 flex flex-wrap justify-center gap-x-4 gap-y-10 md:mt-12 lg:flex-nowrap lg:gap-6">
           {categories.map((category) => (
-            <li key={category.id}>
+            <li key={category.id} className="w-[calc(50%-0.5rem)] sm:w-auto">
               <CollectionCircle category={category} />
             </li>
           ))}

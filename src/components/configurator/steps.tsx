@@ -2,19 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode, RefObject } from "react";
 import { focalPosition } from "@/components/site/artwork-card";
+import { formatPrice, optionPriceLabel, startingPrice } from "@/features/catalog/prices";
 import type { OptionKind } from "@/features/catalog/types";
 import { BR_STATES } from "@/features/orders/br-states";
 import { formatLongDate } from "@/features/orders/dates";
 import { CUSTOM_CATEGORY } from "@/features/orders/form-types";
 import { formatBrPhone, phoneInputDigits } from "@/features/orders/phone";
 import {
+  availableOptions,
   categoriesFor,
-  deliveryKindOption,
+  CUSTOM_FIELDS,
   findModality,
   LIMITS,
   maxDesiredDate,
   minDesiredDate,
-  optionsFor,
+  OPTION_FIELDS,
   type FieldErrors,
   type OrderDraft,
   type StepNumber,
@@ -40,6 +42,7 @@ export const FIELD_ANCHORS: Record<keyof OrderDraft, string> = {
   customSize: "tamanho-outro",
   finishOptionId: "acabamento-0",
   fileFormatOptionId: "formato-0",
+  deliveryOptionId: "entrega-0",
   description: "descricao",
   desiredDate: "data-desejada",
   name: "nome",
@@ -68,7 +71,13 @@ export function StepChoice({ draft, update, errors, ctx }: StepProps) {
   const modality = findModality(ctx, draft.modalityId);
   const categoryChoices: Choice[] = modality
     ? [
-        ...categoriesFor(ctx, modality.id).map((c) => ({ value: c.id, label: c.name, image: c.image })),
+        ...categoriesFor(ctx, modality.id).map((c) => ({
+          value: c.id,
+          label: c.name,
+          image: c.image,
+          imageFallback: "marca" as const,
+          price: c.priceCents === null ? null : `A partir de ${formatPrice(c.priceCents)}`,
+        })),
         { value: CUSTOM_CATEGORY, label: "Personalizado", description: "Outra ideia? Conte na etapa 3." },
       ]
     : [];
@@ -108,13 +117,17 @@ export function StepChoice({ draft, update, errors, ctx }: StepProps) {
         value={draft.modalityId}
         onChange={(modalityId) => update({ modalityId })}
         error={errors.modalityId}
-        choices={ctx.data.modalities.map((m) => ({
-          value: m.id,
-          label: m.name,
-          description: m.description,
-          image: m.image,
-          tag: deliveryTag[m.deliveryKind],
-        }))}
+        choices={ctx.data.modalities.map((m) => {
+          const from = startingPrice(ctx.data.options, m.id);
+          return {
+            value: m.id,
+            label: m.name,
+            description: m.description,
+            image: m.image,
+            tag: deliveryTag[m.deliveryKind],
+            price: from === null ? null : `A partir de ${formatPrice(from)}`,
+          };
+        })}
       />
 
       {modality ? (
@@ -141,48 +154,68 @@ export function StepChoice({ draft, update, errors, ctx }: StepProps) {
 // Etapa 2: técnica, tamanho e entrega
 // ---------------------------------------------------------------------------
 
-function OptionGroup({
-  ctx,
-  draft,
-  update,
-  errors,
-  kind,
-  name,
-  legend,
-  hint,
-  field,
-  custom,
-}: StepProps & {
-  kind: OptionKind;
-  name: string;
-  legend: string;
-  hint?: ReactNode;
-  field: "techniqueOptionId" | "sizeOptionId" | "finishOptionId" | "fileFormatOptionId";
-  custom?: { field: "customTechnique" | "customSize"; id: string; label: string; placeholder: string };
-}) {
-  const options = optionsFor(ctx, draft.modalityId, kind);
+const GROUPS: Record<
+  OptionKind,
+  {
+    name: string;
+    legend: string;
+    hint?: string;
+    variant?: "cards" | "pills";
+    custom?: { id: string; label: string; placeholder: string };
+  }
+> = {
+  size: {
+    name: "tamanho",
+    legend: "Tamanho",
+    custom: { id: "tamanho-outro", label: "Qual tamanho?", placeholder: "Ex.: 25 × 35 cm" },
+  },
+  technique: {
+    name: "tecnica",
+    legend: "Técnica",
+    custom: { id: "tecnica-outra", label: "Qual técnica ou estilo?", placeholder: "Ex.: carvão, colagem…" },
+  },
+  finish: { name: "acabamento", legend: "Moldura" },
+  file_format: {
+    name: "formato",
+    legend: "Formato do arquivo",
+    hint: "A obra é entregue em arquivo digital de alta resolução.",
+  },
+  delivery: { name: "entrega", legend: "Como você quer receber?", variant: "cards" },
+};
+
+function OptionGroup({ ctx, draft, update, errors, kind }: StepProps & { kind: OptionKind }) {
+  const options = availableOptions(ctx, draft, kind);
   if (options.length === 0) return null;
-  const showCustom = custom && isCustomOption(ctx, draft[field]);
+  const group = GROUPS[kind];
+  const field = OPTION_FIELDS[kind];
+  const customField = CUSTOM_FIELDS[kind];
+  const showCustom = group.custom && customField && isCustomOption(ctx, draft[field]);
   return (
     <div className="flex flex-col gap-4">
       <ChoiceGroup
-        name={name}
-        legend={legend}
-        hint={hint}
+        name={group.name}
+        legend={group.legend}
+        hint={group.hint}
+        variant={group.variant}
         value={draft[field]}
         onChange={(value) => update({ [field]: value })}
         error={errors[field]}
-        choices={options.map((o) => ({ value: o.id, label: o.label }))}
+        choices={options.map((o) => ({
+          value: o.id,
+          label: o.label,
+          description: group.variant === "cards" ? o.description : undefined,
+          price: optionPriceLabel(o),
+        }))}
       />
       {showCustom && (
         <TextField
-          id={custom.id}
-          label={custom.label}
-          placeholder={custom.placeholder}
+          id={group.custom!.id}
+          label={group.custom!.label}
+          placeholder={group.custom!.placeholder}
           maxLength={LIMITS.customText}
-          value={draft[custom.field]}
-          onChange={(e) => update({ [custom.field]: e.target.value })}
-          error={errors[custom.field]}
+          value={draft[customField]}
+          onChange={(e) => update({ [customField]: e.target.value })}
+          error={errors[customField]}
         />
       )}
     </div>
@@ -190,55 +223,15 @@ function OptionGroup({
 }
 
 export function StepDetails(props: StepProps) {
-  const { draft, ctx } = props;
-  const digital = deliveryKindOption(ctx, draft.modalityId) === "file_format";
   return (
     <div className="flex flex-col gap-10">
-      <OptionGroup
-        {...props}
-        kind="technique"
-        name="tecnica"
-        legend="Técnica"
-        field="techniqueOptionId"
-        custom={{
-          field: "customTechnique",
-          id: "tecnica-outra",
-          label: "Qual técnica ou estilo?",
-          placeholder: "Ex.: carvão, colagem…",
-        }}
-      />
-      <OptionGroup
-        {...props}
-        kind="size"
-        name="tamanho"
-        legend="Tamanho"
-        field="sizeOptionId"
-        custom={{
-          field: "customSize",
-          id: "tamanho-outro",
-          label: "Qual tamanho?",
-          placeholder: digital ? "Ex.: 1080 × 1350 px" : "Ex.: 25 × 35 cm",
-        }}
-      />
-      {digital ? (
-        <OptionGroup
-          {...props}
-          kind="file_format"
-          name="formato"
-          legend="Formato do arquivo"
-          hint="A obra é entregue em arquivo digital de alta resolução."
-          field="fileFormatOptionId"
-        />
-      ) : (
-        <OptionGroup
-          {...props}
-          kind="finish"
-          name="acabamento"
-          legend="Moldura"
-          hint="A forma de entrega é combinada com a artista junto com o orçamento."
-          field="finishOptionId"
-        />
-      )}
+      <p className="text-sm leading-relaxed text-plum-muted">
+        Os preços são de referência. O valor final é confirmado pela artista no orçamento, conforme os detalhes do
+        seu pedido.
+      </p>
+      {(Object.keys(OPTION_FIELDS) as OptionKind[]).map((kind) => (
+        <OptionGroup key={kind} {...props} kind={kind} />
+      ))}
     </div>
   );
 }
@@ -462,7 +455,12 @@ export function StepReview({
   const delivery =
     modality?.deliveryKind === "digital"
       ? `Arquivo digital em alta resolução${draft.fileFormatOptionId ? ` · ${optionLabel(ctx, draft.fileFormatOptionId)}` : ""}`
-      : optionLabel(ctx, draft.finishOptionId) || "A combinar";
+      : optionLabel(ctx, draft.deliveryOptionId) || "A combinar";
+  const withPrice = (id: string, text: string) => {
+    const option = ctx.data.options.find((o) => o.id === id);
+    const price = option && optionPriceLabel(option);
+    return price ? `${text} (${price})` : text;
+  };
   const state = BR_STATES.find(([code]) => code === draft.state)?.[0] ?? draft.state;
 
   const optional = (value: string) => value || "Não se aplica";
@@ -483,9 +481,12 @@ export function StepReview({
         step={2}
         onEdit={onEdit}
         rows={[
+          ["Tamanho", optional(withPrice(draft.sizeOptionId, withCustom(draft.sizeOptionId, draft.customSize)))],
           ["Técnica", optional(withCustom(draft.techniqueOptionId, draft.customTechnique))],
-          ["Tamanho", optional(withCustom(draft.sizeOptionId, draft.customSize))],
-          ["Entrega", delivery],
+          ...(draft.finishOptionId
+            ? [["Moldura", withPrice(draft.finishOptionId, optionLabel(ctx, draft.finishOptionId))] as [string, string]]
+            : []),
+          ["Entrega", draft.deliveryOptionId ? withPrice(draft.deliveryOptionId, delivery) : delivery],
         ]}
       />
       <ReviewBlock

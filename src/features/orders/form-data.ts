@@ -51,6 +51,7 @@ export async function getOrderFormData(): Promise<OrderFormData> {
       slug: c.slug,
       name: c.name,
       image: c.image,
+      priceCents: c.priceCents,
       modalityIds: catalog.categoryModalities
         .filter((link) => link.categoryId === c.id && activeModalityIds.has(link.modalityId))
         .map((link) => link.modalityId),

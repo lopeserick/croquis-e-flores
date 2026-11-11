@@ -95,14 +95,14 @@ isOneToOne: false
                   ]
                 },"categories": {
                   Row: {
-                    "active": boolean,"created_at": string,"id": string,"image": NonNullable<Json>,"name": string,"show_on_home": boolean,"slug": string,"sort_order": number,"tagline": string,"updated_at": string
+                    "active": boolean,"created_at": string,"id": string,"image": Json | null,"name": string,"price_cents": number | null,"show_on_home": boolean,"slug": string,"sort_order": number,"tagline": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "active"?: boolean,"created_at"?: string,"id"?: string,"image": NonNullable<Json>,"name": string,"show_on_home"?: boolean,"slug": string,"sort_order"?: number,"tagline"?: string,"updated_at"?: string
+                    "active"?: boolean,"created_at"?: string,"id"?: string,"image"?: Json | null,"name": string,"price_cents"?: number | null,"show_on_home"?: boolean,"slug": string,"sort_order"?: number,"tagline"?: string,"updated_at"?: string
                   }
                   Update: {
-                    "active"?: boolean,"created_at"?: string,"id"?: string,"image"?: NonNullable<Json>,"name"?: string,"show_on_home"?: boolean,"slug"?: string,"sort_order"?: number,"tagline"?: string,"updated_at"?: string
+                    "active"?: boolean,"created_at"?: string,"id"?: string,"image"?: Json | null,"name"?: string,"price_cents"?: number | null,"show_on_home"?: boolean,"slug"?: string,"sort_order"?: number,"tagline"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     
@@ -149,14 +149,14 @@ isOneToOne: false
                   ]
                 },"options": {
                   Row: {
-                    "active": boolean,"allows_custom": boolean,"created_at": string,"description": string,"id": string,"kind": Database["public"]['Enums']["option_kind"],"label": string,"modality_id": string,"sort_order": number,"updated_at": string
+                    "active": boolean,"allows_custom": boolean,"created_at": string,"description": string,"id": string,"kind": Database["public"]['Enums']["option_kind"],"label": string,"modality_id": string,"price_cents": number | null,"requires_option_ids": (string)[],"sort_order": number,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "active"?: boolean,"allows_custom"?: boolean,"created_at"?: string,"description"?: string,"id"?: string,"kind": Database["public"]['Enums']["option_kind"],"label": string,"modality_id": string,"sort_order"?: number,"updated_at"?: string
+                    "active"?: boolean,"allows_custom"?: boolean,"created_at"?: string,"description"?: string,"id"?: string,"kind": Database["public"]['Enums']["option_kind"],"label": string,"modality_id": string,"price_cents"?: number | null,"requires_option_ids"?: (string)[],"sort_order"?: number,"updated_at"?: string
                   }
                   Update: {
-                    "active"?: boolean,"allows_custom"?: boolean,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: Database["public"]['Enums']["option_kind"],"label"?: string,"modality_id"?: string,"sort_order"?: number,"updated_at"?: string
+                    "active"?: boolean,"allows_custom"?: boolean,"created_at"?: string,"description"?: string,"id"?: string,"kind"?: Database["public"]['Enums']["option_kind"],"label"?: string,"modality_id"?: string,"price_cents"?: number | null,"requires_option_ids"?: (string)[],"sort_order"?: number,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -223,14 +223,14 @@ isOneToOne: false
                   ]
                 },"orders": {
                   Row: {
-                    "artwork_ref_id": string | null,"category_id": string | null,"choices": NonNullable<Json>,"city": string,"confirmed_deadline": string | null,"created_at": string,"custom_size": string | null,"custom_technique": string | null,"customer_email": string,"customer_name": string,"customer_whatsapp": string,"description": string,"desired_date": string | null,"email_status": Database["public"]['Enums']["email_status"],"file_format_option_id": string | null,"finish_option_id": string | null,"id": string,"idempotency_key": string,"ip_hash": string | null,"modality_id": string | null,"notes": string | null,"number": string,"portfolio_consent": boolean,"privacy_accepted_at": string,"privacy_version": string,"quote_cents": number | null,"size_option_id": string | null,"state": string,"status": Database["public"]['Enums']["order_status"],"technique_option_id": string | null,"updated_at": string
+                    "artwork_ref_id": string | null,"category_id": string | null,"choices": NonNullable<Json>,"city": string,"confirmed_deadline": string | null,"created_at": string,"custom_size": string | null,"custom_technique": string | null,"customer_email": string,"customer_name": string,"customer_whatsapp": string,"delivery_option_id": string | null,"description": string,"desired_date": string | null,"email_status": Database["public"]['Enums']["email_status"],"file_format_option_id": string | null,"finish_option_id": string | null,"id": string,"idempotency_key": string,"ip_hash": string | null,"modality_id": string | null,"notes": string | null,"number": string,"portfolio_consent": boolean,"privacy_accepted_at": string,"privacy_version": string,"quote_cents": number | null,"size_option_id": string | null,"state": string,"status": Database["public"]['Enums']["order_status"],"technique_option_id": string | null,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "artwork_ref_id"?: string | null,"category_id"?: string | null,"choices"?: NonNullable<Json>,"city": string,"confirmed_deadline"?: string | null,"created_at"?: string,"custom_size"?: string | null,"custom_technique"?: string | null,"customer_email": string,"customer_name": string,"customer_whatsapp": string,"description": string,"desired_date"?: string | null,"email_status"?: Database["public"]['Enums']["email_status"],"file_format_option_id"?: string | null,"finish_option_id"?: string | null,"id"?: string,"idempotency_key": string,"ip_hash"?: string | null,"modality_id"?: string | null,"notes"?: string | null,"number": string,"portfolio_consent"?: boolean,"privacy_accepted_at": string,"privacy_version": string,"quote_cents"?: number | null,"size_option_id"?: string | null,"state": string,"status"?: Database["public"]['Enums']["order_status"],"technique_option_id"?: string | null,"updated_at"?: string
+                    "artwork_ref_id"?: string | null,"category_id"?: string | null,"choices"?: NonNullable<Json>,"city": string,"confirmed_deadline"?: string | null,"created_at"?: string,"custom_size"?: string | null,"custom_technique"?: string | null,"customer_email": string,"customer_name": string,"customer_whatsapp": string,"delivery_option_id"?: string | null,"description": string,"desired_date"?: string | null,"email_status"?: Database["public"]['Enums']["email_status"],"file_format_option_id"?: string | null,"finish_option_id"?: string | null,"id"?: string,"idempotency_key": string,"ip_hash"?: string | null,"modality_id"?: string | null,"notes"?: string | null,"number": string,"portfolio_consent"?: boolean,"privacy_accepted_at": string,"privacy_version": string,"quote_cents"?: number | null,"size_option_id"?: string | null,"state": string,"status"?: Database["public"]['Enums']["order_status"],"technique_option_id"?: string | null,"updated_at"?: string
                   }
                   Update: {
-                    "artwork_ref_id"?: string | null,"category_id"?: string | null,"choices"?: NonNullable<Json>,"city"?: string,"confirmed_deadline"?: string | null,"created_at"?: string,"custom_size"?: string | null,"custom_technique"?: string | null,"customer_email"?: string,"customer_name"?: string,"customer_whatsapp"?: string,"description"?: string,"desired_date"?: string | null,"email_status"?: Database["public"]['Enums']["email_status"],"file_format_option_id"?: string | null,"finish_option_id"?: string | null,"id"?: string,"idempotency_key"?: string,"ip_hash"?: string | null,"modality_id"?: string | null,"notes"?: string | null,"number"?: string,"portfolio_consent"?: boolean,"privacy_accepted_at"?: string,"privacy_version"?: string,"quote_cents"?: number | null,"size_option_id"?: string | null,"state"?: string,"status"?: Database["public"]['Enums']["order_status"],"technique_option_id"?: string | null,"updated_at"?: string
+                    "artwork_ref_id"?: string | null,"category_id"?: string | null,"choices"?: NonNullable<Json>,"city"?: string,"confirmed_deadline"?: string | null,"created_at"?: string,"custom_size"?: string | null,"custom_technique"?: string | null,"customer_email"?: string,"customer_name"?: string,"customer_whatsapp"?: string,"delivery_option_id"?: string | null,"description"?: string,"desired_date"?: string | null,"email_status"?: Database["public"]['Enums']["email_status"],"file_format_option_id"?: string | null,"finish_option_id"?: string | null,"id"?: string,"idempotency_key"?: string,"ip_hash"?: string | null,"modality_id"?: string | null,"notes"?: string | null,"number"?: string,"portfolio_consent"?: boolean,"privacy_accepted_at"?: string,"privacy_version"?: string,"quote_cents"?: number | null,"size_option_id"?: string | null,"state"?: string,"status"?: Database["public"]['Enums']["order_status"],"technique_option_id"?: string | null,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -244,6 +244,12 @@ isOneToOne: false
       columns: ["category_id"]
 isOneToOne: false
       referencedRelation: "categories"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "orders_delivery_option_id_fkey"
+      columns: ["delivery_option_id"]
+isOneToOne: false
+      referencedRelation: "options"
       referencedColumns: ["id"]
     },{
       foreignKeyName: "orders_file_format_option_id_fkey"
@@ -333,7 +339,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "artwork_status": "rascunho"|"publicada"|"arquivada","delivery_kind": "digital"|"fisica","email_status": "pendente"|"enviado"|"falhou","option_kind": "technique"|"size"|"finish"|"file_format","order_event_type": "criado"|"status"|"nota"|"email_enviado"|"email_falhou","order_status": "nova"|"em_analise"|"orcamento_enviado"|"aguardando_aprovacao"|"aprovado"|"em_producao"|"concluido"|"cancelado"
+            "artwork_status": "rascunho"|"publicada"|"arquivada","delivery_kind": "digital"|"fisica","email_status": "pendente"|"enviado"|"falhou","option_kind": "technique"|"size"|"finish"|"file_format"|"delivery","order_event_type": "criado"|"status"|"nota"|"email_enviado"|"email_falhou","order_status": "nova"|"em_analise"|"orcamento_enviado"|"aguardando_aprovacao"|"aprovado"|"em_producao"|"concluido"|"cancelado"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -453,7 +459,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "artwork_status": ["rascunho", "publicada", "arquivada"],"delivery_kind": ["digital", "fisica"],"email_status": ["pendente", "enviado", "falhou"],"option_kind": ["technique", "size", "finish", "file_format"],"order_event_type": ["criado", "status", "nota", "email_enviado", "email_falhou"],"order_status": ["nova", "em_analise", "orcamento_enviado", "aguardando_aprovacao", "aprovado", "em_producao", "concluido", "cancelado"]
+            "artwork_status": ["rascunho", "publicada", "arquivada"],"delivery_kind": ["digital", "fisica"],"email_status": ["pendente", "enviado", "falhou"],"option_kind": ["technique", "size", "finish", "file_format", "delivery"],"order_event_type": ["criado", "status", "nota", "email_enviado", "email_falhou"],"order_status": ["nova", "em_analise", "orcamento_enviado", "aguardando_aprovacao", "aprovado", "em_producao", "concluido", "cancelado"]
           }
         }
 } as const

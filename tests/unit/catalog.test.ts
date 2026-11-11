@@ -11,6 +11,7 @@ const category: CategoryRow = {
   name: "Retratos",
   tagline: "",
   image,
+  priceCents: null,
   sortOrder: 1,
   active: true,
   showOnHome: true,
@@ -81,6 +82,7 @@ describe("conversão das linhas do banco", () => {
     sort_order: 2,
     active: true,
     show_on_home: false,
+    price_cents: 5500,
     created_at: "",
     updated_at: "",
   };
@@ -92,6 +94,7 @@ describe("conversão das linhas do banco", () => {
       name: "Retratos",
       tagline: "Momentos",
       image: { path: "/x.jpg", alt: "Foto", width: 100, height: 125, focalX: 50, focalY: 20 },
+      priceCents: 5500,
       sortOrder: 2,
       active: true,
       showOnHome: false,
@@ -102,6 +105,10 @@ describe("conversão das linhas do banco", () => {
     expect(() => toCategory({ ...categoryRow, image: { ...categoryRow.image, alt: " " } })).toThrow(
       /categoria "retratos"/,
     );
+  });
+
+  it("categoria sem foto é aceita (o site mostra o símbolo da marca)", () => {
+    expect(toCategory({ ...categoryRow, image: null }).image).toBeNull();
   });
 
   it("foto com ponto focal fora de 0–100 é rejeitada", () => {

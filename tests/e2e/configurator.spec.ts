@@ -11,11 +11,11 @@ const PNG = Buffer.from(
 const heading = (page: Page) => page.locator("#etapa-titulo");
 const next = (page: Page) => page.getByRole("button", { name: "Continuar" }).click();
 
-/** Amanhã em São Paulo (AAAA-MM-DD), como o formulário calcula. */
-function tomorrowInSaoPaulo(): string {
+/** Hoje + N dias em São Paulo (AAAA-MM-DD), como o formulário calcula. */
+function daysFromTodayInSaoPaulo(days: number): string {
   const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
   const date = new Date(`${today}T00:00:00Z`);
-  date.setUTCDate(date.getUTCDate() + 1);
+  date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
 }
 
@@ -32,7 +32,8 @@ test("percurso completo: da obra da galeria até a revisão", async ({ page }) =
   await expect(heading(page)).toHaveText("Sua obra");
   await expect(page.getByText("Inspirada em")).toBeVisible();
   await expect(page.getByRole("radio", { name: "Obra feita à mão", exact: true })).toBeChecked();
-  await expect(page.getByRole("radio", { name: "Croquis de moda" })).toBeChecked();
+  await expect(page.getByRole("radio", { name: "Desenho técnico de moda" })).toBeChecked();
+  await expect(page.getByText("A partir de R$ 90")).toBeVisible(); // menor tamanho da obra feita à mão
   await expect(page).toHaveURL(/\/encomendar$/); // o ?obra= sai do endereço
   await audit(page);
   await next(page);
@@ -40,19 +41,23 @@ test("percurso completo: da obra da galeria até a revisão", async ({ page }) =
   // Etapa 2: continuar sem escolher mostra as pendências e leva o foco a elas.
   await expect(heading(page)).toHaveText("Técnica, tamanho e entrega");
   await expect(page).toHaveURL(/etapa=2/);
+  // Técnica e moldura dependem do tamanho: só aparecem depois dele.
+  await expect(page.getByRole("group", { name: "Técnica" })).toHaveCount(0);
   await next(page);
   const summary = page.locator("#pendencias");
-  await expect(summary).toContainText("Faltam 3 informações");
+  await expect(summary).toContainText("Faltam 2 informações");
   await expect(summary).toBeFocused();
   await audit(page);
-  await summary.getByRole("link", { name: "Escolha a técnica." }).click();
-  await expect(page.getByRole("radio", { name: "Nanquim" })).toBeFocused();
+  await summary.getByRole("link", { name: "Escolha o tamanho." }).click();
+  await expect(page.getByRole("radio", { name: "Quadro 10 × 15 cm" })).toBeFocused();
 
-  await page.getByRole("radio", { name: "Outra técnica" }).check();
-  await page.getByLabel("Qual técnica ou estilo?").fill("Carvão");
-  await page.getByRole("radio", { name: "30 × 40 cm" }).check();
-  await page.getByRole("radio", { name: "Com moldura" }).check();
+  await page.getByRole("radio", { name: "Folha A4" }).check();
+  await expect(summary).toContainText("Escolha a técnica."); // a folha pede técnica e moldura
+  await page.getByRole("radio", { name: "Nanquim" }).check();
+  await page.getByRole("radio", { name: "Com moldura (porta-retrato)" }).check();
+  await page.getByRole("radio", { name: "Entrega em Feira de Santana" }).check();
   await expect(summary).toHaveCount(0); // pendências somem quando resolvidas
+  await audit(page);
   await next(page);
 
   // Etapa 3: fotos (uma válida, uma falsa), descrição e data.
@@ -64,7 +69,7 @@ test("percurso completo: da obra da galeria até a revisão", async ({ page }) =
   await expect(page.getByText("1 foto adicionada.")).toBeVisible();
   await expect(page.getByText(/"falsa\.jpg" não é uma imagem válida/)).toBeVisible();
   await expect(page.getByRole("img", { name: /Referência 1: vestido\.png/ })).toBeVisible();
-  await expect(page.getByLabel(/Quando você gostaria/)).toHaveAttribute("min", tomorrowInSaoPaulo());
+  await expect(page.getByLabel(/Quando você gostaria/)).toHaveAttribute("min", daysFromTodayInSaoPaulo(15));
   await page.getByLabel(/Conte um pouco/).fill("Croqui da minha filha com o vestido de formatura, em tons de rosa.");
   await page.getByLabel(/Quando você gostaria/).fill("2027-03-15");
   await audit(page);
@@ -88,11 +93,12 @@ test("percurso completo: da obra da galeria até a revisão", async ({ page }) =
   const review = page.locator("form");
   for (const text of [
     "Obra feita à mão",
-    "Croquis de moda",
+    "Desenho técnico de moda",
     "[Nome da obra: croqui com chapéu]",
-    "Outra técnica: Carvão",
-    "30 × 40 cm",
-    "Com moldura",
+    "Folha A4 (R$ 100)",
+    "Nanquim",
+    "Com moldura (porta-retrato) (+ R$ 50)",
+    "Entrega em Feira de Santana (+ R$ 10)",
     "segunda-feira, 15 de março de 2027",
     "1 foto",
     "Maria Souza",
@@ -106,24 +112,41 @@ test("percurso completo: da obra da galeria até a revisão", async ({ page }) =
   // "Editar" leva à etapa e dá para voltar direto à revisão pelo indicador (desktop) ou continuando.
   await page.getByRole("button", { name: "Editar técnica, tamanho e entrega" }).click();
   await expect(heading(page)).toHaveText("Técnica, tamanho e entrega");
-  await page.getByRole("radio", { name: "Sem moldura" }).check();
+  // Trocar a folha por um quadro: a técnica vira acrílica sozinha e a moldura sai.
+  await page.getByRole("radio", { name: "Quadro 20 × 25 cm" }).check();
+  await expect(page.getByRole("radio", { name: "Tinta acrílica" })).toBeChecked();
+  await expect(page.getByRole("group", { name: "Moldura" })).toHaveCount(0);
   await next(page);
   await next(page);
   await next(page);
-  await expect(review.getByText("Sem moldura", { exact: true })).toBeVisible();
+  await expect(review.getByText("Quadro 20 × 25 cm (R$ 140)", { exact: true })).toBeVisible();
+  await expect(review.getByText("Tinta acrílica", { exact: true })).toBeVisible();
+  await expect(review.getByText("Com moldura (porta-retrato) (+ R$ 50)")).toHaveCount(0);
 
   await page.getByRole("button", { name: "Solicitar orçamento" }).click();
   await expect(page.getByRole("status").filter({ hasText: "Tudo certo" })).toBeVisible();
 });
 
-test("obra digital pede formato do arquivo, e não moldura", async ({ page }) => {
+test("obra digital pede formato do arquivo (PDF ou JPG), e não moldura nem entrega", async ({ page }) => {
   await page.goto("/encomendar");
   await page.getByRole("radio", { name: "Ilustração digital", exact: true }).check();
   await page.getByRole("radio", { name: "Retratos" }).check();
   await next(page);
+  // Tamanho e técnica únicos já vêm escolhidos.
+  await expect(page.getByRole("radio", { name: "A4" })).toBeChecked();
   await expect(page.getByRole("group", { name: "Formato do arquivo" })).toBeVisible();
   await expect(page.getByRole("radio", { name: "PDF" })).toBeVisible();
+  await expect(page.getByRole("radio", { name: "JPG" })).toBeVisible();
   await expect(page.getByRole("group", { name: "Moldura" })).toHaveCount(0);
+  await expect(page.getByRole("group", { name: "Como você quer receber?" })).toHaveCount(0);
+});
+
+test("Kit para colorir só aparece nas ilustrações", async ({ page }) => {
+  await page.goto("/encomendar?modalidade=obra-feita-a-mao");
+  await expect(page.getByRole("radio", { name: "Pets" })).toBeVisible();
+  await expect(page.getByRole("radio", { name: "Kit para colorir" })).toHaveCount(0);
+  await page.getByRole("radio", { name: "Ilustração digital", exact: true }).check();
+  await expect(page.getByRole("radio", { name: "Kit para colorir" })).toBeVisible();
 });
 
 test("trocar a modalidade mantém só o que ainda vale", async ({ page }) => {
@@ -136,9 +159,10 @@ test("trocar a modalidade mantém só o que ainda vale", async ({ page }) => {
 test("rascunho sobrevive a recarregar a página; fotos pedem nova escolha", async ({ page }) => {
   await page.goto("/encomendar?modalidade=obra-feita-a-mao&categoria=casais");
   await next(page);
+  await page.getByRole("radio", { name: "Folha A4" }).check();
   await page.getByRole("radio", { name: "Nanquim" }).check();
-  await page.getByRole("radio", { name: "20 × 30 cm" }).check();
   await page.getByRole("radio", { name: "Sem moldura" }).check();
+  await page.getByRole("radio", { name: "Retirada em Feira de Santana" }).check();
   await next(page);
   await page.locator("#referencias").setInputFiles({ name: "casal.png", mimeType: "image/png", buffer: PNG });
   await page.getByLabel(/Conte um pouco/).fill("Nós dois na praia ao entardecer.");
@@ -178,6 +202,6 @@ test("ao trocar de etapa, o foco vai para o título (leitor de tela anuncia)", a
 
 test("Tipos de obra → Encomendar já escolhe a modalidade", async ({ page }) => {
   await page.goto("/tipos-de-obra");
-  await page.getByRole("link", { name: "Encomendar" }).nth(1).click();
+  await page.getByRole("link", { name: "Encomendar Ilustração digital", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Ilustração digital", exact: true })).toBeChecked();
 });

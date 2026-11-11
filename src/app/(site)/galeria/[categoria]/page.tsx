@@ -21,7 +21,7 @@ export async function generateMetadata(props: PageProps<"/galeria/[categoria]">)
     title: `${category.name} · Galeria`,
     description: `${category.tagline}. Obras da coleção ${category.name} criadas pela artista Carla.`,
     path: `/galeria/${category.slug}`,
-    image: category.image,
+    image: category.image ?? undefined,
   });
 }
 

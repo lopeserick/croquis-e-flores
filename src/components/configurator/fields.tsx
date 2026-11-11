@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ComponentProps, ReactNode, RefObject } from "react";
 import { focalPosition } from "@/components/site/artwork-card";
+import { LogoSymbol } from "@/components/site/logo";
 import type { ImageAsset } from "@/features/catalog/types";
 
 // Campos do configurador. Texto em 16px (o iPhone não dá zoom ao focar),
@@ -167,6 +168,10 @@ export type Choice = {
   image?: ImageAsset | null;
   /** Etiqueta pequena acima do nome ("Entrega física"). */
   tag?: string;
+  /** Preço de referência ("R$ 90", "+ R$ 50", "A partir de R$ 80"). */
+  price?: string | null;
+  /** Sem foto: "ideia" mostra "sua ideia"; "marca" mostra o símbolo da marca. */
+  imageFallback?: "ideia" | "marca";
 };
 
 type ChoiceGroupProps = {
@@ -233,7 +238,17 @@ function ChoiceOption({
   variant: NonNullable<ChoiceGroupProps["variant"]>;
   invalid: boolean;
 }) {
-  const details = [choice.tag ? `${id}-tag` : null, choice.description ? `${id}-desc` : null].filter(Boolean);
+  const details = [
+    choice.tag ? `${id}-tag` : null,
+    choice.price ? `${id}-preco` : null,
+    choice.description ? `${id}-desc` : null,
+  ].filter(Boolean);
+  const price = (className: string) =>
+    choice.price && (
+      <span id={`${id}-preco`} className={className}>
+        {choice.price}
+      </span>
+    );
   // Rádio transparente cobrindo o cartão inteiro: toque em qualquer ponto
   // marca a opção, e o foco do teclado continua no rádio nativo.
   const radio = (
@@ -264,6 +279,7 @@ function ChoiceOption({
         {radio}
         {checked && <CheckMark />}
         <span id={`${id}-nome`}>{choice.label}</span>
+        {price(checked ? "text-sm text-cream/85" : "text-sm text-plum-muted")}
       </label>
     );
   }
@@ -293,11 +309,16 @@ function ChoiceOption({
           />
         </span>
       ) : (
-        tile && (
+        tile &&
+        (choice.imageFallback === "marca" ? (
+          <span aria-hidden="true" className="flex aspect-[4/3] w-full items-center justify-center bg-blush">
+            <LogoSymbol className="h-4/5" />
+          </span>
+        ) : (
           <span aria-hidden="true" className="flex aspect-[4/3] w-full items-center justify-center bg-peach-soft font-script text-3xl text-rose">
             sua ideia
           </span>
-        )
+        ))
       )}
       <span className={`flex flex-1 flex-col gap-1 ${tile ? "p-3.5" : "p-4 md:p-5"}`}>
         {choice.tag && (
@@ -308,6 +329,7 @@ function ChoiceOption({
         <span id={`${id}-nome`} className={`font-serif leading-tight font-medium ${tile ? "text-lg" : "text-[22px]"}`}>
           {choice.label}
         </span>
+        {price("text-sm font-medium text-plum")}
         {choice.description && (
           <span id={`${id}-desc`} className="text-sm leading-relaxed text-plum-muted">
             {choice.description}

@@ -28,6 +28,7 @@ const rows = [
         imageCaption: "",
       },
       editorialExample: null,
+      howItWorks: { subtitle: "", steps: [{ title: "Rascunho", text: "A artista começa o rascunho." }] },
     },
   },
   {
@@ -42,17 +43,23 @@ const rows = [
       photo,
     },
   },
+  {
+    key: "commerce",
+    value: { leadTime: "Até 15 dias.", paymentTerms: "50% + 50%.", paymentMethods: "Pix.", priceNote: "" },
+  },
 ];
 
 const withSite = (site: Record<string, unknown>) =>
   rows.map((row) => (row.key === "site" ? { ...row, value: { ...row.value, ...site } } : row));
 
 describe("parseSiteSettings", () => {
-  it("junta as chaves site, home e about", () => {
+  it("junta as chaves site, home, about e commerce", () => {
     const settings = parseSiteSettings(rows);
     expect(settings.siteName).toBe("Croquis e Flores");
     expect(settings.hero.title).toBe("Título");
     expect(settings.about.heading).toBe("Oi");
+    expect(settings.howItWorks.steps).toHaveLength(1);
+    expect(settings.commerce.leadTime).toBe("Até 15 dias.");
   });
 
   it("aceita contatos ainda não informados (null)", () => {
@@ -67,5 +74,6 @@ describe("parseSiteSettings", () => {
 
   it("diz quais chaves faltam no banco", () => {
     expect(() => parseSiteSettings(rows.filter((r) => r.key !== "about"))).toThrow(/about/);
+    expect(() => parseSiteSettings(rows.filter((r) => r.key !== "commerce"))).toThrow(/commerce/);
   });
 });

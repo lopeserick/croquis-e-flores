@@ -47,7 +47,8 @@ export function toCategory(row: Tables<"categories">): CategoryRow {
     slug: row.slug,
     name: row.name,
     tagline: row.tagline,
-    image: parseImageAsset(row.image, `categoria "${row.slug}"`),
+    image: row.image === null ? null : parseImageAsset(row.image, `categoria "${row.slug}"`),
+    priceCents: row.price_cents,
     sortOrder: row.sort_order,
     active: row.active,
     showOnHome: row.show_on_home,
@@ -79,6 +80,8 @@ export function toOption(row: Tables<"options">): OptionRow {
     label: row.label,
     description: row.description,
     allowsCustom: row.allows_custom,
+    priceCents: row.price_cents,
+    requiresOptionIds: row.requires_option_ids,
     sortOrder: row.sort_order,
   };
 }

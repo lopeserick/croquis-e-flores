@@ -126,7 +126,7 @@ describe("visitante anônimo", () => {
   it("só vê configurações públicas", async () => {
     expectNothingVisible(await anon.from("settings").select("key").eq("key", privateSettingKey));
     const publicKeys = await anon.from("settings").select("key");
-    expect(publicKeys.data!.map((s) => s.key).sort()).toEqual(["about", "home", "order_form", "site"]);
+    expect(publicKeys.data!.map((s) => s.key).sort()).toEqual(["about", "commerce", "home", "order_form", "site"]);
   });
 
   it("não lista, não baixa e não envia fotos de clientes", async () => {

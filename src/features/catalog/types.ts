@@ -15,9 +15,9 @@ export type ModalityRow = {
   active: boolean;
 };
 
-export type OptionKind = "technique" | "size" | "finish" | "file_format";
+export type OptionKind = "technique" | "size" | "finish" | "file_format" | "delivery";
 
-/** Técnica, tamanho, acabamento ou formato de arquivo oferecido numa modalidade. */
+/** Técnica, tamanho, acabamento, formato de arquivo ou forma de entrega oferecido numa modalidade. */
 export type OptionRow = {
   id: string;
   modalityId: string;
@@ -26,6 +26,10 @@ export type OptionRow = {
   description: string;
   /** Abre campo livre ("Outra técnica", "Tamanho personalizado"). */
   allowsCustom: boolean;
+  /** Tamanho: preço "a partir de". Moldura e entrega: acréscimo (0 = sem custo). null = sem preço. */
+  priceCents: number | null;
+  /** Só aparece quando uma destas opções (de outro grupo) está escolhida. Vazio = sempre. */
+  requiresOptionIds: string[];
   sortOrder: number;
 };
 
@@ -47,7 +51,10 @@ export type CategoryRow = {
   slug: string;
   name: string;
   tagline: string;
-  image: ImageAsset;
+  /** null = coleção ainda sem foto (o site mostra o símbolo da marca). */
+  image: ImageAsset | null;
+  /** Preço "a partir de" próprio da coleção (ex.: Kit para colorir). */
+  priceCents: number | null;
   sortOrder: number;
   active: boolean;
   showOnHome: boolean;

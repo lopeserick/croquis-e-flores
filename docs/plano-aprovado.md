@@ -2,7 +2,7 @@
 
 Atualizado a cada entrega. Plano completo: `arquitetura.md`. Pendências e decisões: `decisoes.md`.
 
-**Última atualização:** 10/11/2026, entrega 5.
+**Última atualização:** 11/11/2026, entrega 5.1.
 
 ## Visão geral
 
@@ -12,6 +12,7 @@ Atualizado a cada entrega. Plano completo: `arquitetura.md`. Pendências e decis
 - [x] Entrega 3: banco de dados (Supabase)
 - [x] Entrega 4: galeria, página da obra e busca
 - [x] Entrega 5: configurador de encomenda (telas)
+- [x] Entrega 5.1: conteúdo real da Carla (coleções, preços, prazos, textos, depoimentos)
 - [ ] Entrega 6: envio do pedido (registro, fotos, e-mail, WhatsApp)
 - [ ] Entrega 7: painel: login e pedidos
 - [ ] Entrega 8: painel: obras
@@ -190,3 +191,39 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 **Ainda não funciona (previsto para depois)**
 - Enviar o pedido: registrar no banco, subir as fotos, e-mail para a Carla e link do WhatsApp (entrega 6)
 - Textos reais das modalidades e da política de privacidade: aguardam a Carla (`decisoes.md`)
+
+## Entrega 5.1: conteúdo real da Carla ✔
+
+Fonte: `conteudo-carla.md`. Decisões: `decisoes.md`, item 14.
+
+**Entregue**
+- [x] Coleções: Retratos, Casais, Pets, Desenho técnico de moda e Kit para colorir ("Momentos especiais" saiu). Coleção sem foto mostra o símbolo da marca
+- [x] Configurador com as opções reais:
+  - **Obra feita à mão:** quadros de 10×15, 16×22 e 20×25 cm em acrílica, ou folha A4 em nanquim ou lápis de cor
+  - **Ilustração digital:** A4, em PDF ou JPG
+  - **Ilustração digital impressa:** A4, com moldura
+- [x] Opções que dependem do tamanho: quadro só em acrílica (já vem escolhida); técnica e moldura da folha só aparecem com a folha A4
+- [x] Nova pergunta para obra física: "Como você quer receber?" (retirada sem taxa, entrega em Feira de Santana por R$ 10, Correios com frete sob consulta)
+- [x] Preços de referência no configurador, na revisão e na página "Tipos de obra e preços" (com prazos, pagamento e entrega)
+- [x] Calendário só a partir de 15 dias
+- [x] "Como funciona" com os 5 passos da Carla; "Sobre a artista" com o texto dela
+- [x] 7 depoimentos reais da pesquisa, sem nome ("Cliente Croquis e Flores"), também no build de produção
+
+**Como conferir no navegador**
+- [ ] Página inicial: 5 coleções (Pets e Kit com o símbolo), 5 passos em "Como funciona", 7 depoimentos e o texto da Carla no "Sobre"
+- [ ] "Tipos de obra" (menu): preços de cada modalidade, coleções com preço próprio, prazos, pagamento e entrega
+- [ ] Encomendar → Obra feita à mão → Continuar: escolher "Folha A4" faz aparecer Nanquim/Lápis de cor e a moldura; trocar para um quadro marca "Tinta acrílica" sozinha e some a moldura
+- [ ] Ilustração digital: tamanho A4 já vem escolhido; o formato é PDF ou JPG; não pergunta entrega
+- [ ] Na etapa 3, o calendário não deixa escolher data antes de 15 dias
+- [ ] Revisão mostra os preços ao lado de tamanho, moldura e entrega
+
+**Testes automáticos**
+- [ ] `npm test`: 71 testes de regras (inclui dependência entre opções, forma de entrega e formato dos preços)
+- [ ] `npm run test:db`: 28 testes no banco (inclui preços, dependências, PDF/JPG, prazo de 15 dias e depoimentos sem nome)
+- [ ] `npm run test:e2e`: 101 testes de navegador (inclui a página de preços e o percurso com folha → quadro)
+
+**Ainda depende da Carla** (`decisoes.md`)
+- Em quais modalidades valem o Desenho técnico de moda (R$ 70) e o Kit para colorir (R$ 55)
+- Fotos das obras, dela, de Pets e do Kit para colorir; nomes reais das obras
+- Confirmar a frase de inspiração do "Sobre" (escrita a partir do que ela contou)
+- Nome nos depoimentos: só com a confirmação de cada cliente

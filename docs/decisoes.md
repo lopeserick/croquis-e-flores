@@ -38,6 +38,16 @@ Registro do que foi decidido antes do desenvolvimento. **Em conflito com o brief
     - **Entrega**: retirada sem taxa (Brasília ou Fraga Maia, Feira de Santana), entrega local por R$ 10 dentro do Anel de Contorno, Correios para todo o Brasil com frete sob consulta.
     - **Textos**: apresentação da seção Sobre e os 5 passos de "Como funciona" são os da Carla.
     - **Domínio desejado**: croquiseflores.com.br.
+    - **Ilustração digital**: entregue em PDF ou JPG (informado em 11/11/2026).
+15. **Adotado na entrega 5.1** (configurável no painel):
+    - **Dependência entre opções**: na obra feita à mão, a acrílica vale só para quadros; nanquim, lápis de cor e moldura, só para a folha A4. A moldura da folha custa + R$ 50 (R$ 150 − R$ 100); na ilustração impressa ela já vem inclusa (R$ 130).
+    - **Forma de entrega** é perguntada no pedido de obra física. A ilustração digital não pergunta (vai em arquivo).
+    - **Sem "Outra técnica" e "Tamanho personalizado"**: a Carla listou opções fechadas; personalizações vão na descrição e no orçamento.
+    - **Preços** aparecem por opção e como "a partir de"; o site não soma um total, porque coleções com preço próprio (moda, kit) ainda não dizem em que formato valem.
+    - **Kit para colorir** aparece só nas ilustrações (digital e impressa); as demais coleções, em todas as modalidades.
+    - **Depoimentos sem nome** ("Cliente Croquis e Flores"): a pesquisa foi anônima e os nomes tinham sido distribuídos sem saber quem escreveu cada frase.
+    - **Coleções sem foto** (Pets, Kit para colorir) mostram o símbolo da marca até a Carla mandar fotos.
+    - **Frase de inspiração** do "Sobre" escrita a partir do que a Carla contou; ela confirma ou reescreve no painel.
 
 ## Pendências com a Carla (bloqueiam a publicação, não o desenvolvimento)
 
@@ -47,13 +57,15 @@ Implementar como **configuração editável** com valor provisório:
 - [ ] Arquivos originais das obras em alta resolução (8 a 12 obras cobrindo cada serviço, mais fotos no ambiente).
 - [x] Categorias reais e se faz pinturas físicas (decisão 14: quadros em acrílica).
 - [x] Modalidades oferecidas (decisão 14: as três).
-- [ ] Técnicas e tamanhos: definidos (decisão 14). **Falta: formatos de arquivo da ilustração digital.**
+- [x] Técnicas, tamanhos e formatos de arquivo (decisão 14: PDF ou JPG).
+- [ ] Em quais modalidades e formatos valem os preços do **Desenho técnico de moda** (R$ 70) e do **Kit para colorir** (R$ 55).
+- [ ] Fotos para as coleções **Pets** e **Kit para colorir**.
 - [x] Emolduramento e entregas (decisão 14).
 - [x] Número do WhatsApp e e-mail de contato (decisão 11). Confirmar se os pedidos também chegam nesse e-mail.
 - [x] Prazo mínimo para o calendário: 15 dias (decisão 14).
 - [ ] Limite de tamanho e quantidade de imagens de referência por pedido.
 - [x] Textos da seção "Sobre a artista" (apresentação e inspiração em `conteudo-carla.md`).
-- [ ] Depoimentos reais com autorização: os textos existem, mas a pesquisa foi **anônima** e os nomes foram distribuídos sem saber quem escreveu cada frase. Decidir antes de publicar: confirmar com cada cliente a sua frase ou exibir sem nome.
+- [x] Depoimentos reais: publicados **sem nome** (decisão 15). Para exibir o nome, cada cliente precisa confirmar a sua frase.
 - [ ] Texto da política de privacidade (LGPD) e dos termos de uso.
 - [ ] Domínio do site: croquiseflores.com.br escolhido; falta conferir disponibilidade e registrar.
 - [ ] Versão final da logo desenhada por ela.

@@ -28,7 +28,8 @@ export type OrderFormCategory = {
   id: string;
   slug: string;
   name: string;
-  image: ImageAsset;
+  image: ImageAsset | null;
+  priceCents: number | null;
   /** Modalidades em que aparece como "tipo de arte". */
   modalityIds: string[];
 };
