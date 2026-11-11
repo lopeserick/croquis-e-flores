@@ -1,96 +1,97 @@
 # Decisões e pendências
 
-Registro do que foi decidido antes do desenvolvimento. **Em conflito com o briefing, este arquivo vale.** Informações comerciais e textos reais da Carla: `conteudo-carla.md`.
+O que já foi decidido para o site da Croquis e Flores e o que ainda falta resolver.
 
-## Decisões tomadas
+**Como ler:**
 
-1. **Nome e marca**: o ateliê se chama **Croquis e Flores**. A artista é a **Carla** (Instagram @croquiseflores; bio: "meus croquis, minhas flores e eu").
-2. **Paleta**: trocamos a paleta bege/grafite do briefing por **laranja e rosa** (ver `identidade-visual.md`). Motivo: combina com a identidade que a Carla já usa nos posts.
-3. **Referências de navegação**: estrutura inspirada em Vivara e Pandora, aprovada no protótipo `design/home-referencia.html`.
-4. **Logo**: escolhida a **opção 3 (Silhueta de croqui)**. Os SVGs atuais são **provisórios**; a ideia é a Carla redesenhar à mão e vetorizar.
-5. **Categorias no protótipo**: o briefing cita Paisagens, Retratos, Pets e Momentos especiais, mas o portfólio real da Carla é de **croquis de moda, retratos digitais, casais e técnica mista**. O protótipo usa: **Croquis de moda, Retratos, Casais e Momentos especiais**. As categorias devem ser **administráveis no painel** (nada fixo no código). *Substituída pela decisão 14.*
-6. **Placeholders**: nomes de obras, descrições, depoimentos, biografia e e-mail aparecem entre colchetes no protótipo. Nenhum dado fictício deve ir para produção como se fosse real.
-7. **Fotos do protótipo**: capturadas do Instagram em ~760px. Na ilustração do casal digital foram **removidos** ícones e uma citação de uma série de TV, para não exibir elementos de obras de terceiros na vitrine.
-8. **Sem pagamento online** na primeira versão (fluxo de orçamento), conforme o briefing.
-9. **Plano da Fase 1 aprovado** em 10/11/2026 (`arquitetura.md`). Andamento das entregas em `plano-aprovado.md`.
-10. **Adotado provisoriamente na entrega 2** (sem resposta explícita; fácil de reverter):
-    - **Sem ícone de sacola** no cabeçalho (não há carrinho nem conta de cliente).
-    - **"Obra feita à mão"** no lugar de "Pintura física" e **"Tipos de obra"** no menu, no lugar de "Tipos de pintura". Nomes ficam editáveis no painel (entrega 9).
-    - **Depoimentos de exemplo** só aparecem em desenvolvimento; no build de produção a seção some até existir depoimento real.
-    - **Contatos não informados** aparecem como `[pendência]` sem link, em vez de um botão que não funciona.
-11. **Contatos do ateliê** (informados em 10/11/2026): WhatsApp **(75) 98849-8356** (`5575988498356`) e e-mail **croquiseflores@outlook.com**. Editáveis no painel (entrega 9).
-12. **Adotado provisoriamente na entrega 3** (fácil de mudar pelo painel):
-    - **Fotos do seed ficam em `/public/demo/obras`**, não no bucket `obras`. Só sobem para o armazenamento quando a Carla autorizar o uso (pendência abaixo).
-    - **Toda categoria aparece como "tipo de arte" em todas as modalidades** até a Carla definir o que oferece em cada uma.
-    - **Cadastro público desligado** no Supabase e senha mínima de 12 caracteres para o painel.
-13. **Adotado provisoriamente nas entregas 4 e 5**:
-    - **Filtro de técnica da galeria** usa a técnica escrita em cada obra. **Filtro por tamanho** fica de fora até as obras terem tamanho cadastrado (o briefing pede "quando aplicável").
-    - **Opções do configurador** (técnicas, tamanhos, moldura, formatos de arquivo) vêm das listas do briefing (seção 6) mais as técnicas vistas no portfólio da Carla (nanquim, lápis, giz pastel, técnica mista). Ela confirma e ajusta no painel (entrega 9). *Substituída pela decisão 14.*
-    - **Data desejada obrigatória**, a partir de amanhã (`minLeadDays` = 1, configurável). **Fotos de referência opcionais**: até 10 imagens de 10 MB (JPG, PNG ou WebP). *Prazo substituído pela decisão 14 (15 dias).*
-    - **Autorização de portfólio**: caixa opcional, desmarcada, ligada por configuração (`askPortfolioConsent`).
-    - **"Personalizado"** como tipo de arte em toda modalidade, para pedidos que não se encaixam numa coleção.
-14. **Conteúdo real informado pela Carla em 10/11/2026** (detalhes em `conteudo-carla.md`; tudo editável no painel):
-    - **Coleções**: Retratos, Casais, Pets, Desenho técnico de moda e Kit para colorir. Saem "Momentos especiais" e caneca.
-    - **Modalidades, técnicas e tamanhos**: feita à mão (quadros em acrílica 10×15, 16×22 e 20×25 cm; folha A4 em nanquim ou lápis de cor), ilustração digital (A4) e ilustração digital impressa (A4, com moldura). Um tipo de moldura só (porta-retrato).
-    - **Preços aparecem no site**, como "a partir de"; personalizações seguem no fluxo de orçamento.
-    - **Prazo**: calendário a partir de 15 dias (`minLeadDays` = 15); entrega em até 15 dias corridos após o sinal.
-    - **Pagamento** (só informativo, fora do site): Pix, transferência, depósito ou boleto; 50% no início e 50% na entrega. Sem cartão.
-    - **Entrega**: retirada sem taxa (Brasília ou Fraga Maia, Feira de Santana), entrega local por R$ 10 dentro do Anel de Contorno, Correios para todo o Brasil com frete sob consulta.
-    - **Textos**: apresentação da seção Sobre e os 5 passos de "Como funciona" são os da Carla.
-    - **Domínio desejado**: croquiseflores.com.br.
-    - **Ilustração digital**: entregue em PDF ou JPG (informado em 11/11/2026).
-15. **Adotado na entrega 5.1** (configurável no painel):
-    - **Dependência entre opções**: na obra feita à mão, a acrílica vale só para quadros; nanquim, lápis de cor e moldura, só para a folha A4. A moldura da folha custa + R$ 50 (R$ 150 − R$ 100); na ilustração impressa ela já vem inclusa (R$ 130).
-    - **Forma de entrega** é perguntada no pedido de obra física. A ilustração digital não pergunta (vai em arquivo).
-    - **Sem "Outra técnica" e "Tamanho personalizado"**: a Carla listou opções fechadas; personalizações vão na descrição e no orçamento.
-    - **Preços** aparecem por opção e como "a partir de"; o site não soma um total, porque coleções com preço próprio (moda, kit) ainda não dizem em que formato valem.
-    - **Kit para colorir** aparece só nas ilustrações (digital e impressa); as demais coleções, em todas as modalidades.
-    - **Depoimentos sem nome** ("Cliente Croquis e Flores"): a pesquisa foi anônima e os nomes tinham sido distribuídos sem saber quem escreveu cada frase.
-    - **Coleções sem foto** (Pets, Kit para colorir) mostram o símbolo da marca até a Carla mandar fotos.
-    - **Frase de inspiração** do "Sobre" escrita a partir do que a Carla contou; ela confirma ou reescreve no painel.
-16. **Adotado na entrega 6** (envio do pedido):
-    - **Número do pedido** `CF-AAAA-NNNN`, sequencial por ano (fuso de São Paulo).
-    - **Fotos** vão direto do navegador para o bucket privado, por links assinados criados pelo servidor, na pasta da chave do pedido. Antes de gravar, o servidor confere tamanho e tipo real (primeiros bytes) e apaga o que não for imagem.
-    - **Sem chave do Resend**, o pedido é gravado normalmente, com o e-mail marcado como "falhou" e o motivo no histórico. O painel (entrega 7) vai destacar e permitir reenviar.
-    - **E-mail de recebimento** fica numa configuração privada (`notifications`), hoje croquiseflores@outlook.com. O "Responder" do e-mail vai direto para o cliente. Em desenvolvimento, `EMAIL_TO_OVERRIDE` manda tudo para um endereço de teste.
-    - **Limites por IP** (guardado só como hash): 10 pedidos e 30 pedidos de envio de fotos por hora. Campo-armadilha invisível contra robôs.
-    - **Tela de sucesso** com o número e "Abrir conversa no WhatsApp" com mensagem pronta. O texto não diz que a mensagem foi enviada.
-    - **Ainda não**: miniaturas das fotos, e-mail de confirmação para o cliente (depende do domínio) e limpeza automática de fotos de pedidos não concluídos (cron, junto com o painel).
+- **[x]** já foi decidido ou já está pronto no site.
+- **[ ]** ainda está em aberto: depende de uma resposta ou de um passo que não foi feito.
 
-## Pendências com a Carla (bloqueiam a publicação, não o desenvolvimento)
+Quase tudo o que aparece no site (textos, preços, coleções, opções) vai poder ser mudado pela Carla no painel, sem precisar de programação.
 
-Implementar como **configuração editável** com valor provisório:
+Os textos, preços e informações que a Carla passou estão em `conteudo-carla.md`. Se algo aqui for diferente do briefing original, vale o que está aqui.
 
-- [ ] Autorização para usar as fotos das obras e a foto dela no site (ela vai mandar pelo WhatsApp, junto com as fotos).
-- [ ] Arquivos originais das obras em alta resolução (8 a 12 obras cobrindo cada serviço, mais fotos no ambiente).
-- [x] Categorias reais e se faz pinturas físicas (decisão 14: quadros em acrílica).
-- [x] Modalidades oferecidas (decisão 14: as três).
-- [x] Técnicas, tamanhos e formatos de arquivo (decisão 14: PDF ou JPG).
-- [ ] Em quais modalidades e formatos valem os preços do **Desenho técnico de moda** (R$ 70) e do **Kit para colorir** (R$ 55).
-- [ ] Fotos para as coleções **Pets** e **Kit para colorir**.
-- [x] Emolduramento e entregas (decisão 14).
-- [x] Número do WhatsApp e e-mail de contato (decisão 11). Confirmar se os pedidos também chegam nesse e-mail.
-- [x] Prazo mínimo para o calendário: 15 dias (decisão 14).
-- [ ] Limite de tamanho e quantidade de imagens de referência por pedido.
-- [x] Textos da seção "Sobre a artista" (apresentação e inspiração em `conteudo-carla.md`).
-- [x] Depoimentos reais: publicados **sem nome** (decisão 15). Para exibir o nome, cada cliente precisa confirmar a sua frase.
-- [ ] Texto da política de privacidade (LGPD) e dos termos de uso.
-- [ ] Domínio do site: croquiseflores.com.br escolhido; falta conferir disponibilidade e registrar.
-- [ ] Versão final da logo desenhada por ela.
-- [ ] Autorização das pessoas retratadas (ou dos clientes que encomendaram) para exibir retratos na galeria (ela vai mandar).
-- [ ] Por quanto tempo guardar as fotos de referência dos clientes após o pedido ser concluído ou cancelado (LGPD).
-- [ ] Se quer pedir ao cliente autorização para publicar a obra final no portfólio.
+*Última atualização: 11/11/2026.*
 
-## Pendências do plano da Fase 1 (ver `arquitetura.md`)
+---
 
-Propostas apresentadas em 09/11/2026, aguardando resposta. Cada uma tem solução provisória configurável.
+## 1. Marca e visual
 
-- [ ] **Custos e titularidade das contas.** Vercel Hobby não permite uso comercial: publicar no Pro (cerca de US$ 20/mês, conferir valor atual). Supabase gratuito pausa após 7 dias sem uso e tem 1 GB de armazenamento: começar no gratuito com ping diário e migrar para o Pro (cerca de US$ 25/mês) se necessário. Definir em nome de quem ficam as contas (ideal: da Carla).
-- [x] **Ícone de sacola do cabeçalho.** Adotado provisoriamente: removido (decisão 10). Alternativa futura: "Minhas inspirações".
-- [x] **Nomes "Pintura física" e "Tipos de pintura".** Adotado provisoriamente: "Obra feita à mão" e "Tipos de obra" (decisão 10).
-- [x] **Configurador em 5 telas** cobrindo as 9 etapas do briefing. Feito na entrega 5 (sem objeção).
-- [ ] **E-mail de confirmação para o cliente.** Recomendado; depende do domínio verificado no Resend.
-- [ ] **Autorização de portfólio no pedido.** Adotado provisoriamente: caixa opcional, desmarcada, desligável na configuração (decisão 13).
-- [ ] **Retenção das referências.** Proposta: apagar N dias após conclusão/cancelamento, N configurável.
-- [x] **Número do pedido.** `CF-2026-0001`, sequencial por ano (decisão 16).
-- [ ] **Limites de upload.** Padrão técnico provisório: até 10 imagens de 10 MB (JPG, PNG, WebP), configurável.
+- [x] **Nome:** o ateliê se chama **Croquis e Flores**. A artista é a **Carla Vitória** (Instagram @croquiseflores, frase "meus croquis, minhas flores e eu").
+- [x] **Cores:** laranja e rosa, no lugar do bege e cinza do briefing, porque combinam com os posts que a Carla já faz.
+- [x] **Organização das páginas:** inspirada nos sites da Vivara e da Pandora. O modelo da página inicial foi aprovado.
+- [x] **Logo:** escolhida a silhueta de croqui (opção 3). A versão atual é provisória.
+- [ ] **Logo final:** a Carla vai redesenhar a logo à mão, para depois ser passada para o computador.
+
+## 2. Como o site funciona
+
+- [x] **Sem pagamento pelo site:** o cliente monta o pedido e pede um orçamento. O pagamento é combinado direto com a Carla.
+- [x] **Sem carrinho de compras:** o ícone de sacola do modelo foi retirado, porque não há compra direta nem conta de cliente.
+- [x] **Nomes no menu:** "Tipos de obra" e "Obra feita à mão", no lugar de "Tipos de pintura" e "Pintura física". Podem ser trocados no painel.
+- [x] **Pedido em 5 telas:** tipo de obra, detalhes (tamanho, técnica, moldura e entrega), inspiração (fotos, descrição e data), dados do cliente e revisão.
+- [x] **O pedido não se perde:** se a página recarregar no meio, o que foi preenchido continua lá. As fotos precisam ser escolhidas de novo.
+- [x] **Contatos do ateliê:** WhatsApp **(75) 98849-8356** e e-mail **croquiseflores@outlook.com**.
+
+## 3. Coleções, preços e prazos
+
+- [x] **Coleções:** Retratos, Casais, Pets, Desenho técnico de moda e Kit para colorir. "Momentos especiais" e caneca saíram.
+- [x] **O que é oferecido em cada tipo de obra:**
+  - **Feita à mão:** quadros em tinta acrílica (10 × 15, 16 × 22 ou 20 × 25 cm) ou desenho em folha A4 com nanquim ou lápis de cor.
+  - **Ilustração digital:** tamanho A4, entregue em arquivo PDF ou JPG.
+  - **Ilustração digital impressa:** tamanho A4, já com moldura.
+- [x] **Moldura:** um tipo só, estilo porta-retrato. Na folha A4 custa R$ 50 a mais; na ilustração impressa já está incluída no preço.
+- [x] **Preços no site:** aparecem como "a partir de", em cada opção e na página "Tipos de obra e preços". O valor final é sempre confirmado pela Carla no orçamento.
+- [x] **O site não soma o total do pedido,** porque ainda não está claro como entram os preços do Desenho técnico de moda e do Kit para colorir (ver o último item desta seção).
+- [x] **Prazo:** o cliente só consegue escolher datas a partir de 15 dias. A entrega é em até 15 dias corridos depois do pagamento inicial.
+- [x] **Pagamento:** Pix, transferência, depósito ou boleto (sem cartão). Metade no início e metade na entrega.
+- [x] **Entrega:** retirada sem taxa (bairros Brasília ou Fraga Maia, em Feira de Santana), entrega por R$ 10 em Feira de Santana (dentro do Anel de Contorno) ou Correios para todo o Brasil, com frete a combinar.
+- [x] **Opções fechadas:** não há "outra técnica" nem "tamanho personalizado". Quem quiser algo diferente explica na descrição do pedido.
+- [x] **Tema "Personalizado":** para pedidos que não se encaixam em nenhuma coleção.
+- [x] **Filtro por tamanho na galeria:** fica para depois, quando as obras tiverem o tamanho cadastrado.
+- [ ] **Desenho técnico de moda (R$ 70) e Kit para colorir (R$ 55):** em que tipo de obra e tamanho esses preços valem? Por enquanto o Kit aparece só nas ilustrações (digital e impressa), e o Desenho técnico de moda em todos os tipos.
+
+## 4. Textos e depoimentos
+
+- [x] **"Sobre a artista":** usa a apresentação escrita pela Carla.
+- [ ] **Frase sobre o que inspira a Carla:** foi escrita a partir do que ela contou. Ela precisa confirmar ou reescrever.
+- [x] **"Como funciona":** usa os 5 passos descritos pela Carla.
+- [x] **Depoimentos:** as 7 frases reais da pesquisa de satisfação aparecem **sem nome** ("Cliente Croquis e Flores"). A pesquisa foi anônima, então não dá para saber quem escreveu cada frase.
+- [ ] **Depoimento com nome:** só se a própria cliente confirmar que a frase é dela e autorizar.
+- [ ] **Política de privacidade e termos de uso:** os textos atuais são provisórios. Falta o texto definitivo.
+
+## 5. Fotos e autorizações
+
+- [x] **Fotos atuais:** vieram do Instagram, em tamanho pequeno. Em uma delas foram apagados ícones e uma frase de série de TV, para não mostrar elementos de terceiros.
+- [x] **Enquanto não houver autorização,** as fotos ficam só como exemplo no site em desenvolvimento.
+- [x] **Coleções sem foto** (Pets e Kit para colorir) mostram o símbolo da marca no lugar da foto.
+- [ ] **Autorização da Carla** para usar as fotos das obras e a foto dela no site.
+- [ ] **Fotos originais em boa resolução:** de 8 a 12 obras, cobrindo cada serviço, mais fotos das obras no ambiente. A Carla vai mandar pelo WhatsApp, como documento.
+- [ ] **Fotos para Pets e Kit para colorir.**
+- [ ] **Autorização das pessoas retratadas** (ou de quem encomendou) para mostrar os retratos na galeria.
+- [ ] **Nomes e descrições reais das obras:** hoje aparecem entre colchetes, como "[Nome da obra]".
+
+## 6. Pedidos de encomenda
+
+- [x] **Número do pedido:** cada pedido recebe um número, como **CF-2026-0001**, em sequência a cada ano.
+- [x] **Aviso por e-mail:** a cada pedido, a Carla recebe um e-mail com tudo o que o cliente escolheu, a data, a descrição e o contato. O e-mail tem um botão para chamar o cliente no WhatsApp, e "Responder" vai direto para o cliente.
+- [x] **Se o e-mail falhar,** o pedido não se perde: fica guardado e vai aparecer no painel.
+- [x] **Depois de enviar,** o cliente vê o número do pedido e um botão para abrir uma conversa no WhatsApp com a Carla, com a mensagem já pronta. É o próprio cliente quem envia.
+- [x] **Fotos dos clientes:** ficam guardadas numa área privada e nunca aparecem no site. Só a Carla vê, pelo painel.
+- [x] **Proteção contra spam:** há um limite de envios por pessoa a cada hora e uma armadilha que barra robôs.
+- [x] **Fotos de referência:** são opcionais, até 10 fotos de até 10 MB cada (JPG, PNG ou WebP).
+- [ ] **Confirmar com a Carla** se esse limite de fotos está bom.
+- [x] **Autorização para o portfólio:** o pedido traz a pergunta "Autorizo a artista a mostrar a obra pronta no portfólio", opcional e desmarcada.
+- [ ] **A Carla quer manter essa pergunta?**
+- [ ] **Por quanto tempo guardar as fotos dos clientes** depois que o pedido termina ou é cancelado (proteção de dados). Sugestão: apagar automaticamente depois de um prazo definido por ela.
+- [ ] **E-mail de confirmação para o cliente:** recomendado, mas só funciona depois que o site tiver domínio próprio (ver seção 7).
+
+## 7. Publicação, contas e custos
+
+- [x] **Painel da Carla:** só ela entra, com e-mail e senha forte (no mínimo 12 caracteres). Não existe cadastro aberto ao público.
+- [x] **Envio de e-mails em teste:** o serviço de envio (Resend) está funcionando. Enquanto o site não tem domínio próprio, os e-mails de pedidos chegam para o Erick.
+- [ ] **Domínio croquiseflores.com.br:** escolhido, mas ainda não registrado. É registrado no registro.br, por cerca de R$ 40 por ano (conferir o valor). Sem ele, o site não tem endereço próprio e os e-mails não podem ir para a Carla.
+- [ ] **E-mails de pedidos indo para a Carla:** depende do domínio. Quando ele estiver pronto, os pedidos passam a chegar em croquiseflores@outlook.com.
+- [ ] **Confirmar se croquiseflores@outlook.com** é mesmo o e-mail onde a Carla quer receber os pedidos.
+- [ ] **Hospedagem do site (Vercel):** o plano gratuito não permite uso comercial. O plano pago custa cerca de US$ 20 por mês (conferir o valor).
+- [ ] **Banco de dados e fotos (Supabase):** dá para começar no plano gratuito. Se o espaço acabar, o plano pago custa cerca de US$ 25 por mês (conferir o valor).
+- [ ] **Em nome de quem ficam as contas** (domínio, hospedagem, banco de dados e envio de e-mails). O ideal é que fiquem no nome da Carla.

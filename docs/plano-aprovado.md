@@ -69,7 +69,7 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 - [x] Páginas "em construção" com caminho de volta: Encomendar (entrega 5) e página de cada obra (entrega 4)
 - [x] Página "Página não encontrada" em português
 - [x] Acessibilidade: foco visível, "Pular para o conteúdo", textos alternativos nas fotos, alvos de toque ≥ 44px, contraste aprovado na auditoria automática
-- [x] Sem ícone de sacola; menu com "Tipos de obra" (decisões provisórias, ver `decisoes.md` item 10)
+- [x] Sem ícone de sacola; menu com "Tipos de obra" (ver `decisoes.md`, seção 2)
 
 **Como conferir no navegador**
 - [x] Abrir a página inicial e comparar com `design/home-referencia.html`
@@ -125,7 +125,7 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 - ~~Busca, filtros e página de cada obra~~ (feito na entrega 4)
 - Formulário de encomenda e registro do pedido (entregas 5 e 6)
 - Painel para a Carla editar tudo isso sem mexer no banco (entregas 7 a 9)
-- Fotos das obras no armazenamento do Supabase: aguardam a autorização da Carla (`decisoes.md`, item 12)
+- Fotos das obras no armazenamento do Supabase: aguardam a autorização da Carla (`decisoes.md`, seção 5)
 
 ## Entrega 4: galeria, página da obra e busca ✔
 
@@ -155,7 +155,7 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 
 **Ainda não funciona (previsto para depois)**
 - ~~"Criar uma obra inspirada nesta" leva a uma página em construção~~ (configurador pronto na entrega 5)
-- Filtro por tamanho: as obras da galeria ainda não têm tamanho cadastrado (ver `decisoes.md`, item 13)
+- Filtro por tamanho: as obras da galeria ainda não têm tamanho cadastrado (ver `decisoes.md`, seção 3)
 - Endereço de obra inexistente mostra "Página não encontrada", mas responde código 200 (limitação do Next com páginas pré-geradas; a página não é indexada)
 
 ## Entrega 5: configurador de encomenda ✔
@@ -171,7 +171,7 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 - [x] Rascunho guardado: recarregar a página ou abrir a câmera no celular não apaga o que foi preenchido (as fotos precisam ser escolhidas de novo, por segurança)
 - [x] Botão "voltar" do celular volta uma etapa; "Recomeçar do zero" pede confirmação
 - [x] "Criar uma obra inspirada nesta" (página da obra) e "Encomendar" (Tipos de obra) já chegam com as escolhas feitas
-- [x] Opções (técnicas, tamanhos, molduras, formatos) e limites vêm do banco: provisórios, a Carla ajusta no painel (`decisoes.md`, item 13)
+- [x] Opções (técnicas, tamanhos, molduras, formatos) e limites vêm do banco: provisórios, a Carla ajusta no painel (`decisoes.md`, seção 3)
 
 **Como conferir no navegador (de preferência no celular)**
 - [ ] Abrir uma obra da galeria e tocar em "Criar uma obra inspirada nesta": a tela 1 já vem com a modalidade e o tema
@@ -194,7 +194,7 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 
 ## Entrega 5.1: conteúdo real da Carla ✔
 
-Fonte: `conteudo-carla.md`. Decisões: `decisoes.md`, item 14.
+Fonte: `conteudo-carla.md`. Decisões: `decisoes.md`, seções 3 a 5.
 
 **Entregue**
 - [x] Coleções: Retratos, Casais, Pets, Desenho técnico de moda e Kit para colorir ("Momentos especiais" saiu). Coleção sem foto mostra o símbolo da marca
@@ -230,7 +230,7 @@ Fonte: `conteudo-carla.md`. Decisões: `decisoes.md`, item 14.
 
 ## Entrega 6: envio do pedido ✔
 
-Decisões: `decisoes.md`, item 16.
+Decisões: `decisoes.md`, seção 6.
 
 **Entregue**
 - [x] "Solicitar orçamento" envia de verdade:
