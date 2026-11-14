@@ -8,7 +8,7 @@ import {
   resetRateLimits,
   type TestUser,
 } from "./support/db";
-import { audit, login, PNG } from "./support/panel";
+import { audit, login, PNG } from "./support/helpers";
 
 // Painel: login e pedidos (entrega 7), contra o Supabase de desenvolvimento.
 // Contas e pedidos de teste são criados e apagados por teste.
@@ -36,6 +36,12 @@ test.describe("sem login", () => {
       await expect(page.getByRole("heading", { name: "Painel da artista" })).toBeVisible();
     });
   }
+
+  test("rotina diária não roda sem a chave", async ({ request }) => {
+    expect((await request.get("/api/cron/manutencao")).status()).toBe(401);
+    const wrong = await request.get("/api/cron/manutencao", { headers: { authorization: "Bearer chave-errada" } });
+    expect(wrong.status()).toBe(401);
+  });
 
   test("foto de cliente não abre por chamada direta", async ({ request }) => {
     const response = await request.get(`/api/admin/referencias/${randomUUID()}`, { maxRedirects: 0 });

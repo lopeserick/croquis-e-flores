@@ -1,11 +1,6 @@
 import Link from "next/link";
-import {
-  EMAIL_LABELS,
-  formatDateTime,
-  STATUS_LABELS,
-  type EmailStatus,
-  type OrderStatus,
-} from "@/features/admin/order-status";
+import { EMAIL_LABELS, STATUS_LABELS, type EmailStatus, type OrderStatus } from "@/features/admin/order-status";
+import { formatDateTime } from "@/features/admin/format";
 import type { OrderListItem } from "@/features/admin/orders";
 
 // Cores com contraste de texto 4,5:1 sobre o fundo de cada etiqueta.
@@ -65,18 +60,5 @@ export function OrderList({ orders, emptyText }: { orders: OrderListItem[]; empt
         </li>
       ))}
     </ul>
-  );
-}
-
-export function ListSkeleton({ rows = 4 }: { rows?: number }) {
-  return (
-    <div aria-busy="true" className="flex flex-col gap-3">
-      <p role="status" className="sr-only">
-        Carregando…
-      </p>
-      {Array.from({ length: rows }, (_, i) => (
-        <div key={i} className="h-20 animate-pulse rounded-card bg-blush motion-reduce:animate-none" />
-      ))}
-    </div>
   );
 }

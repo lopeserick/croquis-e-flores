@@ -11,7 +11,7 @@ Quase tudo o que aparece no site (obras, textos, preços, coleções, opções, 
 
 Os textos, preços e informações que a Carla passou estão em `conteudo-carla.md`. Se algo aqui for diferente do briefing original, vale o que está aqui.
 
-*Última atualização: 13/11/2026.*
+*Última atualização: 14/11/2026.*
 
 ---
 
@@ -79,7 +79,7 @@ Os textos, preços e informações que a Carla passou estão em `conteudo-carla.
 - [x] **Andamento do pedido no painel:** Novo, Orçamento enviado, Aprovado (em produção), Concluído e Cancelado.
 - [x] **Mensagens prontas do WhatsApp:** em tom carinhoso e com emojis, tanto a do cliente para a Carla quanto a da Carla para o cliente. Dá para editar antes de enviar.
 - [x] **Aviso por e-mail:** a cada pedido, a Carla recebe um e-mail com tudo o que o cliente escolheu, a data, a descrição e o contato. O e-mail tem um botão para chamar o cliente no WhatsApp, e "Responder" vai direto para o cliente.
-- [x] **Se o e-mail falhar,** o pedido não se perde: fica guardado e vai aparecer no painel.
+- [x] **Se o e-mail falhar,** o pedido não se perde: fica guardado e aparece em destaque no painel. Todo dia de manhã o site tenta mandar o e-mail de novo (até 3 vezes, para pedidos da última semana). A Carla também pode reenviar pelo painel.
 - [x] **Depois de enviar,** o cliente vê o número do pedido e um botão para abrir uma conversa no WhatsApp com a Carla, com a mensagem já pronta. É o próprio cliente quem envia.
 - [x] **Fotos dos clientes:** ficam guardadas numa área privada e nunca aparecem no site. Só a Carla vê, pelo painel.
 - [x] **Proteção contra spam:** há um limite de envios por pessoa a cada hora e uma armadilha que barra robôs.
@@ -87,7 +87,9 @@ Os textos, preços e informações que a Carla passou estão em `conteudo-carla.
 - [ ] **Confirmar com a Carla** se esse limite de fotos está bom.
 - [x] **Autorização para o portfólio:** o pedido traz a pergunta "Autorizo a artista a mostrar a obra pronta no portfólio", opcional e desmarcada.
 - [ ] **A Carla quer manter essa pergunta?**
-- [ ] **Por quanto tempo guardar as fotos dos clientes** depois que o pedido termina ou é cancelado (proteção de dados). Sugestão: apagar automaticamente depois de um prazo definido por ela.
+- [x] **Apagar as fotos dos clientes sozinho:** o site já sabe fazer isso. A Carla escolhe no painel (Configurações > Fotos dos clientes) quantos dias depois do pedido concluído ou cancelado as fotos são apagadas. O pedido continua guardado, só as fotos saem, e fica uma anotação no histórico. Enquanto o campo estiver vazio, nada é apagado.
+- [ ] **Por quanto tempo guardar as fotos dos clientes:** a Carla precisa escolher o prazo (sugestão: 90 dias depois do fim do pedido).
+- [x] **Fotos esquecidas:** fotos de clientes que desistiram no meio do envio, e fotos enviadas no painel mas não salvas, são apagadas sozinhas depois de 24 horas.
 - [ ] **E-mail de confirmação para o cliente:** recomendado, mas só funciona depois que o site tiver domínio próprio (ver seção 7).
 
 ## 7. Publicação, contas e custos

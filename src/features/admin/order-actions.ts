@@ -6,7 +6,8 @@ import { isValidIsoDate } from "@/features/orders/dates";
 import { notifyArtist } from "@/features/orders/notify";
 import { createSessionClient } from "@/lib/supabase/session";
 import { requireAdmin } from "./auth";
-import { centsToInput, formatShortDate, isOrderStatus, parseReais, STATUS_LABELS } from "./order-status";
+import { isOrderStatus, STATUS_LABELS } from "./order-status";
+import { centsToInput, formatShortDate, parseReais } from "./format";
 
 // Ações da página do pedido. Cada uma confere o admin de novo (uma Server
 // Action pode ser chamada direto, sem passar pela página) e grava com a sessão

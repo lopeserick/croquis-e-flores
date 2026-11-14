@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { expect, test, type Page } from "@playwright/test";
 import { admin, createUser, deleteUser, resetRateLimits, type TestUser } from "./support/db";
-import { audit, login, saveAndWait } from "./support/panel";
+import { audit, login, saveAndWait } from "./support/helpers";
 
 // Painel: catálogo, depoimentos, textos e configurações (entrega 9). Muda o
 // conteúdo do Supabase de desenvolvimento: roda no projeto "painel", depois dos
@@ -138,6 +138,27 @@ test.describe("configurações e textos", () => {
     }
     const { data } = await admin.from("settings").select("value").eq("key", "site").single();
     expect((data!.value as { whatsappNumber: string }).whatsappNumber).toBe("5575988498356");
+  });
+
+  test("retenção das fotos dos clientes: prazo inválido é recusado; vazio desliga", async ({ page }) => {
+    await page.goto("/admin/configuracoes");
+    const retention = section(page, "secao-retencao");
+    const days = retention.getByLabel(/Apagar as fotos quantos dias/);
+    await expect(days).toHaveValue("");
+    await days.fill("0");
+    await saveAndWait(page, retention.getByRole("button", { name: "Salvar" }));
+    await expect(retention.getByText("Use pelo menos 1 dia.")).toBeVisible();
+    try {
+      await days.fill("180");
+      await saveAndWait(page, retention.getByRole("button", { name: "Salvar" }));
+      const { data } = await admin.from("settings").select("value").eq("key", "retention").single();
+      expect(data!.value).toEqual({ referenceDays: 180 });
+    } finally {
+      await days.fill("");
+      await saveAndWait(page, retention.getByRole("button", { name: "Salvar" }));
+    }
+    const { data } = await admin.from("settings").select("value").eq("key", "retention").single();
+    expect(data!.value).toEqual({ referenceDays: null });
   });
 
   test("textos: faixa do topo e termos de uso", async ({ page }) => {

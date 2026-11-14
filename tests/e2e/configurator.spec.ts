@@ -1,12 +1,7 @@
-import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { audit, PNG } from "./support/helpers";
 
 // Configurador de encomenda: as 5 telas (o envio fica em order.spec.ts).
-
-const PNG = Buffer.from(
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-  "base64",
-);
 
 const heading = (page: Page) => page.locator("#etapa-titulo");
 const next = (page: Page) => page.getByRole("button", { name: "Continuar" }).click();
@@ -17,11 +12,6 @@ function daysFromTodayInSaoPaulo(days: number): string {
   const date = new Date(`${today}T00:00:00Z`);
   date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
-}
-
-async function audit(page: Page) {
-  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
-  expect(results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(" | ")}`)).toEqual([]);
 }
 
 test("percurso completo: da obra da galeria até a revisão", async ({ page }) => {

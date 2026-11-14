@@ -144,3 +144,17 @@ export function Checkbox({
     </div>
   );
 }
+
+/** Enquanto a lista carrega (dentro de <Suspense>). */
+export function ListSkeleton({ rows = 4 }: { rows?: number }) {
+  return (
+    <div aria-busy="true" className="flex flex-col gap-3">
+      <p role="status" className="sr-only">
+        Carregando…
+      </p>
+      {Array.from({ length: rows }, (_, i) => (
+        <div key={i} className="h-20 animate-pulse rounded-card bg-blush motion-reduce:animate-none" />
+      ))}
+    </div>
+  );
+}

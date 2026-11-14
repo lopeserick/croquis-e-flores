@@ -449,3 +449,29 @@ export function OrderFormSettingsForm({
     </SectionForm>
   );
 }
+
+export function RetentionForm({ referenceDays }: { referenceDays: number | null }) {
+  return (
+    <SectionForm
+      section="retencao"
+      title="Fotos dos clientes"
+      description="Proteção de dados: as fotos de referência não precisam ficar guardadas para sempre."
+    >
+      {(error) => (
+        <TextField
+          id="retencao-dias"
+          name="referenceDays"
+          label="Apagar as fotos quantos dias depois do pedido concluído ou cancelado"
+          optional
+          hint="Vazio: as fotos ficam guardadas. Com um número, a rotina diária apaga as fotos (não o pedido) e anota no histórico."
+          type="number"
+          inputMode="numeric"
+          min={1}
+          max={3650}
+          defaultValue={referenceDays ?? ""}
+          error={error("referenceDays")}
+        />
+      )}
+    </SectionForm>
+  );
+}

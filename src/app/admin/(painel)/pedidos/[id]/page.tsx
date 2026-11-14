@@ -3,17 +3,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
 import { NoteForm, QuoteForm, ResendEmailForm, StatusForm } from "@/components/admin/order-forms";
-import { EmailAlert, ListSkeleton, StatusBadge } from "@/components/admin/order-list";
-import {
-  EMAIL_LABELS,
-  formatDateTime,
-  STATUS_LABELS,
-} from "@/features/admin/order-status";
+import { EmailAlert, StatusBadge } from "@/components/admin/order-list";
+import { EMAIL_LABELS, STATUS_LABELS } from "@/features/admin/order-status";
+import { formatDateTime } from "@/features/admin/format";
 import { getOrderDetail, type OrderDetail, type OrderEvent } from "@/features/admin/orders";
 import { formatLongDate } from "@/features/orders/dates";
 import { formatBrPhone } from "@/features/orders/phone";
 import { formatFileSize } from "@/features/orders/references";
 import { artistToCustomerLink } from "@/features/orders/whatsapp";
+import { ListSkeleton } from "@/components/admin/admin-ui";
 
 export const metadata: Metadata = { title: "Pedido" };
 

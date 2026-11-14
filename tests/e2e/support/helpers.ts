@@ -3,7 +3,8 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, type Locator, type Page } from "@playwright/test";
 import type { TestUser } from "./db";
 
-// Apoio aos testes do painel: login, auditoria de acessibilidade e uma foto.
+// Apoio aos testes de navegador: auditoria de acessibilidade, fotos de teste
+// (geradas, não são fotos de ninguém) e login no painel.
 
 /** PNG de 1×1 pixel (foto de teste: não é foto de ninguém). */
 export const PNG = Buffer.from(

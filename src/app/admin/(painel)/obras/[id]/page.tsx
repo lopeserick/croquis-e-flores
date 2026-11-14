@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { BackLink } from "@/components/admin/admin-ui";
+import { BackLink, ListSkeleton } from "@/components/admin/admin-ui";
 import { ArtworkForm } from "@/components/admin/artwork-form";
 import { ArtworkPhotos } from "@/components/admin/artwork-photos";
 import { ArtworkStatusPanel } from "@/components/admin/artwork-status";
-import { ListSkeleton } from "@/components/admin/order-list";
 import { publishProblems } from "@/features/admin/artwork-rules";
 import { getAdminArtwork, getArtworkFormOptions } from "@/features/admin/artworks";
 

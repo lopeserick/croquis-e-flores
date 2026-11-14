@@ -6,8 +6,8 @@ import { createSessionClient } from "@/lib/supabase/session";
 import { requireAdmin } from "./auth";
 import { storedImageSchema, type StoredImage } from "./gallery-images";
 
-// Leituras do painel de catálogo e depoimentos: tudo, inclusive inativos,
-// com a sessão da Carla (RLS). Sem cache.
+// Leituras do painel de catálogo: tudo, inclusive inativos, com a sessão da
+// Carla (RLS). Sem cache.
 
 export type AdminImage = StoredImage & { url: string };
 
@@ -104,43 +104,4 @@ export async function getAdminCatalog(): Promise<AdminCatalog> {
       requiresOptionIds: o.requires_option_ids,
     })),
   };
-}
-
-export type AdminTestimonial = {
-  id: string;
-  name: string;
-  location: string;
-  body: string;
-  rating: number | null;
-  consentNote: string;
-  published: boolean;
-  isDemo: boolean;
-  sortOrder: number;
-};
-
-export async function listAdminTestimonials(): Promise<AdminTestimonial[]> {
-  await requireAdmin();
-  const supabase = await createSessionClient();
-  const { data, error } = await supabase.from("testimonials").select("*").order("sort_order").order("created_at");
-  if (error) throw new Error(`Falha ao carregar os depoimentos: ${error.message}`);
-  return data.map((t) => ({
-    id: t.id,
-    name: t.name,
-    location: t.location ?? "",
-    body: t.body,
-    rating: t.rating,
-    consentNote: t.consent_note,
-    published: t.published,
-    isDemo: t.is_demo,
-    sortOrder: t.sort_order,
-  }));
-}
-
-/** Valor atual de cada chave de configuração (como está no banco). */
-export async function getAdminSettings(): Promise<Record<string, Json>> {
-  await requireAdmin();
-  const supabase = await createSessionClient();
-  const { data, error } = await supabase.from("settings").select("key, value");
-  if (error) throw new Error(`Falha ao carregar as configurações: ${error.message}`);
-  return Object.fromEntries(data.map((row) => [row.key, row.value]));
 }

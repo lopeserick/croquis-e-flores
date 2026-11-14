@@ -8,20 +8,27 @@ import {
 import { getOrderFormData } from "@/features/orders/form-data";
 import { getSiteSettings } from "@/features/settings/site-settings";
 import { getPublishedTestimonials } from "@/features/testimonials/testimonials";
+import { createAdminClient } from "@/lib/supabase/server";
 
 // O site lendo o banco (supabase/seed.sql): conteúdo real da Carla
-// (docs/conteudo-carla.md) com as fotos provisórias do protótipo.
+// (docs/conteudo-carla.md) com as fotos provisórias do protótipo. A Carla
+// muda esses dados pelo painel: os testes conferem o que o seed criou (e as
+// regras), não que nada tenha mudado desde então.
 
 describe("dados iniciais lidos do Supabase", () => {
-  it("a home mostra as 4 coleções da Carla, em ordem", async () => {
-    const categories = await getHomeCategories();
-    expect(categories.map((c) => c.name)).toEqual([
+  it("as 4 coleções da Carla existem, na ordem; a home mostra as ativas", async () => {
+    const { data } = await createAdminClient().from("categories").select("slug, name, active, price_cents").order("sort_order");
+    const seeded = ["retratos", "casais", "pets", "croquis-de-moda"];
+    expect(data!.filter((c) => seeded.includes(c.slug)).map((c) => c.name)).toEqual([
       "Retratos",
       "Casais",
       "Pets",
       "Desenho técnico de moda",
     ]);
-    expect(categories.find((c) => c.slug === "croquis-de-moda")?.priceCents).toBe(7000);
+    expect(data!.find((c) => c.slug === "croquis-de-moda")?.price_cents).toBe(7000);
+    const home = await getHomeCategories();
+    expect(home.map((c) => c.slug)).toEqual(data!.filter((c) => c.active && home.some((h) => h.slug === c.slug)).map((c) => c.slug));
+    expect(home.every((c) => c.active)).toBe(true);
   });
 
   it("obra feita à mão: preços dos tamanhos e técnica conforme o suporte", async () => {
@@ -64,7 +71,11 @@ describe("dados iniciais lidos do Supabase", () => {
   });
 
   it("nomes de obras pendentes vêm entre colchetes", async () => {
-    for (const a of await getFeaturedArtworks()) expect(a.title).toMatch(/^\[.+\]$/);
+    // Só as obras provisórias do seed: as que a Carla cadastra têm nome de verdade.
+    const seeded = new Set(["croqui-corset", "retrato-folhas-vermelhas", "croqui-chapeu", "casal-sob-o-poste", "casal-abracado", "retrato-cantor"]);
+    const featured = (await getFeaturedArtworks()).filter((a) => seeded.has(a.slug));
+    expect(featured.length).toBeGreaterThan(0);
+    for (const a of featured) expect(a.title).toMatch(/^\[.+\]$/);
   });
 
   it("obra é encontrada pelo endereço", async () => {

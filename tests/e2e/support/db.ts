@@ -94,3 +94,53 @@ export async function deleteArtworksTitled(prefix: string) {
     await admin.from("artworks").delete().eq("id", artwork.id);
   }
 }
+
+// ---------------------------------------------------------------------------
+// O que o site mostra hoje (lido como visitante, sujeito ao RLS). Os testes
+// comparam a tela com estes dados, sem depender de quantas obras a Carla já
+// cadastrou.
+// ---------------------------------------------------------------------------
+
+const visitor = createClient<Database>(
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
+  { auth: { persistSession: false, autoRefreshToken: false } },
+);
+
+export type VisibleArtwork = { slug: string; title: string; text: string; category: string; modality: string; technique: string };
+
+/** Obras que aparecem na galeria: publicadas, com coleção e modalidade ativas e foto de capa. */
+export async function visibleArtworks(): Promise<VisibleArtwork[]> {
+  const { data, error } = await visitor
+    .from("artworks")
+    .select("slug, title, short_description, technique_label, categories(slug, name, active), modalities(slug, name, active), artwork_images(is_cover)")
+    .eq("status", "publicada");
+  if (error) throw error;
+  return data
+    .filter((a) => a.categories?.active && a.modalities?.active && a.artwork_images.some((i) => i.is_cover))
+    .map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      text: [a.title, a.short_description, a.categories!.name, a.modalities!.name, a.technique_label].join(" "),
+      category: a.categories!.slug,
+      modality: a.modalities!.slug,
+      technique: a.technique_label,
+    }));
+}
+
+/** "1 obra encontrada", "9 obras encontradas". */
+export const foundText = (n: number) => (n === 1 ? "1 obra encontrada" : `${n} obras encontradas`);
+
+/** Depoimentos publicados (os de exemplo não aparecem no build de produção). */
+export async function publishedTestimonials() {
+  const { data, error } = await visitor.from("testimonials").select("body, is_demo").eq("published", true);
+  if (error) throw error;
+  return data;
+}
+
+/** Coleções da página inicial (ativas e marcadas para aparecer nela). */
+export async function homeCollections() {
+  const { data, error } = await visitor.from("categories").select("slug, name, image").eq("active", true).eq("show_on_home", true);
+  if (error) throw error;
+  return data;
+}

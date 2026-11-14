@@ -2,14 +2,10 @@ import { randomUUID } from "node:crypto";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import { admin, deleteOrdersOf, ordersOf, resetRateLimits } from "./support/db";
+import { PNG } from "./support/helpers";
 
 // Envio do pedido de ponta a ponta (entrega 6), contra o Supabase de
 // desenvolvimento. Cada teste usa um e-mail próprio e apaga o que criou.
-
-const PNG = Buffer.from(
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-  "base64",
-);
 
 let email = "";
 

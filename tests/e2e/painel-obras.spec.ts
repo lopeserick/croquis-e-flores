@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { expect, test } from "@playwright/test";
 import { admin, createUser, deleteArtworksTitled, deleteUser, resetRateLimits, type TestUser } from "./support/db";
-import { audit, login, solidPng } from "./support/panel";
+import { audit, login, solidPng } from "./support/helpers";
 
 // Painel de obras (entrega 8). Grava no Supabase de desenvolvimento: roda no
 // projeto "painel", depois dos demais testes (ver playwright.config.ts), para
@@ -127,4 +127,16 @@ test("obra publicada não fica sem foto e endereço repetido é recusado", async
   await page.getByRole("button", { name: "Apagar foto 1" }).click();
   await expect(page.getByText(/esta é a única foto/)).toBeVisible();
   await expect(page.getByRole("listitem", { name: "Foto 1" })).toBeVisible();
+});
+
+test("rotina diária roda com a chave e devolve só contagens", async ({ request }) => {
+  const response = await request.get("/api/cron/manutencao", {
+    headers: { authorization: `Bearer ${process.env.CRON_SECRET}` },
+  });
+  expect(response.status()).toBe(200);
+  const report = await response.json();
+  expect(Object.keys(report)).toEqual(
+    expect.arrayContaining(["emailsTentados", "pastasDeFotosApagadas", "fotosDaGaleriaApagadas"]),
+  );
+  expect(Object.keys(report).filter((k) => k.startsWith("erro_"))).toEqual([]);
 });

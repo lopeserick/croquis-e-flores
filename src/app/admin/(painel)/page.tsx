@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ListSkeleton, OrderList } from "@/components/admin/order-list";
+import { OrderList } from "@/components/admin/order-list";
 import { requireAdmin } from "@/features/admin/auth";
 import { ORDER_STATUSES, STATUS_LABELS } from "@/features/admin/order-status";
 import { getOrderCounts, listOrders } from "@/features/admin/orders";
+import { ListSkeleton } from "@/components/admin/admin-ui";
 
 export const metadata: Metadata = { title: "Início" };
 

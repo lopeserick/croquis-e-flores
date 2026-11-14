@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { homeCollections, publishedTestimonials } from "./support/db";
 
 test.describe("página inicial", () => {
   test.beforeEach(async ({ page }) => {
@@ -29,7 +30,10 @@ test.describe("página inicial", () => {
 
   test("depoimentos reais, sem nome e sem selo de demonstração", async ({ page }) => {
     const section = page.locator("section[aria-labelledby='depoimentos-titulo']");
-    await expect(section.locator("figure")).toHaveCount(7);
+    // No build de produção os depoimentos de exemplo não aparecem.
+    const published = await publishedTestimonials();
+    const expected = process.env.CI ? published.filter((t) => !t.is_demo).length : published.length;
+    await expect(section.locator("figure")).toHaveCount(expected);
     await expect(section.getByText(/Conteúdo demonstrativo/)).toHaveCount(0);
     await expect(section.getByText("Cliente Croquis e Flores").first()).toBeVisible();
   });
@@ -57,8 +61,10 @@ test.describe("página inicial", () => {
   });
 
   test("coleção sem foto mostra o símbolo da marca", async ({ page }) => {
-    const pets = page.getByRole("link", { name: /Pets/ }).first();
-    await expect(pets.locator("svg")).toBeVisible();
+    const withoutPhoto = (await homeCollections()).find((c) => c.image === null);
+    test.skip(!withoutPhoto, "hoje toda coleção da página inicial tem foto");
+    const link = page.getByRole("link", { name: new RegExp(withoutPhoto!.name) }).first();
+    await expect(link.locator("svg")).toBeVisible();
   });
 
   test("todos os links internos abrem uma página existente", async ({ page, request }) => {

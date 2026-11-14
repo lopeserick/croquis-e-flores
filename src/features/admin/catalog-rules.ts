@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { DeliveryKind, OptionKind } from "@/features/catalog/types";
 import { slugify } from "@/lib/text";
-import { parseReais } from "./order-status";
+import { parseReais } from "./format";
 
 // Regras do catálogo e dos depoimentos (painel, entrega 9).
 

@@ -9,7 +9,8 @@ import {
   saveOrderQuote,
   updateOrderStatus,
 } from "@/features/admin/order-actions";
-import { centsToInput, ORDER_STATUSES, STATUS_LABELS, type OrderStatus } from "@/features/admin/order-status";
+import { ORDER_STATUSES, STATUS_LABELS, type OrderStatus } from "@/features/admin/order-status";
+import { centsToInput } from "@/features/admin/format";
 
 // Formulários da página do pedido. Funcionam também sem JavaScript (form action).
 

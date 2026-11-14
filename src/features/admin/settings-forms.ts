@@ -17,6 +17,9 @@ import {
 
 export const notificationsSchema = z.object({ orderEmail: z.email() });
 
+/** Por quantos dias guardar as fotos dos clientes depois do pedido concluído ou cancelado. null = não apagar. */
+export const retentionSchema = z.object({ referenceDays: z.int().min(1).max(3650).nullable() });
+
 /** Schemas de leitura de cada chave (os mesmos do site). */
 export const SETTINGS_SCHEMAS = {
   site: siteSchema,
@@ -26,6 +29,7 @@ export const SETTINGS_SCHEMAS = {
   legal: legalSchema,
   notifications: notificationsSchema,
   order_form: orderFormSettingsSchema,
+  retention: retentionSchema,
 } as const;
 export type SettingsKey = keyof typeof SETTINGS_SCHEMAS;
 export const SETTINGS_KEYS = Object.keys(SETTINGS_SCHEMAS) as SettingsKey[];
@@ -156,6 +160,16 @@ export const SETTINGS_SECTIONS = {
       maxFiles: integer(0, 20, "Use um número de 0 a 20."),
       maxFileSizeMb: integer(1, 10, "Use um número de 1 a 10."),
       askPortfolioConsent: checkbox,
+    }),
+  },
+  retencao: {
+    key: "retention",
+    patch: z.object({
+      referenceDays: z
+        .string()
+        .trim()
+        .transform((v) => (v === "" ? null : Number(v)))
+        .pipe(z.int("Use um número inteiro de dias.").min(1, "Use pelo menos 1 dia.").max(3650, "Use até 3650 dias.").nullable()),
     }),
   },
 } as const satisfies Record<string, Section>;

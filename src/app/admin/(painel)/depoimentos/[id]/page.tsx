@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { BackLink } from "@/components/admin/admin-ui";
-import { ListSkeleton } from "@/components/admin/order-list";
+import { BackLink, ListSkeleton } from "@/components/admin/admin-ui";
 import { TestimonialForm } from "@/components/admin/testimonial-form";
-import { listAdminTestimonials } from "@/features/admin/catalog";
+import { listAdminTestimonials } from "@/features/admin/content";
 
 export const metadata: Metadata = { title: "Depoimento" };
 

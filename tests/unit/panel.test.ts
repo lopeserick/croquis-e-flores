@@ -266,6 +266,15 @@ describe("textos e configurações", () => {
     expect(merged).toMatchObject({ whatsappNumber: "5571998765432", contactEmail: null, instagramHandle: "croquiseflores" });
   });
 
+  it("retenção das fotos: vazio = guardar; número inteiro de 1 a 3650 dias", () => {
+    const patch = SETTINGS_SECTIONS.retencao.patch;
+    expect(patch.parse({ referenceDays: "" })).toEqual({ referenceDays: null });
+    expect(patch.parse({ referenceDays: "180" })).toEqual({ referenceDays: 180 });
+    expect(patch.safeParse({ referenceDays: "0" }).success).toBe(false);
+    expect(patch.safeParse({ referenceDays: "1,5" }).success).toBe(false);
+    expect(patch.safeParse({ referenceDays: "abc" }).success).toBe(false);
+  });
+
   it("versão da política: data e hora de São Paulo", () => {
     expect(privacyVersion(new Date("2026-11-13T02:30:00Z"))).toBe("2026-11-12-2330");
   });

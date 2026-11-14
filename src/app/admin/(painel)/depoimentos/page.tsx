@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { PageHeader, Panel, Pill, smallButton } from "@/components/admin/admin-ui";
-import { ListSkeleton } from "@/components/admin/order-list";
+import { PageHeader, Panel, Pill, smallButton, ListSkeleton } from "@/components/admin/admin-ui";
 import { SortableList } from "@/components/admin/sortable-list";
-import { listAdminTestimonials } from "@/features/admin/catalog";
+import { listAdminTestimonials } from "@/features/admin/content";
 import { moveTestimonial } from "@/features/admin/content-actions";
 
 export const metadata: Metadata = { title: "Depoimentos" };

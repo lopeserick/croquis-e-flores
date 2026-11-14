@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { BackLink } from "@/components/admin/admin-ui";
+import { BackLink, ListSkeleton } from "@/components/admin/admin-ui";
 import { OptionForm } from "@/components/admin/catalog-forms";
-import { ListSkeleton } from "@/components/admin/order-list";
 import { getAdminCatalog } from "@/features/admin/catalog";
 import { isOptionKind } from "@/features/admin/catalog-rules";
 

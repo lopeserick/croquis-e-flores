@@ -1,13 +1,6 @@
 import { describe, expect, it } from "vitest";
-import {
-  centsToInput,
-  formatDateTime,
-  formatShortDate,
-  isOrderStatus,
-  ORDER_STATUSES,
-  parseReais,
-  STATUS_LABELS,
-} from "@/features/admin/order-status";
+import { centsToInput, formatDateTime, formatShortDate, parseReais } from "@/features/admin/format";
+import { isOrderStatus, ORDER_STATUSES, STATUS_LABELS } from "@/features/admin/order-status";
 import { parseStoredSummary } from "@/features/orders/summary";
 
 describe("valor do orçamento em reais", () => {

@@ -2,7 +2,7 @@
 
 import { Checkbox, dangerButton, Feedback, Panel, smallButton } from "@/components/admin/admin-ui";
 import { SelectField, TextArea, TextField } from "@/components/ui/fields";
-import type { AdminTestimonial } from "@/features/admin/catalog";
+import type { AdminTestimonial } from "@/features/admin/content";
 import { deleteTestimonial, saveTestimonial } from "@/features/admin/content-actions";
 import { useFormAction } from "./use-form-action";
 

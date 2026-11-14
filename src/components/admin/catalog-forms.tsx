@@ -10,7 +10,7 @@ import {
   OPTION_KIND_SINGULAR,
   OPTION_PRICE_HINTS,
 } from "@/features/admin/catalog-rules";
-import { centsToInput } from "@/features/admin/order-status";
+import { centsToInput } from "@/features/admin/format";
 import type { OptionKind } from "@/features/catalog/types";
 import { ImageAssetField } from "./image-asset-field";
 import { useFormAction } from "./use-form-action";

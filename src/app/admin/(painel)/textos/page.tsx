@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { PageHeader } from "@/components/admin/admin-ui";
-import { ListSkeleton } from "@/components/admin/order-list";
+import { PageHeader, ListSkeleton } from "@/components/admin/admin-ui";
 import {
   AboutForm,
   CommerceForm,
@@ -11,7 +10,8 @@ import {
   StepsForm,
   TopBarForm,
 } from "@/components/admin/settings-forms";
-import { getAdminSettings, toAdminImage } from "@/features/admin/catalog";
+import { toAdminImage } from "@/features/admin/catalog";
+import { getAdminSettings } from "@/features/admin/content";
 import { SETTINGS_SCHEMAS } from "@/features/admin/settings-forms";
 
 export const metadata: Metadata = { title: "Textos" };

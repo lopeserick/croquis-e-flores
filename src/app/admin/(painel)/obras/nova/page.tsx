@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { BackLink } from "@/components/admin/admin-ui";
+import { BackLink, ListSkeleton } from "@/components/admin/admin-ui";
 import { ArtworkForm } from "@/components/admin/artwork-form";
-import { ListSkeleton } from "@/components/admin/order-list";
 import { getArtworkFormOptions } from "@/features/admin/artworks";
 
 export const metadata: Metadata = { title: "Nova obra" };

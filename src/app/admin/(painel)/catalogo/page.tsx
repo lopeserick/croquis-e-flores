@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { PageHeader, Panel, Pill, smallButton } from "@/components/admin/admin-ui";
-import { ListSkeleton } from "@/components/admin/order-list";
+import { PageHeader, Panel, Pill, smallButton, ListSkeleton } from "@/components/admin/admin-ui";
 import { SortableList } from "@/components/admin/sortable-list";
 import { getAdminCatalog } from "@/features/admin/catalog";
 import { moveCategory, moveModality } from "@/features/admin/catalog-actions";
