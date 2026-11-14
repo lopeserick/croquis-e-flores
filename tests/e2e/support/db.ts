@@ -82,3 +82,15 @@ export async function createTestOrder(customerEmail: string, photo: Buffer) {
   if (error) throw error;
   return { id: data[0].order_id, number: data[0].order_number };
 }
+
+/** Apaga as obras de teste (pelo começo do nome) e as fotos delas no bucket "obras". */
+export async function deleteArtworksTitled(prefix: string) {
+  const { data } = await admin.from("artworks").select("id").like("title", `${prefix}%`);
+  for (const artwork of data ?? []) {
+    const folder = `obras/${artwork.id}`;
+    const { data: files } = await admin.storage.from("obras").list(folder);
+    const paths = (files ?? []).map((f) => `${folder}/${f.name}`);
+    if (paths.length > 0) await admin.storage.from("obras").remove(paths);
+    await admin.from("artworks").delete().eq("id", artwork.id);
+  }
+}

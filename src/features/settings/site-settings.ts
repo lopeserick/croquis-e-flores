@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { z } from "zod";
-import { imageAssetSchema } from "@/features/catalog/mappers";
+import { imageAssetSchema, withResolvedPath } from "@/features/catalog/mappers";
 import { cacheTags } from "@/lib/cache-tags";
 import { createPublicClient, rowsOrThrow } from "@/lib/supabase/server";
 
@@ -8,7 +8,7 @@ import { createPublicClient, rowsOrThrow } from "@/lib/supabase/server";
 // editável pelo painel (entrega 9). Valores entre colchetes ou null são
 // pendências com a Carla (docs/decisoes.md).
 
-const siteSchema = z.object({
+export const siteSchema = z.object({
   siteName: z.string().min(1),
   topBarMessage: z.string(),
   footerDescription: z.string(),
@@ -18,7 +18,7 @@ const siteSchema = z.object({
   contactEmail: z.email().nullable(),
 });
 
-const homeSchema = z.object({
+export const homeSchema = z.object({
   hero: z.object({
     eyebrow: z.string(),
     title: z.string(),
@@ -38,7 +38,7 @@ const homeSchema = z.object({
 });
 
 /** Parágrafos vazios não aparecem no site. */
-const aboutSchema = z.object({
+export const aboutSchema = z.object({
   heading: z.string(),
   signature: z.string(),
   intro: z.string(),
@@ -49,12 +49,16 @@ const aboutSchema = z.object({
 });
 
 /** Prazos e pagamento (informativos: o pagamento é combinado fora do site). */
-const commerceSchema = z.object({
+export const commerceSchema = z.object({
   leadTime: z.string(),
   paymentMethods: z.string(),
   paymentTerms: z.string(),
   priceNote: z.string(),
 });
+
+/** Política de privacidade e termos de uso: texto livre, parágrafos separados por linha em branco. */
+export const legalSchema = z.object({ privacy: z.string(), terms: z.string() });
+export type LegalTexts = z.infer<typeof legalSchema>;
 
 const settingsSchemas = { site: siteSchema, home: homeSchema, about: aboutSchema, commerce: commerceSchema } as const;
 type SettingsKey = keyof typeof settingsSchemas;
@@ -70,10 +74,14 @@ export function parseSiteSettings(rows: { key: string; value: unknown }[]): Site
   if (invalid.length > 0) {
     throw new Error(`Configurações ausentes ou inválidas no banco: ${invalid.join(", ")}.`);
   }
+  const home = homeSchema.parse(values.get("home"));
+  const about = aboutSchema.parse(values.get("about"));
   return {
     ...siteSchema.parse(values.get("site")),
-    ...homeSchema.parse(values.get("home")),
-    about: aboutSchema.parse(values.get("about")),
+    ...home,
+    hero: { ...home.hero, image: withResolvedPath(home.hero.image) },
+    editorialExample: home.editorialExample && withResolvedPath(home.editorialExample),
+    about: { ...about, photo: withResolvedPath(about.photo) },
     commerce: commerceSchema.parse(values.get("commerce")),
   };
 }
@@ -86,3 +94,22 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   const result = await createPublicClient().from("settings").select("key, value").in("key", SETTINGS_KEYS);
   return parseSiteSettings(rowsOrThrow(result, "configurações"));
 }
+
+/** Textos legais. Sem texto cadastrado, as páginas mostram o aviso de pendência. */
+export async function getLegalTexts(): Promise<LegalTexts> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(cacheTags.settings);
+
+  const { data, error } = await createPublicClient().from("settings").select("value").eq("key", "legal").maybeSingle();
+  if (error) throw new Error(`Falha ao carregar os textos legais: ${error.message}`);
+  const parsed = legalSchema.safeParse(data?.value);
+  return parsed.success ? parsed.data : { privacy: "", terms: "" };
+}
+
+/** Texto do painel → parágrafos (linha em branco separa). */
+export const paragraphs = (text: string) =>
+  text
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);

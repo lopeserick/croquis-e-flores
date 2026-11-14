@@ -1,39 +1,17 @@
 "use client";
 
-import { useActionState, useEffect, useRef, type ReactNode } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import { Feedback, Panel, smallButton } from "@/components/admin/admin-ui";
 import { SelectField, TextArea, TextField } from "@/components/ui/fields";
 import {
   addOrderNote,
   resendOrderEmail,
   saveOrderQuote,
   updateOrderStatus,
-  type ActionState,
 } from "@/features/admin/order-actions";
 import { centsToInput, ORDER_STATUSES, STATUS_LABELS, type OrderStatus } from "@/features/admin/order-status";
 
 // Formulários da página do pedido. Funcionam também sem JavaScript (form action).
-
-const smallButton =
-  "inline-flex min-h-11 items-center justify-center rounded-full bg-plum px-5 text-xs uppercase tracking-button text-cream hover:bg-orange-cta disabled:cursor-wait disabled:opacity-70";
-
-function Feedback({ state }: { state: ActionState }) {
-  return (
-    <p role="status" className={state ? (state.ok ? "text-sm text-plum" : "text-sm text-rose") : "sr-only"}>
-      {state?.message ?? ""}
-    </p>
-  );
-}
-
-function Panel({ title, id, children }: { title: string; id: string; children: ReactNode }) {
-  return (
-    <section aria-labelledby={id} className="flex flex-col gap-4 rounded-card border border-border bg-white p-5">
-      <h2 id={id} className="font-serif text-2xl leading-tight">
-        {title}
-      </h2>
-      {children}
-    </section>
-  );
-}
 
 export function StatusForm({ orderId, status }: { orderId: string; status: OrderStatus }) {
   const [state, action, pending] = useActionState(updateOrderStatus, null);

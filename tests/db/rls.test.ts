@@ -126,7 +126,7 @@ describe("visitante anônimo", () => {
   it("só vê configurações públicas", async () => {
     expectNothingVisible(await anon.from("settings").select("key").eq("key", privateSettingKey));
     const publicKeys = await anon.from("settings").select("key");
-    expect(publicKeys.data!.map((s) => s.key).sort()).toEqual(["about", "commerce", "home", "order_form", "site"]);
+    expect(publicKeys.data!.map((s) => s.key).sort()).toEqual(["about", "commerce", "home", "legal", "order_form", "site"]);
   });
 
   it("não lista, não baixa e não envia fotos de clientes", async () => {
@@ -257,6 +257,54 @@ describe("Carla logada (admin), só com a chave pública", () => {
     const signed = await carla.storage.from("referencias").createSignedUrl(referencePath, 60);
     expect(signed.error).toBeNull();
     expect((await fetch(signed.data!.signedUrl)).status).toBe(200);
+  });
+
+  it("envia foto para a galeria por link assinado, e ela abre pelo endereço público", async () => {
+    const path = `obras/teste-${suffix}/0123456789abcdef.png`;
+    const signed = await carla.storage.from("obras").createSignedUploadUrl(path);
+    expect(signed.error).toBeNull();
+    try {
+      // Como o navegador do painel faz: PUT no link, sem chave do Supabase.
+      const put = await fetch(signed.data!.signedUrl, { method: "PUT", headers: { "content-type": "image/png" }, body: png });
+      expect(put.ok).toBe(true);
+      const url = carla.storage.from("obras").getPublicUrl(path).data.publicUrl;
+      expect((await fetch(url)).status).toBe(200);
+    } finally {
+      await admin.storage.from("obras").remove([path]);
+    }
+  });
+
+  it("edita catálogo, depoimentos e configurações", async () => {
+    const { data: before } = await admin.from("settings").select("value").eq("key", "legal").single();
+    const updated = await carla.from("settings").update({ value: before!.value }).eq("key", "legal").select("key");
+    expect(updated.data).toEqual([{ key: "legal" }]);
+    const testimonial = await carla
+      .from("testimonials")
+      .insert({ name: "Teste", body: `teste-${suffix}`, published: false })
+      .select("id")
+      .single();
+    expect(testimonial.error).toBeNull();
+    await carla.from("testimonials").delete().eq("id", testimonial.data!.id);
+  });
+});
+
+describe("painel: quem não é admin não envia fotos para a galeria", () => {
+  it("usuário comum não consegue link de envio", async () => {
+    const email = `teste-foto-${suffix}@exemplo.com`;
+    const password = randomUUID();
+    const created = await admin.auth.admin.createUser({ email, password, email_confirm: true });
+    const user = createClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+      { auth: { persistSession: false, autoRefreshToken: false } },
+    );
+    try {
+      await user.auth.signInWithPassword({ email, password });
+      const signed = await user.storage.from("obras").createSignedUploadUrl(`obras/teste-${suffix}/fedcba9876543210.png`);
+      expect(signed.error).not.toBeNull();
+    } finally {
+      await admin.auth.admin.deleteUser(created.data.user!.id);
+    }
   });
 });
 

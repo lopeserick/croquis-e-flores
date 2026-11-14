@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { Tables } from "@/lib/supabase/database.types";
+import { resolveImagePath } from "./image-url";
 import type {
   ArtworkImageRow,
   ArtworkRow,
@@ -22,10 +23,17 @@ export const imageAssetSchema = z.object({
   focalY: z.number().min(0).max(100),
 });
 
+/** Troca o caminho guardado no banco pelo endereço que o navegador abre. */
+export const withResolvedPath = <T extends { path: string }>(image: T): T => ({
+  ...image,
+  path: resolveImagePath(image.path),
+});
+
+/** Foto em JSON → ImageAsset pronto para exibir (com o endereço completo). */
 export function parseImageAsset(value: unknown, where: string): ImageAsset {
   const result = imageAssetSchema.safeParse(value);
   if (!result.success) throw new Error(`Foto inválida em ${where}.`);
-  return result.data;
+  return withResolvedPath(result.data);
 }
 
 export function toModality(row: Tables<"modalities">): ModalityRow {
@@ -94,7 +102,7 @@ export function toArtworkImage(row: Tables<"artwork_images">): ArtworkImageRow {
   return {
     id: row.id,
     artworkId: row.artwork_id,
-    path: row.path,
+    path: resolveImagePath(row.path),
     alt: row.alt,
     width: row.width,
     height: row.height,

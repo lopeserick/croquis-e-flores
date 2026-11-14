@@ -2,7 +2,7 @@
 
 Atualizado a cada entrega. Plano completo: `arquitetura.md`. Pendências e decisões: `decisoes.md`.
 
-**Última atualização:** 11/11/2026, ajustes depois da entrega 7.
+**Última atualização:** 13/11/2026, entregas 8 e 9.
 
 ## Visão geral
 
@@ -15,8 +15,8 @@ Atualizado a cada entrega. Plano completo: `arquitetura.md`. Pendências e decis
 - [x] Entrega 5.1: conteúdo real da Carla (coleções, preços, prazos, textos, depoimentos)
 - [x] Entrega 6: envio do pedido (registro, fotos, e-mail, WhatsApp)
 - [x] Entrega 7: painel: login e pedidos
-- [ ] Entrega 8: painel: obras
-- [ ] Entrega 9: painel: catálogo, depoimentos, textos e configurações
+- [x] Entrega 8: painel: obras
+- [x] Entrega 9: painel: catálogo, depoimentos, textos e configurações
 - [ ] Entrega 10: qualidade (testes, acessibilidade, celulares reais)
 - [ ] Entrega 11: publicação (Vercel, domínio, e-mail)
 
@@ -77,11 +77,11 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 - [x] No celular: tocar em ☰, ver o menu; fechar no X; a página atual aparece em rosa
 - [x] Clicar em uma coleção (ex.: Retratos): abre a galeria só com retratos
 - [x] Na vitrine "Obras que contam histórias": seta → avança, seta ← volta; no celular, arrastar
-- [x] Menu "Como funciona": rola até a seção dos 3 passos
+- [x] Menu "Como funciona": rola até a seção dos 3 passos (hoje são 5, entrega 5.1)
 - [x] Buscar "croqui": vai para a galeria com o termo no endereço (o filtro chega na entrega 4)
 - [x] Apertar Tab ao abrir a página: o primeiro item é "Pular para o conteúdo"; todo link mostra contorno ao receber foco
 - [x] Digitar um endereço que não existe (ex.: `/teste`): aparece "Página não encontrada"
-- [x] Depoimentos: aparecem com o selo "Conteúdo demonstrativo" em `npm run dev`; somem em `npm run build` + `npm start`
+- [x] Depoimentos: aparecem com o selo "Conteúdo demonstrativo" em `npm run dev`; somem em `npm run build` + `npm start` (hoje só há depoimentos reais, entrega 5.1)
 - [x] Rodapé e página Contato: WhatsApp abre conversa com (75) 98849-8356; e-mail abre croquiseflores@outlook.com; Instagram abre @croquiseflores
 
 **Testes automáticos**
@@ -140,18 +140,18 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 - [x] Para o Google: título e descrição por página, `/sitemap.xml` e `/robots.txt` (painel fora dos buscadores)
 
 **Como conferir no navegador**
-- [ ] Galeria: tocar em "Retratos" (coleção), depois em uma técnica; o endereço muda e a lista também
-- [ ] Copiar o endereço filtrado, abrir em outra aba (ou mandar para si mesmo no WhatsApp): mesmo resultado
-- [ ] Buscar "chapeu" (sem acento): aparece o croqui com chapéu
-- [ ] Buscar "xyz": aparece "Nenhuma obra encontrada" e o botão "Limpar filtros"
-- [ ] No celular, os filtros deslizam para o lado sem a página inteira sair da tela
-- [ ] Abrir uma obra: foto inteira, detalhes, "Criar uma obra inspirada nesta" e "Mais obras" no fim
-- [ ] Ver a prévia do link: abrir `http://localhost:3000/opengraph-image` mostra a imagem padrão (a prévia real no WhatsApp só funciona com o site publicado, entrega 11)
-- [ ] Abrir `http://localhost:3000/sitemap.xml`: lista páginas, coleções e obras
+- [x] Galeria: tocar em "Retratos" (coleção), depois em uma técnica; o endereço muda e a lista também
+- [x] Copiar o endereço filtrado, abrir em outra aba (ou mandar para si mesmo no WhatsApp): mesmo resultado
+- [x] Buscar "chapeu" (sem acento): aparece o croqui com chapéu
+- [x] Buscar "xyz": aparece "Nenhuma obra encontrada" e o botão "Limpar filtros"
+- [x] No celular, os filtros deslizam para o lado sem a página inteira sair da tela
+- [x] Abrir uma obra: foto inteira, detalhes, "Criar uma obra inspirada nesta" e "Mais obras" no fim
+- [x] Ver a prévia do link: abrir `http://localhost:3000/opengraph-image` mostra a imagem padrão (a prévia real no WhatsApp só funciona com o site publicado, entrega 11)
+- [x] Abrir `http://localhost:3000/sitemap.xml`: lista páginas, coleções e obras
 
 **Testes automáticos**
-- [ ] `npm test`: 40 testes de regras (inclui filtros, busca sem acento, endereço compartilhável, obras relacionadas)
-- [ ] `npm run test:e2e`: 77 testes de navegador (inclui filtros, busca, sem resultados, página da obra, prévia de link, sitemap, acessibilidade em 9 páginas)
+- [x] `npm test`: 40 testes de regras (inclui filtros, busca sem acento, endereço compartilhável, obras relacionadas)
+- [x] `npm run test:e2e`: 77 testes de navegador (inclui filtros, busca, sem resultados, página da obra, prévia de link, sitemap, acessibilidade em 9 páginas)
 
 **Ainda não funciona (previsto para depois)**
 - ~~"Criar uma obra inspirada nesta" leva a uma página em construção~~ (configurador pronto na entrega 5)
@@ -163,8 +163,8 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 **Entregue**
 - [x] Formulário em 5 telas, com indicador de progresso: Obra → Detalhes → Inspiração → Seus dados → Revisão
 - [x] Tela 1: modalidade (com foto e descrição) e tema (coleções + "Personalizado")
-- [x] Tela 2: técnica, tamanho e entrega mudam conforme a modalidade (obra física pede moldura; digital pede formato do arquivo); "Outra técnica" e "Tamanho personalizado" abrem campo livre
-- [x] Tela 3: fotos de referência com prévia e botão de remover (até 10 fotos de 10 MB; JPG, PNG ou WebP, conferindo o conteúdo real do arquivo), descrição e calendário (só datas a partir de amanhã, com o aviso de que a artista confirma a data)
+- [x] Tela 2: técnica, tamanho e entrega mudam conforme a modalidade (obra física pede moldura; digital pede formato do arquivo); "Outra técnica" e "Tamanho personalizado" abrem campo livre (retirados na entrega 5.1, com as opções reais)
+- [x] Tela 3: fotos de referência com prévia e botão de remover (até 10 fotos de 10 MB; JPG, PNG ou WebP, conferindo o conteúdo real do arquivo), descrição e calendário (só datas a partir de amanhã, hoje 15 dias, com o aviso de que a artista confirma a data)
 - [x] Tela 4: nome, e-mail, WhatsApp (com máscara), cidade, estado, observações, aceite da política de privacidade e autorização opcional de portfólio
 - [x] Tela 5: resumo de tudo, com "Editar" em cada bloco
 - [x] Cada etapa avisa o que falta antes de seguir (lista no topo + mensagem em cada campo)
@@ -174,19 +174,19 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 - [x] Opções (técnicas, tamanhos, molduras, formatos) e limites vêm do banco: provisórios, a Carla ajusta no painel (`decisoes.md`, seção 3)
 
 **Como conferir no navegador (de preferência no celular)**
-- [ ] Abrir uma obra da galeria e tocar em "Criar uma obra inspirada nesta": a tela 1 já vem com a modalidade e o tema
-- [ ] Tocar em "Continuar" sem escolher nada na tela 2: aparece a lista do que falta; tocar num item leva ao campo
-- [ ] Escolher "Ilustração digital" na tela 1: na tela 2 aparece "Formato do arquivo" em vez de "Moldura"
-- [ ] Na tela 3, adicionar 2 fotos, remover uma; tentar uma data de hoje (não deixa)
-- [ ] Recarregar a página no meio: o que foi digitado continua lá
-- [ ] Na tela 4, digitar o WhatsApp só com números: a máscara (11) 91234-5678 aparece sozinha
-- [ ] Na revisão, tocar em "Editar" de um bloco, mudar algo e voltar: o resumo mostra a mudança
-- [ ] "Solicitar orçamento" mostra que o envio ainda está em construção (chega na entrega 6)
+- [x] Abrir uma obra da galeria e tocar em "Criar uma obra inspirada nesta": a tela 1 já vem com a modalidade e o tema
+- [x] Tocar em "Continuar" sem escolher nada na tela 2: aparece a lista do que falta; tocar num item leva ao campo
+- [x] Escolher "Ilustração digital" na tela 1: na tela 2 aparece "Formato do arquivo" em vez de "Moldura"
+- [x] Na tela 3, adicionar 2 fotos, remover uma; tentar uma data de hoje (não deixa)
+- [x] Recarregar a página no meio: o que foi digitado continua lá
+- [x] Na tela 4, digitar o WhatsApp só com números: a máscara (11) 91234-5678 aparece sozinha
+- [x] Na revisão, tocar em "Editar" de um bloco, mudar algo e voltar: o resumo mostra a mudança
+- [x] "Solicitar orçamento" mostra que o envio ainda está em construção (o envio de verdade chegou na entrega 6)
 
 **Testes automáticos**
-- [ ] `npm test`: 64 testes de regras (inclui datas no fuso de São Paulo, WhatsApp, tipo real das fotos, regras de cada etapa, rascunho)
-- [ ] `npm run test:e2e`: 93 testes de navegador (inclui o percurso completo no celular e no computador, foto falsa recusada, rascunho após recarregar, botão voltar, acessibilidade em cada etapa)
-- [ ] `npm run test:db`: 25 testes no banco continuam passando
+- [x] `npm test`: 64 testes de regras (inclui datas no fuso de São Paulo, WhatsApp, tipo real das fotos, regras de cada etapa, rascunho)
+- [x] `npm run test:e2e`: 93 testes de navegador (inclui o percurso completo no celular e no computador, foto falsa recusada, rascunho após recarregar, botão voltar, acessibilidade em cada etapa)
+- [x] `npm run test:db`: 25 testes no banco continuam passando
 
 **Ainda não funciona (previsto para depois)**
 - Enviar o pedido: registrar no banco, subir as fotos, e-mail para a Carla e link do WhatsApp (entrega 6)
@@ -197,7 +197,7 @@ Para abrir no celular (mesma rede Wi-Fi): com o `npm run dev` rodando, acesse `h
 Fonte: `conteudo-carla.md`. Decisões: `decisoes.md`, seções 3 a 5.
 
 **Entregue**
-- [x] Coleções: Retratos, Casais, Pets, Desenho técnico de moda e Kit para colorir ("Momentos especiais" saiu). Coleção sem foto mostra o símbolo da marca
+- [x] Coleções: Retratos, Casais, Pets, Desenho técnico de moda e Kit para colorir ("Momentos especiais" saiu; o Kit saiu depois da entrega 7). Coleção sem foto mostra o símbolo da marca
 - [x] Configurador com as opções reais:
   - **Obra feita à mão:** quadros de 10×15, 16×22 e 20×25 cm em acrílica, ou folha A4 em nanquim ou lápis de cor
   - **Ilustração digital:** A4, em PDF ou JPG
@@ -210,21 +210,21 @@ Fonte: `conteudo-carla.md`. Decisões: `decisoes.md`, seções 3 a 5.
 - [x] 7 depoimentos reais da pesquisa, sem nome ("Cliente Croquis e Flores"), também no build de produção
 
 **Como conferir no navegador**
-- [ ] Página inicial: 5 coleções (Pets e Kit com o símbolo), 5 passos em "Como funciona", 7 depoimentos e o texto da Carla no "Sobre"
-- [ ] "Tipos de obra" (menu): preços de cada modalidade, coleções com preço próprio, prazos, pagamento e entrega
-- [ ] Encomendar → Obra feita à mão → Continuar: escolher "Folha A4" faz aparecer Nanquim/Lápis de cor e a moldura; trocar para um quadro marca "Tinta acrílica" sozinha e some a moldura
-- [ ] Ilustração digital: tamanho A4 já vem escolhido; o formato é PDF ou JPG; não pergunta entrega
-- [ ] Na etapa 3, o calendário não deixa escolher data antes de 15 dias
-- [ ] Revisão mostra os preços ao lado de tamanho, moldura e entrega
+- [x] Página inicial: 5 coleções (Pets e Kit com o símbolo; hoje 4, sem o Kit), 5 passos em "Como funciona", 7 depoimentos e o texto da Carla no "Sobre"
+- [x] "Tipos de obra" (menu): preços de cada modalidade, coleções com preço próprio, prazos, pagamento e entrega
+- [x] Encomendar → Obra feita à mão → Continuar: escolher "Folha A4" faz aparecer Nanquim/Lápis de cor e a moldura; trocar para um quadro marca "Tinta acrílica" sozinha e some a moldura
+- [x] Ilustração digital: tamanho A4 já vem escolhido; o formato é PDF ou JPG; não pergunta entrega
+- [x] Na etapa 3, o calendário não deixa escolher data antes de 15 dias
+- [x] Revisão mostra os preços ao lado de tamanho, moldura e entrega
 
 **Testes automáticos**
-- [ ] `npm test`: 71 testes de regras (inclui dependência entre opções, forma de entrega e formato dos preços)
-- [ ] `npm run test:db`: 28 testes no banco (inclui preços, dependências, PDF/JPG, prazo de 15 dias e depoimentos sem nome)
-- [ ] `npm run test:e2e`: 101 testes de navegador (inclui a página de preços e o percurso com folha → quadro)
+- [x] `npm test`: 71 testes de regras (inclui dependência entre opções, forma de entrega e formato dos preços)
+- [x] `npm run test:db`: 28 testes no banco (inclui preços, dependências, PDF/JPG, prazo de 15 dias e depoimentos sem nome)
+- [x] `npm run test:e2e`: 101 testes de navegador (inclui a página de preços e o percurso com folha → quadro)
 
 **Ainda depende da Carla** (`decisoes.md`)
-- Em quais modalidades valem o Desenho técnico de moda (R$ 70) e o Kit para colorir (R$ 55)
-- Fotos das obras, dela, de Pets e do Kit para colorir; nomes reais das obras
+- Em quais modalidades valem o Desenho técnico de moda (R$ 70) e o Kit para colorir (R$ 55; Kit retirado)
+- Fotos das obras, dela e de Pets; nomes reais das obras
 - Confirmar a frase de inspiração do "Sobre" (escrita a partir do que ela contou)
 - Nome nos depoimentos: só com a confirmação de cada cliente
 
@@ -246,26 +246,26 @@ Decisões: `decisoes.md`, seção 6.
 - [x] Enquanto envia, o botão mostra "Enviando…" e o andamento ("Enviando foto 1 de 2…"); em caso de erro, os dados continuam no formulário
 
 **Como conferir no navegador**
-- [ ] Fazer uma encomenda completa com 1 ou 2 fotos: aparece "Recebemos o seu pedido!" com o número
-- [ ] "Abrir conversa no WhatsApp" abre a conversa com a Carla e a mensagem com o número do pedido (não precisa enviar)
-- [ ] No Supabase (Table Editor > `orders`), o pedido aparece; em `order_references`, as fotos; em Storage > `referencias`, os arquivos
-- [ ] Voltar a "Encomendar" depois do envio: o formulário começa vazio
-- [ ] Depois de conferir, apagar o pedido de teste no Supabase (as fotos ficam na pasta com a chave do pedido)
+- [x] Fazer uma encomenda completa com 1 ou 2 fotos: aparece "Recebemos o seu pedido!" com o número
+- [x] "Abrir conversa no WhatsApp" abre a conversa com a Carla e a mensagem com o número do pedido (não precisa enviar)
+- [x] No Supabase (Table Editor > `orders`), o pedido aparece; em `order_references`, as fotos; em Storage > `referencias`, os arquivos
+- [x] Voltar a "Encomendar" depois do envio: o formulário começa vazio
+- [x] Depois de conferir, apagar o pedido de teste no Supabase (as fotos ficam na pasta com a chave do pedido)
 
-**Para receber o e-mail de verdade** (falta configurar)
-- [ ] Criar conta em resend.com e gerar uma chave de API
-- [ ] No `.env.local`: `RESEND_API_KEY=re_...`, `EMAIL_FROM="Croquis e Flores <onboarding@resend.dev>"` e `EMAIL_TO_OVERRIDE=` com o e-mail da conta do Resend (sem domínio verificado, ele só entrega para esse endereço)
+**Para receber o e-mail de verdade** (configurado em 11/11/2026)
+- [x] Criar conta em resend.com e gerar uma chave de API
+- [x] No `.env.local`: `RESEND_API_KEY=re_...`, `EMAIL_FROM="Croquis e Flores <onboarding@resend.dev>"` e `EMAIL_TO_OVERRIDE=` com o e-mail da conta do Resend (sem domínio verificado, ele só entrega para esse endereço)
 - [x] Chave do Resend no `.env.local`, com os e-mails desviados para erick1lopes7@outlook.com (11/11/2026)
-- [ ] Reiniciar o `npm run dev`, enviar um pedido e conferir a caixa de entrada (veja também o lixo eletrônico)
+- [x] Reiniciar o `npm run dev`, enviar um pedido e conferir a caixa de entrada (veja também o lixo eletrônico)
 - Os testes automáticos não mandam e-mail. Para testar o envio real neles: `E2E_SEND_EMAIL=1 npm run test:e2e`
 
 **Testes automáticos**
-- [ ] `npm test`: 91 testes de regras (inclui link do WhatsApp, e-mail sem HTML injetado, falha do e-mail, caminho das fotos, chave do pedido, IP em hash)
-- [ ] `npm run test:db`: 34 testes no banco (inclui número sequencial, pedido gravado numa vez, mesma chave sem duplicar, limite de tentativas, visitante sem acesso às funções)
-- [ ] `npm run test:e2e`: 108 testes de navegador (inclui pedido com foto, duplo clique, foto falsa recusada pelo servidor, robô barrado, acessibilidade da tela de sucesso). Os pedidos de teste são apagados no fim
+- [x] `npm test`: 91 testes de regras (inclui link do WhatsApp, e-mail sem HTML injetado, falha do e-mail, caminho das fotos, chave do pedido, IP em hash)
+- [x] `npm run test:db`: 34 testes no banco (inclui número sequencial, pedido gravado numa vez, mesma chave sem duplicar, limite de tentativas, visitante sem acesso às funções)
+- [x] `npm run test:e2e`: 108 testes de navegador (inclui pedido com foto, duplo clique, foto falsa recusada pelo servidor, robô barrado, acessibilidade da tela de sucesso). Os pedidos de teste são apagados no fim
 
 **Ainda não funciona (previsto para depois)**
-- "Ver no painel" do e-mail: o painel chega na entrega 7
+- ~~"Ver no painel" do e-mail: o painel chega na entrega 7~~ (feito na entrega 7)
 - Reenvio de e-mails que falharam e limpeza de fotos de pedidos não concluídos (rotina diária, junto com o painel)
 - E-mail de confirmação para o cliente (depende do domínio verificado, entrega 11)
 
@@ -285,22 +285,22 @@ Decisões: `decisoes.md`, seção 6.
 - [x] Comando para criar a conta do painel e trocar senha: `npm run admin -- criar email "Nome"` (a senha é digitada no terminal, sem aparecer)
 
 **Como conferir no navegador**
-- [ ] No terminal, criar a sua conta: `npm run admin -- criar erick1lopes7@outlook.com "Erick"` e digitar uma senha de 12 caracteres ou mais
-- [ ] Abrir `http://localhost:3000/admin` sem estar logado: vai para o login
-- [ ] Entrar com a conta criada: aparece "Olá, Erick!" com a contagem de pedidos
-- [ ] Fazer um pedido pelo site (com foto) e vê-lo no painel; abrir a foto
-- [ ] Mudar o status, salvar um orçamento e uma anotação: tudo aparece no histórico
-- [ ] "Sair" e tentar abrir o pedido de novo: volta para o login
-- [ ] No celular: o painel funciona e os botões são fáceis de tocar
+- [x] No terminal, criar a sua conta: `npm run admin -- criar erick1lopes7@outlook.com "Erick"` e digitar uma senha de 12 caracteres ou mais
+- [x] Abrir `http://localhost:3000/admin` sem estar logado: vai para o login
+- [x] Entrar com a conta criada: aparece "Olá, Erick!" com a contagem de pedidos
+- [x] Fazer um pedido pelo site (com foto) e vê-lo no painel; abrir a foto
+- [x] Mudar o status, salvar um orçamento e uma anotação: tudo aparece no histórico
+- [x] "Sair" e tentar abrir o pedido de novo: volta para o login
+- [x] No celular: o painel funciona e os botões são fáceis de tocar
 
 **Testes automáticos**
-- [ ] `npm test`: 100 testes de regras (inclui valor em reais, datas no fuso de São Paulo, nomes dos status)
-- [ ] `npm run test:db`: 37 testes no banco (inclui conta comum sem acesso aos pedidos e a Carla lendo, alterando e abrindo fotos só com a sessão dela)
-- [ ] `npm run test:e2e`: 127 testes de navegador (inclui painel bloqueado sem login, conta sem acesso, foto sem login, percurso completo da Carla, filtros e acessibilidade)
+- [x] `npm test`: 100 testes de regras (inclui valor em reais, datas no fuso de São Paulo, nomes dos status)
+- [x] `npm run test:db`: 37 testes no banco (inclui conta comum sem acesso aos pedidos e a Carla lendo, alterando e abrindo fotos só com a sessão dela)
+- [x] `npm run test:e2e`: 127 testes de navegador (inclui painel bloqueado sem login, conta sem acesso, foto sem login, percurso completo da Carla, filtros e acessibilidade)
 
 **Ainda não funciona (previsto para depois)**
 - "Esqueci minha senha" pelo e-mail (depois do domínio próprio)
-- Cadastro de obras pelo painel (entrega 8); catálogo, textos e configurações (entrega 9)
+- ~~Cadastro de obras pelo painel (entrega 8); catálogo, textos e configurações (entrega 9)~~ (feito)
 - Rotina diária: reenviar e-mails que falharam e limpar fotos de pedidos não concluídos (entrega 10)
 
 ## Ajustes pedidos depois da entrega 7 ✔
@@ -315,10 +315,67 @@ Decisões: `decisoes.md`, seção 6.
 - [x] Depoimentos em **carrossel**: um por vez, com aspas grandes, setas que dão a volta, bolinhas no computador e "1 de 7" no celular. Dá para arrastar com o dedo e passar pelo teclado
 
 **Como conferir no navegador**
-- [ ] Painel: o filtro e a página do pedido mostram os 5 status novos
-- [ ] Página inicial: não aparece mais o Kit para colorir; `/galeria/kit-para-colorir` mostra "Página não encontrada"
-- [ ] Rodapé > WhatsApp: a conversa abre com "Oi, Carla! 🌸 Vim pelo site…"
-- [ ] Depoimentos: passar com as setas e, no celular, arrastando com o dedo
+- [x] Painel: o filtro e a página do pedido mostram os 5 status novos
+- [x] Página inicial: não aparece mais o Kit para colorir; `/galeria/kit-para-colorir` mostra "Página não encontrada"
+- [x] Rodapé > WhatsApp: a conversa abre com "Oi, Carla! 🌸 Vim pelo site…"
+- [x] Depoimentos: passar com as setas e, no celular, arrastando com o dedo
 
 **Testes automáticos**
-- [ ] `npm test`: 101 · `npm run test:db`: 37 · `npm run test:e2e`: 129 (inclui o carrossel, a coleção retirada e a mensagem do WhatsApp)
+- [x] `npm test`: 101 · `npm run test:db`: 37 · `npm run test:e2e`: 129 (inclui o carrossel, a coleção retirada e a mensagem do WhatsApp)
+
+## Entrega 8: painel de obras ✔
+
+**Entregue**
+- [x] Menu do painel com Obras, Catálogo, Depoimentos, Textos e Configurações
+- [x] Lista de obras com foto, coleção, situação (Publicada, Rascunho, Arquivada), destaque e filtro
+- [x] Nova obra: nome, coleção, modalidade, técnica (com sugestões), dimensões, descrição, história, endereço da página e "Destaque na página inicial". Começa como rascunho
+- [x] Fotos: enviar várias de uma vez (até do celular), descrição de cada uma, ponto de foco com prévia do corte, escolher a capa, mudar a ordem e apagar
+  - o navegador diminui a foto (até 2400 px) e apaga os dados da câmera antes de enviar;
+  - o servidor confere se é mesmo uma imagem.
+- [x] Publicar (só com foto de capa descrita e sem nome entre colchetes), voltar para rascunho, arquivar e apagar de vez (pede para digitar "apagar")
+- [x] Ordem das obras na galeria: setas subir/descer na lista
+- [x] Ao salvar, o site muda na hora (galeria, página da obra, vitrine da página inicial)
+
+**Como conferir no navegador**
+- [ ] Painel > Obras > **Nova obra**: preencher, "Criar obra"
+- [ ] Na obra criada, "Adicionar fotos" (pode ser foto do celular), escrever a descrição e tocar na parte mais importante da foto
+- [ ] "Publicar": a obra aparece na galeria e em "Ver no site"
+- [ ] Marcar "Destaque na página inicial", salvar: aparece na vitrine "Obras que contam histórias"
+- [ ] "Arquivar": some do site e continua na lista do painel
+- [ ] Apagar a obra de teste no fim ("Apagar a obra de vez")
+
+**Testes automáticos**
+- [x] `npm test`: regras de publicação, capa, caminho das fotos, redução de tamanho, ordem e endereço
+- [x] `npm run test:db`: a Carla envia foto para a galeria por link assinado; conta comum não consegue
+- [x] `npm run test:e2e` (projeto "painel"): cadastrar com foto, publicar e ver na galeria, arquivar e sumir, apagar e as fotos saírem do armazenamento; obra publicada não fica sem foto; endereço repetido recusado
+
+## Entrega 9: painel de catálogo, depoimentos, textos e configurações ✔
+
+**Entregue**
+- [x] **Catálogo:** modalidades (nome, descrição, foto, ativa) e as opções de cada uma, por grupo: tamanhos, técnicas, molduras, formatos e entrega
+  - preço, descrição, "só aparece quando o cliente escolher…" (ex.: Nanquim só com Folha A4), ativa e ordem;
+  - nova modalidade e nova opção.
+- [x] **Coleções:** nome, frase, preço próprio, foto, em quais modalidades pode ser encomendada, mostrar na página inicial, ativa, ordem e nova coleção
+- [x] **Depoimentos:** novo, editar, ordem do carrossel, publicar (só com a autorização anotada) e apagar
+- [x] **Textos:** faixa do topo, rodapé, destaque da página inicial (com foto), "Sua ideia, nossa arte.", "Como funciona" (adicionar e tirar passos), "Sobre" (com foto), prazos e pagamento, política de privacidade e termos de uso
+- [x] Política e termos agora vêm do painel; vazios, as páginas mostram que o texto está pendente. Mudou a política: os próximos pedidos guardam a nova versão
+- [x] **Configurações:** WhatsApp, e-mail e Instagram do site, e-mail que recebe os pedidos, prazo mínimo da data desejada, limite de fotos e a pergunta do portfólio
+- [x] Cada campo avisa o erro (preço inválido, WhatsApp incompleto, passo vazio…) e leva o foco até ele; o que foi digitado não se perde
+
+**Como conferir no navegador**
+- [ ] Catálogo > Obra feita à mão > Nanquim > desmarcar "Ativa" > Salvar: em Encomendar, com Folha A4, só aparece Lápis de cor. Depois, marcar "Ativa" de novo
+- [ ] Mudar o preço de um tamanho: o novo valor aparece em "Tipos de obra e preços"
+- [ ] Configurações > WhatsApp: trocar o número e salvar; o botão do rodapé abre o novo número. Depois, voltar para (75) 98849-8356
+- [ ] Textos > Faixa do topo: mudar e ver no site; depois voltar o texto
+- [ ] Depoimentos > Novo: tentar publicar sem a autorização (não deixa); com a autorização, aparece no carrossel. Apagar no fim
+- [ ] No celular: as telas do painel funcionam e os botões são fáceis de tocar
+
+**Testes automáticos**
+- [x] `npm test`: 128 testes de regras (inclui preços, dependência entre opções, autorização do depoimento, WhatsApp, passos, limites do formulário, versão da política)
+- [x] `npm run test:db`: 40 testes no banco (inclui a Carla editando catálogo, depoimentos e configurações; textos legais públicos)
+- [x] `npm run test:e2e`: 152 testes de navegador (inclui painel bloqueado sem login nas páginas novas, desativar técnica e sumir do configurador, mudar o WhatsApp e o link mudar, textos, termos, coleção nova na página inicial, depoimento com autorização e acessibilidade das telas do painel). Os testes que mudam o conteúdo devolvem tudo como estava
+
+**Ainda não funciona (previsto para depois)**
+- Foto enviada e não salva (ex.: trocou a foto de uma coleção e saiu sem salvar) fica esquecida no armazenamento: a limpeza automática fica na rotina diária (entrega 10)
+- Apagar modalidade, coleção ou opção: por segurança, só dá para desativar (pedidos e obras antigos continuam apontando para elas)
+

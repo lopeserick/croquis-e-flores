@@ -2,6 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 const PORT = 3100;
 const isCI = Boolean(process.env.CI);
+const PANEL_WRITES = /painel-.*\.spec\.ts/;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -18,8 +19,12 @@ export default defineConfig({
   },
   // Celular primeiro: a maior parte do público chega pelo Instagram e WhatsApp.
   projects: [
-    { name: "celular", use: { ...devices["Pixel 7"] } },
-    { name: "desktop", use: { ...devices["Desktop Chrome"] } },
+    { name: "celular", use: { ...devices["Pixel 7"] }, testIgnore: PANEL_WRITES },
+    { name: "desktop", use: { ...devices["Desktop Chrome"] }, testIgnore: PANEL_WRITES },
+    // Testes que mudam o conteúdo do site pelo painel (obras, catálogo, textos)
+    // rodam por último, para não alterar o que os outros testes estão conferindo.
+    // Rodar só eles: npx playwright test --project=painel --no-deps
+    { name: "painel", use: { ...devices["Desktop Chrome"] }, testMatch: PANEL_WRITES, dependencies: ["celular", "desktop"] },
   ],
   webServer: {
     // No CI testa o build de produção; localmente, o servidor de desenvolvimento.

@@ -3,10 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Seções do painel. Obras, catálogo e configurações chegam nas entregas 8 e 9.
+// Seções do painel.
 const items = [
   { href: "/admin", label: "Início" },
   { href: "/admin/pedidos", label: "Pedidos" },
+  { href: "/admin/obras", label: "Obras" },
+  { href: "/admin/catalogo", label: "Catálogo" },
+  { href: "/admin/depoimentos", label: "Depoimentos" },
+  { href: "/admin/textos", label: "Textos" },
+  { href: "/admin/configuracoes", label: "Configurações" },
 ] as const;
 
 /** Menu com a seção atual destacada. Lê o endereço: fica dentro de <Suspense>. */

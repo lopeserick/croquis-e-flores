@@ -84,9 +84,9 @@ src/
       (painel)/                 layout que verifica a sessão no servidor
         page.tsx                dashboard
         pedidos/  pedidos/[id]/
-        obras/  obras/[id]/
-        catalogo/               modalidades, categorias, opções
-        depoimentos/  configuracoes/
+        obras/  obras/nova/  obras/[id]/
+        catalogo/               modalidades, coleções e opções (catalogo/modalidades|colecoes|opcoes/[id])
+        depoimentos/  textos/  configuracoes/
     api/
       admin/referencias/[id]/   exige login e redireciona para link assinado curto
       cron/manutencao/          limpa uploads órfãos, reenvia e-mails que falharam, ping diário
@@ -220,4 +220,6 @@ Configurações: contatos, e-mail de recebimento, WhatsApp, limites, prazo míni
 | Datas e fuso horário | Data desejada como data pura; horários exibidos em `America/Sao_Paulo` |
 | LGPD | Aceite com data e versão da política; coleta mínima (só cidade/UF); IP só como hash; retenção e exclusão pelo painel; texto da política vem da Carla ou de um profissional |
 | Imagens de baixa resolução e direitos de imagem | Ponto focal por foto; pendências de originais e autorizações em `decisoes.md` |
+| Painel salva, mas a primeira visita ao site ainda mostra a página antiga (Next 16.4: `updateTag` invalida os dados, não a página pronta) | `siteContentChanged()` chama `updateTag` e `revalidatePath("/", "layout")` em toda ação do painel; coberto pelos testes `painel-*.spec.ts` |
+| Fotos do painel com localização da câmera (EXIF) ou grandes demais | O navegador reduz para 2400 px e converte para WebP antes de enviar; o servidor confere os primeiros bytes e o caminho |
 | Obra/categoria inexistente responde 200 em vez de 404 (pré-renderização parcial envia a casca antes do `notFound()`) | Comportamento documentado do Next 16: a página mostra "Página não encontrada" e recebe `noindex`. Revisto na entrega 4: mantido, porque `dynamicParams = false` daria 404 correto mas impediria obras novas do painel de aparecerem sem novo deploy |

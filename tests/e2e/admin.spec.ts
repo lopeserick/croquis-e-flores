@@ -1,6 +1,5 @@
 import { randomUUID } from "node:crypto";
-import AxeBuilder from "@axe-core/playwright";
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import {
   createTestOrder,
   createUser,
@@ -9,33 +8,28 @@ import {
   resetRateLimits,
   type TestUser,
 } from "./support/db";
+import { audit, login, PNG } from "./support/panel";
 
 // Painel: login e pedidos (entrega 7), contra o Supabase de desenvolvimento.
 // Contas e pedidos de teste são criados e apagados por teste.
-
-const PNG = Buffer.from(
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-  "base64",
-);
-
-async function audit(page: Page) {
-  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
-  expect(results.violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(" | ")}`)).toEqual([]);
-}
-
-async function login(page: Page, user: TestUser) {
-  await page.goto("/admin/login");
-  await page.getByLabel("E-mail").fill(user.email);
-  await page.getByLabel("Senha").fill(user.password);
-  await page.getByRole("button", { name: "Entrar" }).click();
-}
 
 test.beforeEach(async () => {
   await resetRateLimits();
 });
 
 test.describe("sem login", () => {
-  for (const path of ["/admin", "/admin/pedidos", "/admin/pedidos/00000000-0000-4000-8000-000000000000"]) {
+  for (const path of [
+    "/admin",
+    "/admin/pedidos",
+    "/admin/pedidos/00000000-0000-4000-8000-000000000000",
+    "/admin/obras",
+    "/admin/obras/nova",
+    "/admin/catalogo",
+    "/admin/catalogo/modalidades/nova",
+    "/admin/depoimentos",
+    "/admin/textos",
+    "/admin/configuracoes",
+  ]) {
     test(`${path} manda para o login`, async ({ page }) => {
       await page.goto(path);
       await expect(page).toHaveURL(/\/admin\/login$/);

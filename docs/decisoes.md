@@ -7,11 +7,11 @@ O que já foi decidido para o site da Croquis e Flores e o que ainda falta resol
 - **[x]** já foi decidido ou já está pronto no site.
 - **[ ]** ainda está em aberto: depende de uma resposta ou de um passo que não foi feito.
 
-Quase tudo o que aparece no site (textos, preços, coleções, opções) vai poder ser mudado pela Carla no painel, sem precisar de programação.
+Quase tudo o que aparece no site (obras, textos, preços, coleções, opções, depoimentos e contatos) pode ser mudado pela Carla no painel, sem precisar de programação.
 
 Os textos, preços e informações que a Carla passou estão em `conteudo-carla.md`. Se algo aqui for diferente do briefing original, vale o que está aqui.
 
-*Última atualização: 11/11/2026.*
+*Última atualização: 13/11/2026.*
 
 ---
 
@@ -57,13 +57,16 @@ Os textos, preços e informações que a Carla passou estão em `conteudo-carla.
 - [x] **"Como funciona":** usa os 5 passos descritos pela Carla.
 - [x] **Depoimentos:** as 7 frases reais da pesquisa de satisfação aparecem **sem nome** ("Cliente Croquis e Flores"), num carrossel que passa de um em um. A pesquisa foi anônima, então não dá para saber quem escreveu cada frase.
 - [ ] **Depoimento com nome:** só se a própria cliente confirmar que a frase é dela e autorizar.
-- [ ] **Política de privacidade e termos de uso:** os textos atuais são provisórios. Falta o texto definitivo.
+- [x] **Onde ficam a política de privacidade e os termos de uso:** o texto é colado no painel (Textos). Enquanto estiver vazio, a página mostra que o texto está pendente. Quando a política muda, os pedidos seguintes guardam a nova versão que o cliente aceitou.
+- [ ] **Texto definitivo da política de privacidade e dos termos de uso:** precisa ser escrito pela Carla ou por um profissional.
 
 ## 5. Fotos e autorizações
 
 - [x] **Fotos atuais:** vieram do Instagram, em tamanho pequeno. Em uma delas foram apagados ícones e uma frase de série de TV, para não mostrar elementos de terceiros.
 - [x] **Enquanto não houver autorização,** as fotos ficam só como exemplo no site em desenvolvimento.
 - [x] **Coleção sem foto** (Pets) mostra o símbolo da marca no lugar da foto.
+- [x] **Fotos enviadas pelo painel:** a Carla manda as fotos das obras, das coleções e a dela direto pelo painel, até do celular. Antes de guardar, o site diminui a foto (no máximo 2400 pixels) e apaga os dados da câmera, como o local onde a foto foi tirada. Uma obra só aparece no site depois que a Carla clica em **Publicar**.
+- [x] **Descrição de cada foto:** toda foto pede uma frase curta dizendo o que ela mostra, para quem usa leitor de tela. Também dá para marcar o ponto mais importante da foto (um rosto, por exemplo), e os recortes do site ficam centrados nele.
 - [ ] **Autorização da Carla** para usar as fotos das obras e a foto dela no site.
 - [ ] **Fotos originais em boa resolução:** de 8 a 12 obras, cobrindo cada serviço, mais fotos das obras no ambiente. A Carla vai mandar pelo WhatsApp, como documento.
 - [ ] **Fotos para a coleção Pets.**
@@ -90,7 +93,11 @@ Os textos, preços e informações que a Carla passou estão em `conteudo-carla.
 ## 7. Publicação, contas e custos
 
 - [x] **Painel da Carla:** só ela entra, com e-mail e senha forte (no mínimo 12 caracteres). Não existe cadastro aberto ao público.
-- [x] **Pedidos no painel:** a Carla vê a lista de pedidos, abre cada um com as fotos do cliente, muda o andamento (Nova, Em análise, Orçamento enviado…), registra o valor do orçamento e o prazo, faz anotações que só ela vê e chama o cliente no WhatsApp. Tudo fica num histórico do pedido.
+- [x] **Pedidos no painel:** a Carla vê a lista de pedidos, abre cada um com as fotos do cliente, muda o andamento (Novo, Orçamento enviado, Aprovado…), registra o valor do orçamento e o prazo, faz anotações que só ela vê e chama o cliente no WhatsApp. Tudo fica num histórico do pedido.
+- [x] **Obras no painel:** a Carla cadastra uma obra, envia as fotos, escolhe a capa e a ordem, marca como destaque da página inicial e publica. Para tirar do site sem perder, ela **arquiva** a obra. Também dá para apagar de vez.
+- [x] **Catálogo no painel:** a Carla muda preços, tamanhos, técnicas, molduras, formatos e formas de entrega, cria coleções e escolhe a ordem de tudo. O que ela desativa some do site na hora, mas os pedidos antigos continuam com o nome da opção escolhida. Ao desativar uma coleção ou um tipo de obra, as obras dele também saem da galeria.
+- [x] **Depoimentos no painel:** a Carla cadastra, muda a ordem e publica. O painel só deixa publicar depois que ela anota como e quando o cliente autorizou.
+- [x] **Textos e configurações no painel:** faixa do topo, destaque da página inicial, "Como funciona", "Sobre", prazos e pagamento, política, termos, WhatsApp, e-mail, Instagram, e-mail que recebe os pedidos, prazo mínimo e limite de fotos do pedido. Ao salvar, o site já mostra a mudança.
 - [x] **Contas do painel:** por enquanto, quem cria a conta da Carla (ou troca a senha dela) é o Erick, por um comando no computador. A senha é digitada pela própria pessoa.
 - [ ] **"Esqueci minha senha" pelo e-mail:** fica para depois que o site tiver domínio próprio. Até lá, se a Carla esquecer a senha, o Erick cria uma nova.
 - [x] **Envio de e-mails em teste:** o serviço de envio (Resend) está funcionando. Enquanto o site não tem domínio próprio, os e-mails de pedidos chegam para o Erick.
