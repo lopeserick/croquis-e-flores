@@ -67,7 +67,7 @@ test("pedido com foto: registra, guarda a foto no armazenamento privado e abre o
 
   const whatsapp = page.getByRole("link", { name: /Abrir conversa no WhatsApp/ });
   const href = (await whatsapp.getAttribute("href"))!;
-  expect(href).toMatch(/^https:\/\/wa\.me\/5575988498356\?text=/);
+  expect(href).toMatch(/^https:\/\/api\.whatsapp\.com\/send\?phone=5575988498356&text=/);
   expect(decodeURIComponent(href)).toContain(number);
   await expect(whatsapp).toHaveAttribute("target", "_blank");
 

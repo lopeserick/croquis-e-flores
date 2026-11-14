@@ -56,11 +56,19 @@ describe("caminho das fotos no armazenamento", () => {
 describe("WhatsApp", () => {
   it("cliente abre conversa com a artista já com o número do pedido", () => {
     const url = customerWhatsappLink("5575988498356", { number: "CF-2026-0007", customerName: "Maria Souza" });
-    expect(url).toMatch(/^https:\/\/wa\.me\/5575988498356\?text=/);
+    expect(url).toMatch(/^https:\/\/api\.whatsapp\.com\/send\?phone=5575988498356&text=/);
     const text = decodeURIComponent(url!.split("text=")[1]);
     expect(text).toBe(
       "Oi, Carla! 🌸 Aqui é Maria. Acabei de enviar pelo site o meu pedido CF-2026-0007 e mal posso esperar para ver a minha ideia virar arte! ✨ Fico no aguardo do orçamento 💛",
     );
+  });
+
+  it("emojis vão em UTF-8 pelo api.whatsapp.com (o wa.me estragava 🌸 e 💛)", () => {
+    const url = customerWhatsappLink("5575988498356", { number: "CF-2026-0007", customerName: "Maria" })!;
+    expect(url).not.toContain("wa.me");
+    expect(url).toContain("%F0%9F%8C%B8"); // 🌸
+    expect(url).toContain("%F0%9F%92%9B"); // 💛
+    expect(new URL(url).searchParams.get("text")).toContain("🌸");
   });
 
   it("sem WhatsApp configurado, não há botão", () => {

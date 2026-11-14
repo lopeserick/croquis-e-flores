@@ -105,7 +105,7 @@ test.describe("Carla logada", () => {
     await expect(photo).toBeVisible();
     await expect.poll(() => photo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
     const whatsapp = page.getByRole("link", { name: /WhatsApp \(11\) 91234-5678/ });
-    await expect(whatsapp).toHaveAttribute("href", /^https:\/\/wa\.me\/5511912345678\?text=/);
+    await expect(whatsapp).toHaveAttribute("href", /^https:\/\/api\.whatsapp\.com\/send\?phone=5511912345678&text=/);
     await audit(page);
 
     await page.getByLabel("Status do pedido").selectOption("orcamento_enviado");

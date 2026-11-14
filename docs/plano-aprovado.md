@@ -337,12 +337,12 @@ Decisões: `decisoes.md`, seção 6.
 - [x] Ao salvar, o site muda na hora (galeria, página da obra, vitrine da página inicial)
 
 **Como conferir no navegador**
-- [ ] Painel > Obras > **Nova obra**: preencher, "Criar obra"
-- [ ] Na obra criada, "Adicionar fotos" (pode ser foto do celular), escrever a descrição e tocar na parte mais importante da foto
-- [ ] "Publicar": a obra aparece na galeria e em "Ver no site"
-- [ ] Marcar "Destaque na página inicial", salvar: aparece na vitrine "Obras que contam histórias"
-- [ ] "Arquivar": some do site e continua na lista do painel
-- [ ] Apagar a obra de teste no fim ("Apagar a obra de vez")
+- [x] Painel > Obras > **Nova obra**: preencher, "Criar obra"
+- [x] Na obra criada, "Adicionar fotos" (pode ser foto do celular), escrever a descrição e tocar na parte mais importante da foto
+- [x] "Publicar": a obra aparece na galeria e em "Ver no site"
+- [x] Marcar "Destaque na página inicial", salvar: aparece na vitrine "Obras que contam histórias"
+- [x] "Arquivar": some do site e continua na lista do painel
+- [x] Apagar a obra de teste no fim ("Apagar a obra de vez")
 
 **Testes automáticos**
 - [x] `npm test`: regras de publicação, capa, caminho das fotos, redução de tamanho, ordem e endereço
@@ -363,12 +363,12 @@ Decisões: `decisoes.md`, seção 6.
 - [x] Cada campo avisa o erro (preço inválido, WhatsApp incompleto, passo vazio…) e leva o foco até ele; o que foi digitado não se perde
 
 **Como conferir no navegador**
-- [ ] Catálogo > Obra feita à mão > Nanquim > desmarcar "Ativa" > Salvar: em Encomendar, com Folha A4, só aparece Lápis de cor. Depois, marcar "Ativa" de novo
-- [ ] Mudar o preço de um tamanho: o novo valor aparece em "Tipos de obra e preços"
-- [ ] Configurações > WhatsApp: trocar o número e salvar; o botão do rodapé abre o novo número. Depois, voltar para (75) 98849-8356
-- [ ] Textos > Faixa do topo: mudar e ver no site; depois voltar o texto
-- [ ] Depoimentos > Novo: tentar publicar sem a autorização (não deixa); com a autorização, aparece no carrossel. Apagar no fim
-- [ ] No celular: as telas do painel funcionam e os botões são fáceis de tocar
+- [x] Catálogo > Obra feita à mão > Nanquim > desmarcar "Ativa" > Salvar: em Encomendar, com Folha A4, só aparece Lápis de cor. Depois, marcar "Ativa" de novo
+- [x] Mudar o preço de um tamanho: o novo valor aparece em "Tipos de obra e preços"
+- [x] Configurações > WhatsApp: trocar o número e salvar; o botão do rodapé abre o novo número. Depois, voltar para (75) 98849-8356
+- [x] Textos > Faixa do topo: mudar e ver no site; depois voltar o texto
+- [x] Depoimentos > Novo: tentar publicar sem a autorização (não deixa); com a autorização, aparece no carrossel. Apagar no fim
+- [x] No celular: as telas do painel funcionam e os botões são fáceis de tocar
 
 **Testes automáticos**
 - [x] `npm test`: 128 testes de regras (inclui preços, dependência entre opções, autorização do depoimento, WhatsApp, passos, limites do formulário, versão da política)

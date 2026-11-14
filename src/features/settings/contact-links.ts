@@ -9,8 +9,15 @@ export function instagramUrl(handle: string): string {
 export const CONTACT_WHATSAPP_MESSAGE =
   "Oi, Carla! 🌸 Vim pelo site da Croquis e Flores e quero conversar sobre uma arte personalizada ✨";
 
-/** Conversa no WhatsApp. O número deve vir com DDI (55); a mensagem é opcional. */
+/**
+ * Conversa no WhatsApp. O número deve vir com DDI (55); a mensagem é opcional.
+ *
+ * Usa api.whatsapp.com/send, e não wa.me: o redirecionamento do wa.me estraga
+ * emojis fora do básico (🌸, 💛, 🌷), que chegavam como "�" no WhatsApp Web e
+ * no aplicativo do computador. O texto vai em UTF-8 codificado.
+ */
 export function whatsappUrl(number: string, message?: string): string {
-  const base = `https://wa.me/${number.replace(/\D/g, "")}`;
-  return message ? `${base}?text=${encodeURIComponent(message)}` : base;
+  const params = new URLSearchParams({ phone: number.replace(/\D/g, "") });
+  const base = `https://api.whatsapp.com/send?${params}`;
+  return message ? `${base}&text=${encodeURIComponent(message)}` : base;
 }

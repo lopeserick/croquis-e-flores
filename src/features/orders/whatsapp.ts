@@ -1,9 +1,11 @@
-// Links do WhatsApp (wa.me) com mensagem pronta, em tom carinhoso (pedido da
-// Carla). A pessoa pode editar o texto antes de enviar; nada é enviado sozinho.
+import { whatsappUrl } from "@/features/settings/contact-links";
+
+// Links do WhatsApp com mensagem pronta, em tom carinhoso (pedido da Carla).
+// A pessoa pode editar o texto antes de enviar; nada é enviado sozinho.
 
 const firstName = (name: string) => name.trim().split(/\s+/)[0] ?? "";
 
-const waLink = (number: string, text: string) => `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
+const waLink = (number: string, text: string) => whatsappUrl(number, text);
 
 /** Cliente → artista, na tela de "pedido enviado". null se o WhatsApp não foi configurado. */
 export function customerWhatsappLink(

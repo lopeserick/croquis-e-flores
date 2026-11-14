@@ -97,7 +97,7 @@ test("rodapé tem WhatsApp, Instagram e e-mail do ateliê", async ({ page }) => 
   const footer = page.getByRole("contentinfo");
   await expect(footer.getByRole("link", { name: /WhatsApp/ })).toHaveAttribute(
     "href",
-    /^https:\/\/wa\.me\/5575988498356\?text=Oi%2C%20Carla!/,
+    /^https:\/\/api\.whatsapp\.com\/send\?phone=5575988498356&text=Oi%2C%20Carla!/,
   );
   await expect(footer.getByRole("link", { name: /Instagram/ })).toHaveAttribute(
     "href",

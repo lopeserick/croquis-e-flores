@@ -30,7 +30,7 @@ describe("links de contato", () => {
   });
 
   it("WhatsApp usa só os dígitos do número", () => {
-    expect(whatsappUrl("+55 (11) 91234-5678")).toBe("https://wa.me/5511912345678");
+    expect(whatsappUrl("+55 (11) 91234-5678")).toBe("https://api.whatsapp.com/send?phone=5511912345678");
   });
 
   it("WhatsApp do site já abre com uma mensagem carinhosa", () => {

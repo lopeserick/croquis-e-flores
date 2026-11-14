@@ -129,7 +129,7 @@ test.describe("configurações e textos", () => {
       await site.goto("/contato");
       await expect(site.getByRole("main").getByRole("link", { name: /WhatsApp/ }).first()).toHaveAttribute(
         "href",
-        /^https:\/\/wa\.me\/5571998765432/,
+        /^https:\/\/api\.whatsapp\.com\/send\?phone=5571998765432/,
       );
     } finally {
       await whatsapp.fill("(75) 98849-8356");
